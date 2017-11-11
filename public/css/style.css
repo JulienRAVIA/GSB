@@ -1,3 +1,56 @@
+:root {
+    --couleurUI: #337ab7;
+    --couleurUIHover: #337aa7;
+    --couleurUIDeconCadre: #d9edf7;
+    --couleurUIDeconBorder: #0067b0;
+    --couleurUIDeconText: #c86400;
+}
+
 .header {
     margin-top: 10px;
+}
+
+.panel-primary {
+    border-color: var(--couleurUI);
+}
+
+.panel-primary > .panel-heading {
+    background-color: var(--couleurUI);
+    border-color: var(--couleurUIBorder);
+}
+
+.nav-pills > li.active > a {
+    background-color: var(--couleurUI);
+}
+
+a {
+    color: var(--couleurUI);
+}
+
+.nav-pills > li > a:hover {
+    color: var(--couleurUI) !important;
+}
+
+.nav-pills > li.active > a:hover {
+    color: white !important;
+}
+
+.nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    color: #fff;
+    background-color: var(--couleurUIHover);
+}
+
+.alert-info {
+    color: var(--couleurUIDeconText);
+    background-color: var(--couleurUIDeconCadre);
+    border-color: var(--couleurUIDeconBorder);
+}
+
+.btn-primary {
+    background-color: var(--couleurUI);
+    border-color: var(--couleurUIDeconBorder);
+}
+
+.btn-primary:hover {
+    background-color: var(--couleurUIHover);
 }

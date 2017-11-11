@@ -40,3 +40,12 @@
 {% macro button(value, color, type) %}
    <button class="btn btn-{{ color }}" type="{{ type|default('submit') }}">{{ value }}</button>
 {% endmacro %}
+
+{% macro navLink(name, link, text, icon, uc) %}
+    <li {% if not uc or uc == name %}class="active"{% endif %}>
+        <a href="http://gsb.ppe/{{ link }}">
+            <span class="fa fa-{{ icon }}"></span>
+            {{ text|e }}
+        </a>
+    </li>
+{% endmacro %}

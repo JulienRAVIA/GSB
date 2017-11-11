@@ -54,9 +54,10 @@ class Session {
      * @param  string $nom    Nom de l'utilisateur à connecter
      * @param  string $prenom Prénom de l'utilisateur à connecter
      */
-    public static function connect($id, $nom, $prenom) {
+    public static function connect($id, $nom, $prenom, $type) {
         self::set('idVisiteur', $id);
         self::set('nom', $nom);
         self::set('prenom', $prenom);
+        self::set('type', $type);
     }
 }

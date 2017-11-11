@@ -61,7 +61,7 @@ class ConnexionController
         // si le login et le mdp sont corrects
         if($visiteur) {
             // on lui créé sa session
-        	Session::connect($visiteur['id'], $visiteur['nom'], $visiteur['prenom']);
+            Session::connect($visiteur['id'], $visiteur['nom'], $visiteur['prenom'], $visiteur['type']);
         	// on le redirige vers l'accueil
             View::redirect('/accueil');
         } else {

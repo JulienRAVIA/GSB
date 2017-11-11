@@ -12,30 +12,15 @@
         </div>
         <div class="col-md-8">
             <ul class="nav nav-pills pull-right" role="tablist">
-                <li {% if not uc or uc == 'accueil' %}class="active"{% endif %}>
-                    <a href="{{ component.url('') }}">
-                        <span class="fa fa-home"></span>
-                        Accueil
-                    </a>
-                </li>
-                <li {% if not uc or uc == 'gererFrais' %}class="active"{% endif %}>
-                    <a href="{{ component.url('frais/saisir') }}">
-                        <span class="fa fa-pencil"></span>
-                        Renseigner la fiche de frais
-                    </a>
-                </li>
-                <li {% if not uc or uc == 'etatFrais' %}class="active"{% endif %}>
-                    <a href="{{ component.url('frais/afficher') }}">
-                        <span class="fa fa-list-alt"></span>
-                        Afficher mes fiches de frais
-                    </a>
-                </li>
-                <li {% if not uc or uc == 'deconnexion' %}class="active"{% endif %}>
-                    <a href="{{ component.url('deconnexion') }}">
-                        <span class="fa fa-sign-out"></span>
-                        Déconnexion
-                    </a>
-                </li>
+                {{ component.navLink('accueil', '', 'Accueil', 'home', uc) }}
+                {% if session.type == 'VISTR' %}
+                    {{ component.navLink('gererFrais', 'frais/saisir', 'Renseigner la fiche de frais', 'pencil', uc) }}
+                    {{ component.navLink('etatFrais', 'frais/afficher', 'Afficher mes fiches de frais', 'list-alt', uc) }}
+                {% else %}
+                    {{ component.navLink('validerFrais', 'frais/valider', 'Valider les fiches de frais', 'check', uc) }}
+                    {{ component.navLink('suivreFrais', 'frais/suivre', 'Suivre le paiement des fiches de frais', 'eur', uc) }}
+                {% endif %}
+                {{ component.navLink('deconnexion', 'deconnexion', 'Deconnexion', 'sign-out', uc) }}
             </ul>
         </div>
     </div>

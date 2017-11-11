@@ -6,9 +6,7 @@
 	</div>
 {% endmacro %}
 
-{% macro url(path) %}
-	http://gsb.ppe/{{path}}
-{% endmacro %}
+{% macro url(path) %}http://gsb.ppe/{{path}}{% endmacro %}
 
 {% macro input_group(name, placeholder, icon, type, label, maxlength) %}
     <div class="form-group">
@@ -32,8 +30,7 @@
 {% macro input(name, value, id, label, type) %}
     <div class="form-group">
         <label for="{{ id }}">{{ label }}</label>
-        <input type="{{ type|default('text') }}" id="{{ id }}" name="{{ name }}" 
-               class="form-control" id="{{ id }}" value="{{ value }}">
+        <input type="{{ type|default('text') }}" id="{{ id }}" name="{{ name }}" class="form-control" id="{{ id }}" value="{{ value }}">
     </div>
 {% endmacro %}
 
@@ -42,10 +39,8 @@
 {% endmacro %}
 
 {% macro navLink(name, link, text, icon, uc) %}
+    {% import _self as component %}
     <li {% if not uc or uc == name %}class="active"{% endif %}>
-        <a href="http://gsb.ppe/{{ link }}">
-            <span class="fa fa-{{ icon }}"></span>
-            {{ text|e }}
-        </a>
+        <a href="{{component.url(link|trim)}}"><span class="fa fa-{{ icon }}"></span> {{ text|e }}</a>
     </li>
 {% endmacro %}

@@ -1,0 +1,50 @@
+{% import 'includes/macro.twig' as component %}
+
+{% if session.idVisiteur %}
+<div class="header">
+    <div class="row vertical-align">
+        <div class="col-md-4">
+            <h1>
+                <img src="{{ component.url('img/logo.jpg') }}" class="img-responsive" 
+                     alt="Laboratoire Galaxy-Swiss Bourdin" 
+                     title="Laboratoire Galaxy-Swiss Bourdin">
+            </h1>
+        </div>
+        <div class="col-md-8">
+            <ul class="nav nav-pills pull-right" role="tablist">
+                <li {% if not uc or uc == 'accueil' %}class="active"{% endif %}>
+                    <a href="{{ component.url('') }}">
+                        <span class="fa fa-home"></span>
+                        Accueil
+                    </a>
+                </li>
+                <li {% if not uc or uc == 'gererFrais' %}class="active"{% endif %}>
+                    <a href="{{ component.url('frais/saisir') }}">
+                        <span class="fa fa-pencil"></span>
+                        Renseigner la fiche de frais
+                    </a>
+                </li>
+                <li {% if not uc or uc == 'etatFrais' %}class="active"{% endif %}>
+                    <a href="{{ component.url('frais/afficher') }}">
+                        <span class="fa fa-list-alt"></span>
+                        Afficher mes fiches de frais
+                    </a>
+                </li>
+                <li {% if not uc or uc == 'deconnexion' %}class="active"{% endif %}>
+                    <a href="{{ component.url('deconnexion') }}">
+                        <span class="fa fa-sign-out"></span>
+                        Déconnexion
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% else %}
+    <h1>
+        <img src="{{ component.url('img/logo.jpg') }}"
+             class="img-responsive center-block"
+             alt="Laboratoire Galaxy-Swiss Bourdin"
+             title="Laboratoire Galaxy-Swiss Bourdin">
+    </h1>
+{% endif %}

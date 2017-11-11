@@ -1,0 +1,75 @@
+{% extends 'includes/template.twig' %}
+{% import 'includes/macro.twig' as component %}
+
+{% set uc = 'gererFrais' %}
+
+{% block content %}
+<div class="row">  
+    {% if erreurs %}
+        {{ component.alert(erreurs, danger) }}
+    {% endif %}  
+    
+    <h2>Renseigner ma fiche de frais du mois 
+        {{ numMois }} - {{ numAnnee }}
+    </h2>
+    <h3>Eléments forfaitisés</h3>
+    <div class="col-md-4">
+        <form method="post" action="/frais/update" role="form" name="update">
+                <fieldset>       
+                {% for unFrais in lesFraisForfait %} 
+                    <div class="form-group">
+                        <label for="idFrais">{{ unFrais.libelle }}</label>
+                        <input type="text" id="idFrais" 
+                               name="lesFrais[{{ unFrais.idfrais }}]"
+                               size="10" maxlength="5" 
+                               value="{{ unFrais.quantite }}" 
+                               class="form-control">
+                    </div>
+                {% endfor %}
+                {{ component.button('Ajouter', 'success') }}
+                {{ component.button('Effacer', 'danger', 'reset') }}
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<hr>
+<div class="row">
+    <div class="panel panel-info">
+        <div class="panel-heading">Descriptif des éléments hors forfait</div>
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th class="date">Date</th>
+                    <th class="libelle">Libellé</th>  
+                    <th class="montant">Montant</th>  
+                    <th class="action">&nbsp;</th> 
+                </tr>
+            </thead>  
+            <tbody>
+            {% for unFraisHorsForfait in lesFraisHorsForfait %}
+                <tr>
+                    <td>{{ unFraisHorsForfait.date|e }}</td>
+                    <td>{{ unFraisHorsForfait.libelle|e }}</td>
+                    <td>{{ unFraisHorsForfait.montant|e }}</td>
+                    <td><a href="{{ component.url('frais/delete/' ~ unFraisHorsForfait.id) }}" 
+                           onclick="return confirm('Voulez-vous vraiment supprimer ce frais?');">Supprimer ce frais</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>  
+        </table>
+    </div>
+</div>
+<div class="row">
+    <h3>Nouvel élément hors forfait</h3>
+    <div class="col-md-4">
+        <form method="post" action="/frais/create" role="form" name="create">
+            {{ component.input('dateFrais', '', 'txtDateHF', 'Date (jj/mm/aaaa) :', 'text') }} 
+            {{ component.input('libelle', '', 'txtLibelleHF', 'Libellé', 'text') }} 
+            {{ component.input_group('montant', '', 'eur', 'text', 'Montant :') }}
+            {{ component.button('Ajouter', 'success') }}
+            {{ component.button('Effacer', 'danger', 'reset') }}
+        </form>
+    </div>
+</div>
+{% endblock %}

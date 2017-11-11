@@ -1,0 +1,37 @@
+{% extends 'includes/template.twig' %}
+{% import 'includes/macro.twig' as component %}
+
+{% block content %}
+    <div id="accueil">
+        <h2>
+            Gestion des frais<small> - Visiteur : {{ session.prenom ~ ' ' ~ session.nom }} </small>
+        </h2>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span class="fa fa-bookmark"></span>
+                        Navigation
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <a href="{{ component.url('frais/saisir') }}" class="btn btn-success btn-lg" role="button">
+                                <span class="fa fa-pencil"></span>
+                                <br>Renseigner la fiche de frais
+                            </a>
+                            <a href="{{ component.url('frais/afficher') }}"
+                               class="btn btn-primary btn-lg" role="button">
+                                <span class="fa fa-list-alt"></span>
+                                <br>Afficher mes fiches de frais</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

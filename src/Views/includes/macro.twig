@@ -1,0 +1,42 @@
+{% macro alert(messages, type) %}
+	<div class="alert alert-{{ type|default('danger') }}" role="alert">
+		{% for message in messages %}
+		    <p>{{ message }}</p>
+		{% endfor %}
+	</div>
+{% endmacro %}
+
+{% macro url(path) %}
+	http://gsb.ppe/{{path}}
+{% endmacro %}
+
+{% macro input_group(name, placeholder, icon, type, label, maxlength) %}
+    <div class="form-group">
+    	{% if label is not empty %}
+        	<label for="">{{ label }}</label>
+    	{% endif %}
+        <div class="input-group">
+            <span class="input-group-addon">
+                <i class="fa fa-{{ icon }}"></i>
+            </span>
+            <input class="form-control" placeholder="{{ placeholder }}"
+                   name="{{ name }}" type="{{ type|default('text') }}" maxlength="{{ maxlength|default(45) }}">
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro input_button(value, class, type, size) %}
+	<input class="btn btn-{{ size|default('lg') }} btn-{{ class }} btn-block" type="{{ type|default('submit') }}" value="{{ value }}">
+{% endmacro %}
+
+{% macro input(name, value, id, label, type) %}
+    <div class="form-group">
+        <label for="{{ id }}">{{ label }}</label>
+        <input type="{{ type|default('text') }}" id="{{ id }}" name="{{ name }}" 
+               class="form-control" id="{{ id }}" value="{{ value }}">
+    </div>
+{% endmacro %}
+
+{% macro button(value, color, type) %}
+   <button class="btn btn-{{ color }}" type="{{ type|default('submit') }}">{{ value }}</button>
+{% endmacro %}

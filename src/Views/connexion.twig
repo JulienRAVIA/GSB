@@ -1,0 +1,29 @@
+{% extends 'includes/template.twig' %}
+{% import 'includes/macro.twig' as component %}
+
+{% set uc = 'connexion' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            {% if erreurs %}
+                {{ component.alert(erreurs, danger) }}
+            {% endif %}
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Identification utilisateur</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="post" action="connexion">
+                        <fieldset>
+                            {{ component.input_group('login', 'Login', 'user fa-lg') }}
+                            {{ component.input_group('mdp', 'Mot de passe', 'lock fa-lg', 'password') }}
+                            {{ component.input_button('Se connecter', 'success', 'submit') }}
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

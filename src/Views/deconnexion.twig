@@ -1,0 +1,11 @@
+{% extends 'includes/template.twig' %}
+{% import 'includes/macro.twig' as component %}
+
+{% set uc = 'deconnexion' %}
+
+{% block content %}
+	<div class="alert alert-info" role="alert">
+    	<p>Vous avez bien été déconnecté ! <a href="{{ component.url('/') }}">Cliquez ici</a>
+        pour revenir à la page de connexion.</p>
+	</div>
+{% endblock %}

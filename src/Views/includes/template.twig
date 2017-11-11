@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% import 'includes/macro.twig' as component %}
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="UTF-8">
+        <title>Intranet du Laboratoire Galaxy-Swiss Bourdin</title> 
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ component.url('css/bootstrap.css') }}" rel="stylesheet">
+        <link href="{{ component.url('css/style.css') }}" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            {% include 'includes/head.twig' %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>

@@ -1,0 +1,80 @@
+{% extends 'includes/template.twig' %}
+{% import 'includes/macro.twig' as component %}
+
+{% set uc = 'etatFrais' %}
+
+{% block content %}
+<h2>Mes fiches de frais</h2>
+<div class="row">
+    <div class="col-md-4">
+        <h3>Sélectionner un mois : </h3>
+    </div>
+    <div class="col-md-4">
+        <form action="/frais/etat" method="post" role="form">
+            <div class="form-group">
+                <label for="lstMois" accesskey="n">Mois : </label>
+                <select id="lstMois" name="lstMois" class="form-control">
+                	{% for unMois in lesMois %}
+                	    {% if unMois.mois == moisASelectionner %}
+                                <option selected value="{{ unMois.mois }}">{{ unMois.numMois }} / {{ unMois.numAnnee }}</option>
+                            {% else %}
+                                <option value="{{ unMois.mois }}">{{ unMois.numMois }} / {{ unMois.numAnnee }}</option>
+                            {% endif %}
+                	{% endfor %}
+                </select>
+            </div>
+            <input id="ok" type="submit" value="Valider" class="btn btn-success" 
+                   role="button">
+            <input id="annuler" type="reset" value="Effacer" class="btn btn-danger" 
+                   role="button">
+        </form>
+    </div>
+</div>
+
+{% if showEtat %}
+<hr>
+<div class="panel panel-primary">
+    <div class="panel-heading">Fiche de frais du mois 
+        {{ numMois }} - {{ numAnnee }} : </div>
+    <div class="panel-body">
+        <strong><u>Etat :</u></strong> {{ libEtat }}
+        depuis le {{ dateModif }} <br> 
+        <strong><u>Montant validé :</u></strong> {{ montantValide }}
+    </div>
+</div>
+<div class="panel panel-info">
+    <div class="panel-heading">Eléments forfaitisés</div>
+    <table class="table table-bordered table-responsive">
+        <tr>
+            {% for unFraisForfait in lesFraisForfait %}
+                <th>{{ unFraisForfait.libelle|e }}</th>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for unFraisForfait in lesFraisForfait %}
+                <td class="qteForfait">{{ unFraisForfait.quantite }}</td>
+            {% endfor %}
+        </tr>
+    </table>
+</div>
+<div class="panel panel-info">
+    <div class="panel-heading">Descriptif des éléments hors forfait - 
+        {{ nbJustificatifs }} justificatifs reçus</div>
+    <table class="table table-bordered table-responsive">
+        <tr>
+            <th class="date">Date</th>
+            <th class="libelle">Libellé</th>
+            <th class='montant'>Montant</th>                
+        </tr>
+        {% for unFraisHorsForfait in lesFraisHorsForfait %}
+        	<tr>
+            	<td>{{ unFraisHorsForfait.date }}</td>
+            	<td>{{ unFraisHorsForfait.libelle|e }}</td>
+            	<td>{{ unFraisHorsForfait.montant }}</td>
+        	</tr>
+        {% endfor %}
+    </table>
+</div>
+{% endif %}
+
+{% endblock %}

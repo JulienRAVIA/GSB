@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <link rel="stylesheet" href="resources/bootstrap.min.css">
+        <link rel="stylesheet" href="resources/style.css">
+
+        <title>
+            Class App\Utils\Form
+        </title>
+    </head>
+
+    <body>
+<div id="navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="index.html">
+                                Overview
+                            </a>
+                        </li>
+
+                            <li>
+                                <a href="classes.html">Classes</a>
+                            </li>
+
+
+
+
+
+                    </ul>
+
+                    <form id="search" class="pull-right">
+                        <input type="text" name="q" class="form-control text" placeholder="Search class, function or namespace" autofocus>
+                    </form>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+            <div id="breadcrumbs">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+
+
+<div class="pull-left type">
+    <span class="label label-success">Class</span>
+</div>
+
+<ol class="breadcrumb pull-left">
+        <li>
+            <a href="namespace-App.html">App</a>
+        </li>
+            <li class="backslash">\</li>
+        <li>
+            <a href="namespace-App.Utils.html">Utils</a>
+        </li>
+
+        <li class="backslash">\</li>
+        <li class="active">Form</li>
+</ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+    <h1>Form</h1>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                Utilitaire pour les formulaires
+            </div>
+        </div>
+
+
+
+
+    <div class="info">
+        
+
+            <a href="source-class-App.Utils.Form.html" class="open-source-code">Open source code</a>
+        <br>
+    </div>
+
+        <table class="summary table table-bordered table-responsive table-striped" id="methods">
+            <tr><th colspan="3">Methods Summary</th></tr>
+
+
+
+<tr id="_isInt">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                 public static
+                
+                
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_isInt">#</a>
+            <code><a href="source-class-App.Utils.Form.html#16-23">isInt</a>( <span> int <span class="property-name">$value</span> </span> )</code>
+
+            <div class="description">
+                On vérifie que la valeur passée soit une valeur numérique
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_isString">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                 public static
+                
+                
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_isString">#</a>
+            <code><a href="source-class-App.Utils.Form.html#32-44">isString</a>( <span> string <span class="property-name">$value</span> </span>, <span> int <span class="property-name">$length</span> = <span class="php-num">5</span></span> )</code>
+
+            <div class="description">
+                On vérifie que la valeur passée soit une chaine de caractères, de plus de x caractères
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_isMail">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                 public static
+                
+                
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_isMail">#</a>
+            <code><a href="source-class-App.Utils.Form.html#52-59">isMail</a>( <span> string <span class="property-name">$value</span> </span> )</code>
+
+            <div class="description">
+                On vérifie que l'adresse email renseignée soit correcte
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_isDate">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                 public static
+                
+                
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_isDate">#</a>
+            <code><a href="source-class-App.Utils.Form.html#67-79">isDate</a>( <span> string <span class="property-name">$value</span> </span> )</code>
+
+            <div class="description">
+                On vérifie que la date attendue soit au bon format
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_isNotEmpty">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                 public static
+                
+                
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_isNotEmpty">#</a>
+            <code><a href="source-class-App.Utils.Form.html#89-105">isNotEmpty</a>( <span> array <span class="property-name">$array</span> </span>, <span> array <span class="property-name">$fields</span> </span> )</code>
+
+            <div class="description">
+                On vérifie que les données d'un tableau correspondent
+au données attendues, à partir d'un tableau définissant
+les champs attendus
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_isPassword">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                 public static
+                
+                
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_isPassword">#</a>
+            <code><a href="source-class-App.Utils.Form.html#113-122">isPassword</a>( <span> string <span class="property-name">$value</span> </span> )</code>
+
+            <div class="description">
+                Vérification que le mot de passe à plus de 8 caractères, un caractère spécial, un chiffre, et une libxml_set_streams_context(streams_context)
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_isStrictInt">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                 public static
+                
+                
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_isStrictInt">#</a>
+            <code><a href="source-class-App.Utils.Form.html#129-131">isStrictInt</a>( <span> int <span class="property-name">$value</span> </span> )</code>
+
+            <div class="description">
+                Vérification d'un entier positif
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+        </table>
+
+
+
+
+
+
+
+    <div id="footer">
+        Generated by <a href="https://github.com/apigen/apigen">ApiGen</a>
+    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="resources/jquery-3.2.1.min.js"></script>
+        <script src="resources/jquery-ui-1.12.1.min.js"></script>
+
+        <script src="elementlist.js"></script>
+        <script src="resources/main.js"></script>
+    </body>
+</html>
+
+

@@ -43,18 +43,22 @@ $match = $router->match();
 if (!$match) {
     App\View\View::redirect('/');
 } else {
-    list($controller, $action) = explode('@', $match['target']);
-    $controller = new $controller;
-    if (is_callable(array($controller, $action))) {
-        try {
-            call_user_func_array(array($controller, $action), array($match['params']));
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
+    if(!\App\Utils\Session::isConnected() && $match['name'] != 'connexion') {
+        \App\View\View::make('connexion.twig');
     } else {
-        echo 'Error: can not call ' . get_class($controller) . '@' . $action;
-        // here your routes are wrong.
-        // Throw an exception in debug, send a 500 error in production
+        list($controller, $action) = explode('@', $match['target']);
+        $controller = new $controller;
+        if (is_callable(array($controller, $action))) {
+            try {
+                call_user_func_array(array($controller, $action), array($match['params']));
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
+        } else {
+            echo 'Error: can not call ' . get_class($controller) . '@' . $action;
+            // here your routes are wrong.
+            // Throw an exception in debug, send a 500 error in production
+        }
     }
 }
 

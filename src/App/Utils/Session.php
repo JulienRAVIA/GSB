@@ -60,4 +60,19 @@ class Session {
         self::set('prenom', $prenom);
         self::set('type', $type);
     }
+
+    /**
+     * Fonction de vérification que la clé pâssée en paramètre ait pour valeur
+     * la valeur attendue, si ce n'est pas le cas on redirige vers la route
+     * passée en paramètre
+     * @param  string $key   Clé du tableau de session à verifier
+     * @param  string $value Valeur attendue
+     * @param  string $route Route vers lequel rediriger l'utilisateur
+     * @return view          Redirection si la clé attendue n'est pas correctement renseignée
+     */
+    public static function check($key, $value, $route = '/') {
+        if(self::get($key) != $value) {
+            \App\View\View::redirect($route);
+        }
+    }
 }

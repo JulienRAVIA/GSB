@@ -379,14 +379,20 @@ class Database
      * @return un tableau associatif de clé un mois -aaaamm- et de valeurs
      *         l'année et le mois correspondant
      */
-    public function getLesMoisDisponibles($idVisiteur)
-    {
-        $requetePrepare = Database::$dbh->prepare(
-            'SELECT fichefrais.mois AS mois FROM fichefrais '
-            . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
-            . 'ORDER BY fichefrais.mois desc'
-        );
-        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur,\PDO::PARAM_STR);
+    public function getLesMoisDisponibles($idVisiteur) {
+        if ($idVisiteur == "*") {
+            $requetePrepare = Database::$dbh->prepare(
+                    'SELECT DISTINCT fichefrais.mois AS mois FROM fichefrais '
+                    . 'ORDER BY fichefrais.mois desc'
+            );
+        } else {
+            $requetePrepare = Database::$dbh->prepare(
+                    'SELECT fichefrais.mois AS mois FROM fichefrais '
+                    . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
+                    . 'ORDER BY fichefrais.mois desc'
+            );
+            $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
+        }
         $requetePrepare->execute();
         $lesMois = array();
         while ($laLigne = $requetePrepare->fetch()) {
@@ -412,24 +418,57 @@ class Database
      * @return un tableau avec des champs de jointure entre une fiche de frais
      *         et la ligne d'état
      */
-    public function getLesInfosFicheFrais($idVisiteur, $mois)
-    {
-        $requetePrepare = Database::$dbh->prepare(
-            'SELECT fichefrais.idetat as idEtat, '
-            . 'fichefrais.datemodif as dateModif,'
-            . 'fichefrais.nbjustificatifs as nbJustificatifs, '
-            . 'fichefrais.montantvalide as montantValide, '
-            . 'etat.libelle as libEtat '
-            . 'FROM fichefrais '
-            . 'INNER JOIN etat ON fichefrais.idetat = etat.id '
-            . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
-            . 'AND fichefrais.mois = :unMois'
-        );
-        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur,\PDO::PARAM_STR);
-        $requetePrepare->bindParam(':unMois', $mois,\PDO::PARAM_STR);
-        $requetePrepare->execute();
-        $laLigne = $requetePrepare->fetch();
-        return $laLigne;
+    public function getLesInfosFicheFrais($idVisiteur, $mois) {
+        if ($idVisiteur == "*") {
+            $requetePrepare = Database::$dbh->prepare(
+                    'SELECT fichefrais.idetat as idEtat, '
+                    . 'fichefrais.datemodif as dateModif,'
+                    . 'fichefrais.idvisiteur as idVisiteur,'
+                    . 'fichefrais.nbjustificatifs as nbJustificatifs, '
+                    . 'fichefrais.montantvalide as montantValide, '
+                    . 'etat.libelle as libEtat '
+                    . 'FROM fichefrais '
+                    . 'INNER JOIN etat ON fichefrais.idetat = etat.id '
+                    . 'WHERE fichefrais.mois = :unMois'
+            );
+            $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
+            $requetePrepare->execute();
+            $lesLignes = array();
+            while ($laLigne = $requetePrepare->fetch()) {
+                $idVisiteur = $laLigne['idVisiteur'];
+                $idEtat = $laLigne['idEtat'];
+                $dateModif = $laLigne['dateModif'];
+                $nbJustificatifs = $laLigne['nbJustificatifs'];
+                $montantValide = $laLigne['montantValide'];
+                $libEtat = $laLigne['libEtat'];
+                $lesLignes[] = array(
+                    'idVisiteur' => $idVisiteur,
+                    'idEtat' => $idEtat, 
+                    'dateModif' => $dateModif,
+                    'nbJustificatifs' => $nbJustificatifs,
+                    'montantValide' => $montantValide,
+                    'libEtat' => $libEtat
+                );
+            }
+            return $lesLignes;
+        } else {
+            $requetePrepare = Database::$dbh->prepare(
+                    'SELECT fichefrais.idetat as idEtat, '
+                    . 'fichefrais.datemodif as dateModif,'
+                    . 'fichefrais.nbjustificatifs as nbJustificatifs, '
+                    . 'fichefrais.montantvalide as montantValide, '
+                    . 'etat.libelle as libEtat '
+                    . 'FROM fichefrais '
+                    . 'INNER JOIN etat ON fichefrais.idetat = etat.id '
+                    . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
+                    . 'AND fichefrais.mois = :unMois'
+            );
+            $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
+            $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
+            $requetePrepare->execute();
+            $laLigne = $requetePrepare->fetch();
+            return $laLigne;
+        }
     }
 
     /**

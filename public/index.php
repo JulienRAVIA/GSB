@@ -38,6 +38,14 @@ $router->addRoutes(array(
 ));
 
 
+// Suivi des fiches de frais
+$router->addRoutes(array(
+    // page d'accueil du suivi des fiches de frais
+    array('GET','/frais/suivre', 'App\\Controllers\\SuivrePaiementController@index', 'frais.suivre'),
+    array('POST','/frais/suivre', 'App\\Controllers\\SuivrePaiementController@showSuivi', 'frais.suivre.post')
+));
+
+
 $match = $router->match();
 
 if (!$match) {

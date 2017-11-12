@@ -1,0 +1,45 @@
+{% extends 'includes/template.twig' %}
+{% import 'includes/macro.twig' as component %}
+
+{% set uc = 'suiviPaiement' %}
+
+{% block content %}
+
+	{% include 'includes/listeMois.twig' with {'lesMois': lesMois, 'moisASelectionner' : moisASelectionner, 'redirect' : '/frais/suivre'} only %}
+
+	{% if lesFiches is defined %}
+	<hr>
+	<div class="panel panel-primary">
+	    <div class="panel-heading">Mise en paiements
+	        {{ moisASelectionner|slice(4, 2) ~ '-' ~ moisASelectionner|slice(0, 4) }} : </div>
+	    <table class="table table-bordered table-responsive">
+	        <tr>
+	            <th class='chck'><input id="checkAlls" type="checkbox"></th>    
+	            <th class="visiteur">ID</th>
+	            <th class="etat">Etat</th>
+	            <th class="datemodif">DateModif</th>
+	            <th class='montant'>Montant</th>
+	            <th class='libelle'>Libelle</th>
+	        </tr>
+	        {% for uneFiche in lesFiches %}
+	            <tr id="{{ uneFiche.idVisiteur }}">
+	                <td><input class="chckbx" name="lesFiches[{{uneFiche.idVisiteur}}]" value="{{ uneFiche.idVisiteur }}" type="checkbox"></td>
+	                <td> {{ uneFiche.idVisiteur }} </td>
+	                <td> {{ uneFiche.idEtat }} </td>
+	                <td> {{ uneFiche.dateModif }} </td>
+	                <td> {{ uneFiche.montantValide }} </td>
+	                <td> {{ uneFiche.libEtat }} </td>
+	            </tr>
+	        {% endfor %}
+	    </table>
+	    <div class="form-group">
+	        <label class="col-md-4 control-label" for="accepter"></label>
+	        <div class="col-md-8">
+	            <button id="accepter" name="accepter" class="btn btn-success">Accepter</button>
+	            <button id="refuser" name="refuser" class="btn btn-danger">Refuser</button>
+	        </div>
+	    </div>
+	</div>
+	{% endif %}
+
+{% endblock %}

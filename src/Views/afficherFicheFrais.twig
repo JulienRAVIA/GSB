@@ -5,7 +5,7 @@
 
 {% block content %}
 
-{% include 'includes/listeMois.twig' with {'lesMois': lesMois, 'redirect' : '/frais/etat'} only %}
+{% include 'includes/listeMois.twig' with {'lesMois': lesMois, 'moisASelectionner' : moisASelectionner ,'redirect' : '/frais/etat'} only %}
 
 {% if showEtat %}
 <hr>

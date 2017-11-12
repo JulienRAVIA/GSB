@@ -1,7 +1,7 @@
 {% extends 'includes/template.twig' %}
 {% import 'includes/macro.twig' as component %}
 
-{% set uc = 'suiviPaiement' %}
+{% set uc = 'suivreFrais' %}
 
 {% block content %}
 
@@ -19,7 +19,7 @@
 	            <th class="etat">Etat</th>
 	            <th class="datemodif">DateModif</th>
 	            <th class='montant'>Montant</th>
-	            <th class='libelle'>Libelle</th>
+	            <th class='libelle'>Libellé</th>
 	        </tr>
 	        {% for uneFiche in lesFiches %}
 	            <tr id="{{ uneFiche.idVisiteur }}">

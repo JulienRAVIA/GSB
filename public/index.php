@@ -46,6 +46,14 @@ $router->addRoutes(array(
 ));
 
 
+// Validation des fiches de frais
+$router->addRoutes(array(
+    // page d'accueil de la validation des fiches de frais
+    array('GET','/frais/valider', 'App\\Controllers\\ValidationFraisController@index', 'frais.valider'),
+));
+
+
+
 $match = $router->match();
 
 if (!$match) { 

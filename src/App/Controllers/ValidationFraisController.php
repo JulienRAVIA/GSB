@@ -9,7 +9,7 @@ use \App\Utils\ErrorLogger as ErrorLogger;
 /**
  * Contrôleur du suivi de paiement de fiche de frais
  */
-class SuivrePaiementController {
+class ValidationFraisController {
 
     /**
      * Récupération du singleton de base de données
@@ -24,7 +24,6 @@ class SuivrePaiementController {
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
-        $this->lesMois = $this->db->getLesMoisDisponibles("*");
     }
 
     /**
@@ -32,20 +31,7 @@ class SuivrePaiementController {
      * @return view Vue du suivi de paiements avec la liste de séléction des mois
      */
     public function index() {
-        View::make('suiviPaiement.twig', array('lesMois' => $this->lesMois,
-            'moisASelectionner' => $this->lesMois[0]));
-    }
-
-    /**
-     * Affichage des fiches de frais de chaque utilisateur l'ayant remplie
-     * @return view Vue du suivi de paiements avec les informations nécessaires pour l'affichage
-     */
-    public function showSuivi() {
-        $leMois = $_POST['lstMois'];
-        $lesFiches = $this->db->getLesInfosFicheFrais("*", $leMois);
-        View::make('suiviPaiement.twig', array('lesMois' => $this->lesMois,
-            'moisASelectionner' => $leMois,
-            'lesFiches' => $lesFiches));
+        View::make('validationFrais.twig', array());
     }
 
 }

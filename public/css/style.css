@@ -54,3 +54,11 @@ a {
 .btn-primary:hover {
     background-color: var(--couleurUIHover);
 }
+
+h2 {
+    color : var(--couleurUI);
+}
+
+#choix-visiteur {
+    margin-top: 15px;
+}

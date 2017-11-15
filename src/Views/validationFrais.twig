@@ -5,6 +5,33 @@
 
 {% block content %}
 
-    
-    
+    <div class="row">  
+        {% if erreurs %}
+            {{ component.alert(erreurs, danger) }}
+        {% endif %}  
+
+        <div id="choix-visiteur" class="col-12">
+            <form action="{{ redirect }}" method="post" role="form">
+                <div class="form-group col-sm-6">
+                    <label for="lstMois" accesskey="n">Choisir le visiteur : </label>
+                    <select id="lstMois" name="lstMois" class="form-control">
+                        <option selected value="Paul George">Paul George</option>
+                        <option value="James Harden">James Harden</option>
+                        <!-- Récuperer les visiteurs -->
+                    </select>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="lstMois" accesskey="n">Mois : </label>
+                    <select id="lstMois" name="lstMois" class="form-control">
+                        <option selected value="08/2017">08/2017</option>
+                        <!-- Récuperer les mois -->
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-12">
+            <h2>Valider la fiche de frais </h2>
+        </div>
+    </div>
 {% endblock %}

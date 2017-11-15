@@ -49,6 +49,16 @@ class SuivrePaiementController
     										   'moisASelectionner' => $leMois,
     										   'lesFiches' => $lesFiches));
     }
+    
+    public function miseEnPaiement(){
+        $leMois = $_POST['lstMois'];
+        //FAIRE UN CHECK SUR LES ETAT
+        $id = $_POST['id'];
+        foreach($id as $unId){
+            $this->db->majEtatFicheFrais($unId, $leMois, "VA");
+        }
+        showSuivi();
+    }
 }
 
 ?>

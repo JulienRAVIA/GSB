@@ -42,14 +42,15 @@ $router->addRoutes(array(
 $router->addRoutes(array(
     // page d'accueil du suivi des fiches de frais
     array('GET','/frais/suivre', 'App\\Controllers\\SuivrePaiementController@index', 'frais.suivre'),
-    array('POST','/frais/suivre', 'App\\Controllers\\SuivrePaiementController@showSuivi', 'frais.suivre.post')
+    array('POST','/frais/suivre', 'App\\Controllers\\SuivrePaiementController@showSuivi', 'frais.suivre.post'),
+    array('POST','/frais/suivre/miseEnPaiement', 'App\\Controllers\\SuivrePaiementController@miseEnPaiement', 'frais.suivre.mep'),
 ));
 
 
 $match = $router->match();
 
 if (!$match) {
-    App\View\View::redirect('/');
+    // App\View\View::redirect('/');
 } else {
     if(!\App\Utils\Session::isConnected() && $match['name'] != 'connexion') {
         \App\View\View::make('connexion.twig');

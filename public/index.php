@@ -48,7 +48,7 @@ $router->addRoutes(array(
 
 $match = $router->match();
 
-if (!$match) {
+if (!$match) { 
     App\View\View::redirect('/');
 } else {
     if(!\App\Utils\Session::isConnected() && $match['name'] != 'connexion') {

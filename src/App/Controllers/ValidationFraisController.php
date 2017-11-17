@@ -24,6 +24,8 @@ class ValidationFraisController {
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
+        $this->lesMois = $this->db->getLesMoisDisponibles("*");
+        $this->lesVisiteurs = $this->db->getLesVisiteursAyantFichesFrais();
     }
 
     /**
@@ -31,7 +33,38 @@ class ValidationFraisController {
      * @return view Vue du suivi de paiements avec la liste de séléction des mois
      */
     public function index() {
-        View::make('validationFrais.twig', array());
+        View::make('validationFrais.twig', array('lesMois' => $this->lesMois,
+        'moisASelectionner' => $this->lesMois[0],
+        'lesVisiteurs' => $this->lesVisiteurs));
+    }
+
+    /**
+     * Affichage des fiches de frais d'un mois
+     * @return view Vue de la page d'affichage des fiches de frais avec état
+     */
+    public function showEtat() {
+        $lesMois = $this->db->getLesMoisDisponibles($this->idVisiteur);
+        $leMois = $_POST['lstMois'];
+        $lesInfosFicheFrais = $this->db->getLesInfosFicheFrais($this->idVisiteur, $leMois);
+        $numAnnee = substr($leMois, 0, 4);
+        $numMois = substr($leMois, 4, 2);
+        $libEtat = $lesInfosFicheFrais['libEtat'];
+        $montantValide = $lesInfosFicheFrais['montantValide'];
+        $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
+        $lesFraisHorsForfait = $this->db->getLesFraisHorsForfait($this->idVisiteur, $leMois);
+        $lesFraisForfait = $this->db->getLesFraisForfait($this->idVisiteur, $leMois);
+        $dateModif = \App\Utils\Date::EngToFr($lesInfosFicheFrais['dateModif']);
+        View::make('validationFrais.twig', $array = array('lesMois' => $lesMois,
+            'moisASelectionner' => $leMois,
+            'showEtat' => true,
+            'dateModif' => $dateModif,
+            'libEtat' => $libEtat,
+            'numAnnee' => $numAnnee,
+            'numMois' => $numMois,
+            'montantValide' => $montantValide,
+            'lesFraisHorsForfait' => $lesFraisHorsForfait,
+            'lesFraisForfait' => $lesFraisForfait,
+            'nbJustificatifs' => $nbJustificatifs));
     }
 
 }

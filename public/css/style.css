@@ -51,8 +51,9 @@ a {
     border-color: var(--couleurUIDeconBorder);
 }
 
-.btn-primary:hover {
-    background-color: var(--couleurUIHover);
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--couleurUIHover) !important;
+    border-color: var(--couleurUIDeconBorder) !important;
 }
 
 h2 {

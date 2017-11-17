@@ -14,17 +14,23 @@
             <form action="{{ redirect }}" method="post" role="form">
                 <div class="form-group col-sm-6">
                     <label for="lstMois" accesskey="n">Choisir le visiteur : </label>
-                    <select id="lstMois" name="lstMois" class="form-control">
-                        <option selected value="Paul George">Paul George</option>
-                        <option value="James Harden">James Harden</option>
-                        <!-- Récuperer les visiteurs -->
-                    </select>
+                    <input type="text" name="visiteurs" list="visiteurName" class="form-control"/>
+                    <datalist id="visiteurName">
+                        {% for unVisiteur in lesVisiteurs %}
+                            <option value="{{ unVisiteur.nom }} {{ unVisiteur.prenom }}"></option>
+                        {% endfor %}
+                    </datalist>
                 </div>
                 <div class="form-group col-sm-6">
                     <label for="lstMois" accesskey="n">Mois : </label>
                     <select id="lstMois" name="lstMois" class="form-control">
-                        <option selected value="08/2017">08/2017</option>
-                        <!-- Récuperer les mois -->
+                        {% for unMois in lesMois %}
+                	    {% if unMois.mois == moisASelectionner %}
+                                <option selected value="{{ unMois.mois }}">{{ unMois.numMois }} / {{ unMois.numAnnee }}</option>
+                            {% else %}
+                                <option value="{{ unMois.mois }}">{{ unMois.numMois }} / {{ unMois.numAnnee }}</option>
+                            {% endif %}
+                	{% endfor %}
                     </select>
                 </div>
             </form>

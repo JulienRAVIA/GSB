@@ -10,27 +10,31 @@
             {{ component.alert(erreurs, danger) }}
         {% endif %}  
 
-        <div id="choix-visiteur" class="col-12">
+        <div id="choix-visiteur" method="post" action="" class="col-12">
             <form action="{{ redirect }}" method="post" role="form">
                 <div class="form-group col-sm-6">
-                    <label for="lstMois" accesskey="n">Choisir le visiteur : </label>
-                    <input type="text" name="visiteurs" list="visiteurName" class="form-control"/>
-                    <datalist id="visiteurName">
+                    <label for="lstVisiteurs">Choisir le visiteur : </label>
+                    <!-- TODO: Voir pour permettre la recherche de visiteurs dans la liste pour choix + rapide/efficace -->
+                    <select id="visiteurName" name="lstVisiteurs" class="form-control" onchange="this.form.submit()"> 
                         {% for unVisiteur in lesVisiteurs %}
-                            <option value="{{ unVisiteur.nom }} {{ unVisiteur.prenom }}"></option>
+                            {% if unVisiteur.id == visiteurASelectionner %}
+                                <option selected value="{{ unVisiteur.id }}">{{ unVisiteur.nom }} {{ unVisiteur.prenom }}</option>
+                            {% else %}
+                                <option value="{{ unVisiteur.id }}">{{ unVisiteur.nom }} {{ unVisiteur.prenom }}</option>
+                            {% endif %}
                         {% endfor %}
-                    </datalist>
+                    </select>
                 </div>
                 <div class="form-group col-sm-6">
                     <label for="lstMois" accesskey="n">Mois : </label>
                     <select id="lstMois" name="lstMois" class="form-control">
                         {% for unMois in lesMois %}
-                	    {% if unMois.mois == moisASelectionner %}
+                            {% if unMois.mois == moisASelectionner %}
                                 <option selected value="{{ unMois.mois }}">{{ unMois.numMois }} / {{ unMois.numAnnee }}</option>
                             {% else %}
                                 <option value="{{ unMois.mois }}">{{ unMois.numMois }} / {{ unMois.numAnnee }}</option>
                             {% endif %}
-                	{% endfor %}
+                        {% endfor %}
                     </select>
                 </div>
             </form>

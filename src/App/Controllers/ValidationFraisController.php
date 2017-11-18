@@ -24,18 +24,30 @@ class ValidationFraisController {
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
-        $this->lesMois = $this->db->getLesMoisDisponibles("*");
+        // on récupère la liste des visiteurs possédant au moins une fiche de frais
         $this->lesVisiteurs = $this->db->getLesVisiteursAyantFichesFrais();
     }
 
     /**
-     * Page d'accueil du suivi des paiements avec la liste de séléction de mois
-     * @return view Vue du suivi de paiements avec la liste de séléction des mois
+     * Page d'accueil de la validation des fiches de frais avec la sélection du visiteur et du mois
+     * @return view Vue de la validation des fiches de frais avec la sélection du visiteur et du mois
      */
     public function index() {
-        View::make('validationFrais.twig', array('lesMois' => $this->lesMois,
-        'moisASelectionner' => $this->lesMois[0],
-        'lesVisiteurs' => $this->lesVisiteurs));
+        // Si on accède à la page pour le première fois, on génère la vue avec les infos basiques
+        if (!isset($_POST['lstVisiteurs'])) {
+            $this->lesMois = $this->db->getLesMoisDisponibles($this->lesVisiteurs[0]["id"]);
+            View::make('validationFrais.twig', array('lesMois' => $this->lesMois,
+                'moisASelectionner' => $this->lesMois[0],
+                'lesVisiteurs' => $this->lesVisiteurs,
+                'visiteurASelectionner' => $this->lesVisiteurs[0]));
+        }
+        else { // Si on est redirigé ici par le POST du formulaire, on génère la vue en fonction des infos précédentes
+            $this->lesMois = $this->db->getLesMoisDisponibles($_POST['lstVisiteurs']);
+            View::make('validationFrais.twig', array('lesMois' => $this->lesMois,
+                'moisASelectionner' => $this->lesMois[0],
+                'lesVisiteurs' => $this->lesVisiteurs,
+                'visiteurASelectionner' => $_POST['lstVisiteurs']));
+        }
     }
 
     /**

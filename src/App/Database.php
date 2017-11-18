@@ -487,7 +487,7 @@ class Database {
      */
     public function getLesVisiteursAyantFichesFrais() {
         $requetePrepare = Database::$dbh->prepare(
-                'SELECT DISTINCT nom, prenom '
+                'SELECT DISTINCT id, nom, prenom '
                 . 'FROM visiteur INNER JOIN ficheFrais '
                 . 'ON visiteur.id = ficheFrais.idVisiteur '
                 . "WHERE type='VISTR'"
@@ -496,6 +496,7 @@ class Database {
         $requetePrepare->execute();
         $lesLignes = $requetePrepare->fetchAll();
         for ($i = 0; $i < count($lesLignes); $i++) {
+            $id = $lesLignes[$i]['id'];
             $nom = $lesLignes[$i]['nom'];
             $prenom = $lesLignes[$i]['prenom'];
         }

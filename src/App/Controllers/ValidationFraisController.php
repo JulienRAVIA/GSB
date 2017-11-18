@@ -39,46 +39,19 @@ class ValidationFraisController {
             View::make('validationFrais.twig', array('lesMois' => $this->lesMois,
                 'moisASelectionner' => $this->lesMois[0],
                 'lesVisiteurs' => $this->lesVisiteurs,
-                'visiteurASelectionner' => $this->lesVisiteurs[0]));
-        }
-        else { // Si on est redirigé ici par le POST du formulaire, on génère la vue en fonction des infos précédentes
+                'visiteurASelectionner' => $this->lesVisiteurs[0],
+                'lesFraisForfait' => $this->db->getLesFraisForfait($this->lesVisiteurs[0]["id"], $this->lesMois[0]["mois"])
+            ));
+        } else {
             $this->lesMois = $this->db->getLesMoisDisponibles($_POST['lstVisiteurs']);
             View::make('validationFrais.twig', array('lesMois' => $this->lesMois,
-                'moisASelectionner' => $this->lesMois[0],
+                'moisASelectionner' => $_POST['lstMois'],
                 'lesVisiteurs' => $this->lesVisiteurs,
-                'visiteurASelectionner' => $_POST['lstVisiteurs']));
+                'visiteurASelectionner' => $_POST['lstVisiteurs'],
+                'lesFraisForfait' => $this->getFraisForfaitsDuMois($_POST['lstVisiteurs'], $_POST['lstMois'])
+            ));
         }
     }
-
-    /**
-     * Affichage des fiches de frais d'un mois
-     * @return view Vue de la page d'affichage des fiches de frais avec état
-     */
-    public function showEtat() {
-        $lesMois = $this->db->getLesMoisDisponibles($this->idVisiteur);
-        $leMois = $_POST['lstMois'];
-        $lesInfosFicheFrais = $this->db->getLesInfosFicheFrais($this->idVisiteur, $leMois);
-        $numAnnee = substr($leMois, 0, 4);
-        $numMois = substr($leMois, 4, 2);
-        $libEtat = $lesInfosFicheFrais['libEtat'];
-        $montantValide = $lesInfosFicheFrais['montantValide'];
-        $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
-        $lesFraisHorsForfait = $this->db->getLesFraisHorsForfait($this->idVisiteur, $leMois);
-        $lesFraisForfait = $this->db->getLesFraisForfait($this->idVisiteur, $leMois);
-        $dateModif = \App\Utils\Date::EngToFr($lesInfosFicheFrais['dateModif']);
-        View::make('validationFrais.twig', $array = array('lesMois' => $lesMois,
-            'moisASelectionner' => $leMois,
-            'showEtat' => true,
-            'dateModif' => $dateModif,
-            'libEtat' => $libEtat,
-            'numAnnee' => $numAnnee,
-            'numMois' => $numMois,
-            'montantValide' => $montantValide,
-            'lesFraisHorsForfait' => $lesFraisHorsForfait,
-            'lesFraisForfait' => $lesFraisForfait,
-            'nbJustificatifs' => $nbJustificatifs));
-    }
-
 }
 
 ?>

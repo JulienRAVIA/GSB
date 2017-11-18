@@ -27,7 +27,7 @@
                 </div>
                 <div class="form-group col-sm-6">
                     <label for="lstMois" accesskey="n">Mois : </label>
-                    <select id="lstMois" name="lstMois" class="form-control">
+                    <select id="lstMois" name="lstMois" class="form-control" onchange="this.form.submit()">
                         {% for unMois in lesMois %}
                             {% if unMois.mois == moisASelectionner %}
                                 <option selected value="{{ unMois.mois }}">{{ unMois.numMois }} / {{ unMois.numAnnee }}</option>
@@ -42,6 +42,24 @@
 
         <div class="col-12">
             <h2>Valider la fiche de frais </h2>
+            <!-- REMARQUE: Correpond à une partie du contenu de la vue "renseignerFicheFrais", amélioration possible? -->
+            <form method="post" action="/frais/update" role="form" name="update">
+                <fieldset>       
+                    {% for unFrais in lesFraisForfait %} 
+                        <div class="form-group">
+                            <label for="idFrais">{{ unFrais.libelle }}</label>
+                            <input type="text" id="idFrais" 
+                                   name="lesFrais[{{ unFrais.idfrais }}]"
+                                   size="10" maxlength="5" 
+                                   value="{{ unFrais.montant }}" 
+                                   class="form-control"
+                                   style="width: 13%;">
+                        </div>
+                    {% endfor %}
+                    {{ component.button('Corriger', 'success') }}
+                    {{ component.button('Réinitialiser', 'danger') }}
+                </fieldset>
+            </form>
         </div>
     </div>
 {% endblock %}

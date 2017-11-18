@@ -48,7 +48,7 @@ class ValidationFraisController {
                 'moisASelectionner' => $_POST['lstMois'],
                 'lesVisiteurs' => $this->lesVisiteurs,
                 'visiteurASelectionner' => $_POST['lstVisiteurs'],
-                'lesFraisForfait' => $this->getFraisForfaitsDuMois($_POST['lstVisiteurs'], $_POST['lstMois'])
+                'lesFraisForfait' => $this->db->getLesFraisForfait($_POST['lstVisiteurs'], $_POST['lstMois'])
             ));
         }
     }

@@ -10,8 +10,8 @@
             {{ component.alert(erreurs, danger) }}
         {% endif %}  
 
-        <div id="choix-visiteur" method="post" action="" class="col-12">
-            <form action="{{ redirect }}" method="post" role="form">
+        <div id="choix-visiteur" class="col-12">
+            <form method="post" action="/frais/valider" role="form">
                 <div class="form-group col-sm-6">
                     <label for="lstVisiteurs">Choisir le visiteur : </label>
                     <!-- TODO: Voir pour permettre la recherche de visiteurs dans la liste pour choix + rapide/efficace -->

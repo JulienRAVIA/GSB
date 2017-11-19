@@ -78,7 +78,6 @@ class RenseignerFraisController
         if(\App\Utils\ArrayUtils::isIntArray($_POST['lesFrais'])) {
             // on met à jour les frais
             $req = $this->db->majFraisForfait($this->idVisiteur, $this->mois, $_POST['lesFrais']);
-            var_dump($_POST['lesFrais']);
             // on redirige vers l'accueil
             View::redirect('/frais/saisir');
         } else {

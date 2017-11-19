@@ -25,7 +25,7 @@ class ValidationFraisController {
             echo $e->getMessage();
         }
         // on récupère la liste des visiteurs possédant au moins une fiche de frais
-        $this->lesVisiteurs = $this->db->getLesVisiteursAyantFichesFrais();
+        $this->lesVisiteurs = $this->db->getLesVisiteursAyantFichesFrais();        
     }
 
     /**
@@ -33,22 +33,20 @@ class ValidationFraisController {
      * @return view Vue de la validation des fiches de frais avec la sélection du visiteur et du mois
      */
     public function index() {
+        
         // Si on accède à la page pour le première fois, on génère la vue avec les infos basiques
         if (!isset($_POST['lstVisiteurs'])) {
-            // On récupère les mois pour lesquelles le premier visiteur de la liste visiteur a une fiche de frais
-            $this->lesMois = $this->db->getLesMoisDisponibles($this->lesVisiteurs[0]["id"]);
+            $this->idVisiteur = $this->lesVisiteurs[0];
+            $this->lesMois = $this->db->getLesMoisDisponibles($this->idVisiteur['id']);
+            $this->mois = $this->lesMois[0];
 
-            // Création de la vue
-            View::make('validationFrais.twig', array('lesMois' => $this->lesMois,
-                'moisASelectionner' => $this->lesMois[0],
-                'lesVisiteurs' => $this->lesVisiteurs,
-                'visiteurASelectionner' => $this->lesVisiteurs[0],
-                'lesFraisForfait' => $this->db->getLesFraisForfait($this->lesVisiteurs[0]["id"], $this->lesMois[0]["mois"])
-            ));
+            // Définition des valeurs finales pour la création de la vue
+            $this->idVisiteurFinal = $this->idVisiteur['id'];
+            $this->moisFinal = $this->mois['mois'];
         } else {
+            $this->idVisiteur = $_POST['lstVisiteurs'];
             // On récupère les mois pour lesquelles le visiteur choisi a une fiche de frais
-            $this->lesMois = $this->db->getLesMoisDisponibles($_POST['lstVisiteurs']);
-
+            $this->lesMois = $this->db->getLesMoisDisponibles($this->idVisiteur);
             // Vérifications sur l'existence du mois passé en post dans la liste des mois du visiteur choisi
             $moisChoisi = $this->lesMois[0]["mois"];
             for ($i = 0; $i < count($this->lesMois); $i++) {
@@ -56,15 +54,48 @@ class ValidationFraisController {
                     $moisChoisi = $_POST['lstMois'];
                 }
             }
+            $this->mois = $moisChoisi;
 
-            // Création de la vue
-            View::make('validationFrais.twig', array('lesMois' => $this->lesMois,
-                'moisASelectionner' => $_POST['lstMois'],
-                'lesVisiteurs' => $this->lesVisiteurs,
-                'visiteurASelectionner' => $_POST['lstVisiteurs'],
-                'lesFraisForfait' => $this->db->getLesFraisForfait($_POST['lstVisiteurs'], $moisChoisi)
-            ));
+            // Définition des valeurs finales pour la création de la vue
+            $this->idVisiteurFinal = $this->idVisiteur;
+            $this->moisFinal = $this->mois;
+        }        
+  
+        if (isset($_POST['corrigerForfait'])) {
+            $this->corrigerForfait($this->idVisiteurFinal, $this->moisFinal);
+        } else if (isset($_POST['reinitForfait'])) {
+            $this->reinitForfait();
         }
+        
+        // Création de la vue
+        View::make('validationFrais.twig', array('lesMois' => $this->lesMois,
+            'moisASelectionner' => $this->mois,
+            'lesVisiteurs' => $this->lesVisiteurs,
+            'visiteurASelectionner' => $this->idVisiteur,
+            'lesFraisForfait' => $this->db->getLesFraisForfait($this->idVisiteurFinal, $this->moisFinal)
+        ));
     }
 
+    /**
+     * Fonction permettant de corriger un frais forfait pour un visiteur et un mois donné.
+     * 
+     * @param type $idVis
+     * @param type $mois
+     */
+    public function corrigerForfait($idVis, $mois) {
+        // on vérifie que le tableau de données envoyé soit un tableau d'entiers positif
+        if (\App\Utils\ArrayUtils::isIntArray($_POST['lesFrais'])) {
+            // on met à jour les frais
+            $req = $this->db->majFraisForfait($idVis, $mois, $_POST['lesFrais']);
+        } else {
+            ErrorLogger::add('Les valeurs des frais doivent être numériques');
+            // on affiche la vue renseignerFicheFrais avec les données à charger par défaut
+            $this->index();
+        }
+    }
+    
+    
+    public function reinitForfait() {
+        // TODO: Annulation des modifications en cours sur la fiche de frais
+    }
 }

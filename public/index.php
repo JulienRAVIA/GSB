@@ -50,8 +50,7 @@ $router->addRoutes(array(
 $router->addRoutes(array(
     // page d'accueil de la validation des fiches de frais
     array('GET','/frais/valider', 'App\\Controllers\\ValidationFraisController@index', 'frais.valider'),
-    array('POST','/frais/valider', 'App\\Controllers\\ValidationFraisController@index', 'frais.valider.post')
-    // TODO: ici array pour fonction "showEtat" 
+    array('POST', '/frais/valider', 'App\\Controllers\\ValidationFraisController@index', 'frais.valider.post')
 ));
 
 

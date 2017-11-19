@@ -37,28 +37,27 @@
                         {% endfor %}
                     </select>
                 </div>
-            </form>
-        </div>
 
-        <div class="col-12">
-            <h2>Valider la fiche de frais </h2>
-            <!-- REMARQUE: Correpond à une partie du contenu de la vue "renseignerFicheFrais", amélioration possible? -->
-            <form method="post" action="/frais/update" role="form" name="update">
-                <fieldset>       
-                    {% for unFrais in lesFraisForfait %} 
-                        <div class="form-group">
-                            <label for="idFrais">{{ unFrais.libelle }}</label>
-                            <input type="text" id="idFrais" 
-                                   name="lesFrais[{{ unFrais.idfrais }}]"
-                                   size="10" maxlength="5" 
-                                   value="{{ unFrais.quantite }}" 
-                                   class="form-control"
-                                   style="width: 13%;">
-                        </div>
-                    {% endfor %}
-                    {{ component.button('Corriger', 'success') }}
-                    {{ component.button('Réinitialiser', 'danger') }}
-                </fieldset>
+                <h2>Valider la fiche de frais </h2>
+                <h3>Eléments forfaitisés</h3>
+                <div class="form-group col-sm-12">
+                    <fieldset>       
+                        {% for unFrais in lesFraisForfait %} 
+                            <div class="form-group">
+                                <label for="idFrais">{{ unFrais.libelle }}</label>
+                                <input type="text" id="idFrais" 
+                                       name="lesFrais[{{ unFrais.idfrais }}]"
+                                       size="10" maxlength="5" 
+                                       value="{{ unFrais.quantite }}" 
+                                       class="form-control"
+                                       style="width: 13%;">
+                            </div>
+                        {% endfor %}
+
+                        <input type="submit" name="corrigerForfait" class="btn btn-success" value="Corriger"/>                      
+                        <input type="submit" name="reinitForfait" class="btn btn-danger" value="Réinitialiser"/>                     
+                    </fieldset>
+                </div>
             </form>
         </div>
     </div>

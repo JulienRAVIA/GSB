@@ -25,7 +25,7 @@ class ValidationFraisController {
             echo $e->getMessage();
         }
         // on récupère la liste des visiteurs possédant au moins une fiche de frais
-        $this->lesVisiteurs = $this->db->getLesVisiteursAyantFichesFrais();        
+        $this->lesVisiteurs = $this->db->getLesVisiteursAyantFichesFrais();
     }
 
     /**
@@ -33,7 +33,8 @@ class ValidationFraisController {
      * @return view Vue de la validation des fiches de frais avec la sélection du visiteur et du mois
      */
     public function index() {
-        
+
+        // TODO: Factoriser ce code
         // Si on accède à la page pour le première fois, on génère la vue avec les infos basiques
         if (!isset($_POST['lstVisiteurs'])) {
             $this->idVisiteur = $this->lesVisiteurs[0];
@@ -59,20 +60,23 @@ class ValidationFraisController {
             // Définition des valeurs finales pour la création de la vue
             $this->idVisiteurFinal = $this->idVisiteur;
             $this->moisFinal = $this->mois;
-        }        
-  
+        }
+
+        $this->majFraisForfaitSucces = "";
+        // TODO: Si aucune modif de faite, pas la peine de faire la correction
         if (isset($_POST['corrigerForfait'])) {
             $this->corrigerForfait($this->idVisiteurFinal, $this->moisFinal);
-        } else if (isset($_POST['reinitForfait'])) {
-            $this->reinitForfait();
+            // TODO: ajouter un test avant d'afficher le succès de l'opération?
+            $this->majFraisForfaitSucces = "La correction du frais forfaitisé a été prise en compte";
         }
-        
+
         // Création de la vue
         View::make('validationFrais.twig', array('lesMois' => $this->lesMois,
             'moisASelectionner' => $this->mois,
             'lesVisiteurs' => $this->lesVisiteurs,
             'visiteurASelectionner' => $this->idVisiteur,
-            'lesFraisForfait' => $this->db->getLesFraisForfait($this->idVisiteurFinal, $this->moisFinal)
+            'lesFraisForfait' => $this->db->getLesFraisForfait($this->idVisiteurFinal, $this->moisFinal),
+            'majFraisForfaitSucces' => $this->majFraisForfaitSucces
         ));
     }
 
@@ -93,9 +97,9 @@ class ValidationFraisController {
             $this->index();
         }
     }
-    
-    
+
     public function reinitForfait() {
-        // TODO: Annulation des modifications en cours sur la fiche de frais
+        $this->index();
     }
+
 }

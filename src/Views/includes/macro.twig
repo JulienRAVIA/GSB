@@ -6,6 +6,12 @@
 	</div>
 {% endmacro %}
 
+{% macro singleMsgAlert(message, type) %}
+	<div class="alert alert-{{ type|default('danger') }}" role="alert">
+            {{ message }}
+	</div>
+{% endmacro %}
+
 {% macro url(path) %}http://gsb.ppe/{{path}}{% endmacro %}
 
 {% macro input_group(name, placeholder, icon, type, label, maxlength) %}

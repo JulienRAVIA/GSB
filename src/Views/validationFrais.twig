@@ -57,6 +57,9 @@
                         <input type="submit" name="corrigerForfait" class="btn btn-success" value="Corriger"/>                      
                         <input type="submit" name="reinitForfait" class="btn btn-danger" value="Réinitialiser"/>                     
                     </fieldset>
+                    {% if majFraisForfaitSucces %}
+                        {{ component.singleMsgAlert(majFraisForfaitSucces, 'success') }}
+                    {% endif %} 
                 </div>
             </form>
         </div>

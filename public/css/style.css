@@ -63,3 +63,8 @@ h2 {
 #choix-visiteur {
     margin-top: 15px;
 }
+
+.alert.alert-success {
+    margin-top: 10px !important;
+    width: fit-content;
+}

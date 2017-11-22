@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="http://gsb.ppe/css/bootstrap.css">
+</head>
+<body>
+	
+{{ visiteur.prenom  ~ ' ' ~ visiteur.nom }}
+Mois : {{ mois }}
+
+<h1>TEST</h1>
+<table>
+	<tbody>
+	{% for fraisForfait in lesFraisForfait %}
+		<tr>
+	    	<td>{{ fraisForfait.libelle|e }}</td>
+	    	<td>{{ fraisForfait.quantite }}</td>
+	    	<td>{{ fraisForfait.quantite * 80 }}</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+</body>
+</html>

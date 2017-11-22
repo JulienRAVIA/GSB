@@ -8,6 +8,10 @@
 {% include 'includes/listeMois.twig' with {'lesMois': lesMois, 'moisASelectionner' : moisASelectionner ,'redirect' : '/frais/etat'} only %}
 
 {% if showEtat %}
+<form action="pdf" method="post">
+    <input type="hidden" name="mois" value="{{ moisASelectionner }}">
+    <input type="submit" class="btn btn-primary" value="submit">
+</form>
 <hr>
 <div class="panel panel-primary">
     <div class="panel-heading">Fiche de frais du mois 

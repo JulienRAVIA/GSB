@@ -189,10 +189,10 @@ class Database {
             $requetePrepare->execute();
         }
     }
-    
+
     /**
-     * Met à jour la table ligneFraisForfait
-     * Met à jour la table ligneFraisForfait pour un visiteur et
+     * Met à jour la table ligneFraisHorsForfait
+     * Met à jour la table ligneFraisHorsForfait pour un visiteur et
      * un mois donné en enregistrant les nouveaux montants
      *
      * @param String $idVisiteur ID du visiteur
@@ -202,29 +202,23 @@ class Database {
      *
      * @return null
      */
-    public function majFraisHorsForfait($idVisiteur, $mois, $lesFraisHF) {
-        $lesCles = array_keys($lesFraisHF);
-        foreach ($lesCles as $unIdFrais) {
-            $date = $lesFraisHF['date'];
-            $libelle = $lesFraisHF['libelle'];
-            $montant = $lesFraisHF['montant'];
-            $requetePrepare = Database::$dbh->prepare(
-                    'UPDATE lignefraishorsforfait '
-                    . 'SET lignefraishorsforfait.date = :date, '
-                    . 'lignefraishorsforfait.libelle = :libelle,'
-                    . 'lignefraishorsforfait.montant = :montant'
-                    . 'WHERE lignefraisforfait.idvisiteur = :unIdVisiteur '
-                    . 'AND lignefraisforfait.mois = :unMois '
-                    . 'AND lignefraisforfait.id = :idFrais'
-            );
-            $requetePrepare->bindParam(':date', $date , \PDO::PARAM_INT);
-            $requetePrepare->bindParam(':libelle', $libelle , \PDO::PARAM_INT);
-            $requetePrepare->bindParam(':montant', $montant , \PDO::PARAM_INT);
-            $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
-            $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
-            $requetePrepare->bindParam(':idFrais', $unIdFrais, \PDO::PARAM_STR);
-            $requetePrepare->execute();
-        }
+    public function majFraisHorsForfait($idVisiteur, $mois, $idFrais, $date, $libelle, $montant) {
+        $requetePrepare = Database::$dbh->prepare(
+                'UPDATE lignefraishorsforfait '
+                . 'SET lignefraishorsforfait.date = :date, '
+                . 'lignefraishorsforfait.libelle = :libelle, '
+                . 'lignefraishorsforfait.montant = :montant '
+                . 'WHERE lignefraishorsforfait.idvisiteur = :unIdVisiteur '
+                . 'AND lignefraishorsforfait.mois = :unMois '
+                . 'AND lignefraishorsforfait.id = :idFrais'
+        );
+        $requetePrepare->bindParam(':date', $date, \PDO::PARAM_STR);
+        $requetePrepare->bindParam(':libelle', $libelle, \PDO::PARAM_STR);
+        $requetePrepare->bindParam(':montant', $montant, \PDO::PARAM_INT);
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
+        $requetePrepare->bindParam(':idFrais', $idFrais, \PDO::PARAM_INT);
+        $requetePrepare->execute();
     }
 
     /**
@@ -245,9 +239,7 @@ class Database {
                 . 'AND fichefrais.mois = :unMois'
         );
         $requetePrepare->bindParam(
-                ':unNbJustificatifs',
-                $nbJustificatifs,
-                \PDO::PARAM_INT
+                ':unNbJustificatifs', $nbJustificatifs, \PDO::PARAM_INT
         );
         $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
@@ -335,9 +327,7 @@ class Database {
             $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
             $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
             $requetePrepare->bindParam(
-                    ':idFrais',
-                    $unIdFrais['idfrais'],
-                    \PDO::PARAM_STR
+                    ':idFrais', $unIdFrais['idfrais'], \PDO::PARAM_STR
             );
             $requetePrepare->execute();
         }
@@ -356,11 +346,7 @@ class Database {
      * @return null
      */
     public function creeNouveauFraisHorsForfait(
-            $idVisiteur,
-            $mois,
-            $libelle,
-            $date,
-            $montant
+    $idVisiteur, $mois, $libelle, $date, $montant
     ) {
         $dateFr = Date::FrToEng($date);
         $requetePrepare = Database::$dbh->prepare(
@@ -539,4 +525,5 @@ class Database {
         }
         return $lesLignes;
     }
+
 }

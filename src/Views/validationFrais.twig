@@ -14,7 +14,6 @@
             <form method="post" action="/frais/valider" role="form">
                 <div class="form-group col-sm-6">
                     <label for="lstVisiteurs">Choisir le visiteur : </label>
-                    <!-- TODO: Voir pour permettre la recherche de visiteurs dans la liste pour choix + rapide/efficace -->
                     <select id="visiteurName" name="lstVisiteurs" class="form-control" onchange="this.form.submit()"> 
                         {% for unVisiteur in lesVisiteurs %}
                             {% if unVisiteur.id == visiteurASelectionner %}
@@ -79,27 +78,27 @@
                             <tr>
                                 <td class="table-frais-hors-forfait-input"> 
                                     <input type="text"
-                                           name="lesFraisHF[{{ unFraisHF.id }}]"
+                                           name="lesFraisHFDate[{{ unFraisHF.id }}]"
                                            value="{{ unFraisHF.date }}" 
                                            class="form-control"
                                            style="width: 100%;">
                                 </td>
                                 <td class="table-frais-hors-forfait-input"> 
                                     <input type="text" 
-                                           name="lesFraisHF[{{ unFraisHF.id }}]"
+                                           name="lesFraisHFLibelle[{{ unFraisHF.id }}]"
                                            value="{{ unFraisHF.libelle }}" 
                                            class="form-control"
                                            style="width: 100%;">
                                 </td>
                                 <td class="table-frais-hors-forfait-input"> 
                                     <input type="text"
-                                           name="lesFraisHF[{{ unFraisHF.id }}]"
+                                           name="lesFraisHFMontant[{{ unFraisHF.id }}]"
                                            value="{{ unFraisHF.montant }}" 
                                            class="form-control"
                                            style="width: 100%;">
                                 </td>
                                 <td> 
-                                    <input type="submit" name="corrigerHorsForfait" class="btn btn-success" value="Corriger"/>                      
+                                    <input type="submit" name="corrigerHorsForfait[{{ unFraisHF.id }}]" class="btn btn-success" value="Corriger"/>                      
                                     <input type="submit" name="reinitForfait" class="btn btn-danger" value="Réinitialiser"/>   
                                 </td>
                             </tr>

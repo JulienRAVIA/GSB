@@ -93,7 +93,7 @@ class ValidationFraisController {
         // on vérifie que le tableau de données envoyé soit un tableau d'entiers positif
         if (\App\Utils\ArrayUtils::isIntArray($_POST['lesFrais'])) {
             // on met à jour les frais
-            $req = $this->db->majFraisForfait($idVis, $mois, $_POST['lesFrais']);
+            $this->db->majFraisForfait($idVis, $mois, $_POST['lesFrais']);
         } else {
             ErrorLogger::add('Les valeurs des frais doivent être numériques');
             // on affiche la vue renseignerFicheFrais avec les données à charger par défaut
@@ -108,8 +108,18 @@ class ValidationFraisController {
      * @param type $mois
      */
     public function corrigerHorsForfait($idVis, $mois) {
+        // TODO: ajouter des controles sur les champs du form
+        // Récupération de la clé de la ligne à traiter
+        $key = array_keys($_POST['corrigerHorsForfait'])[0];
+        
+        // Récupération des valeurs de la ligne à modifier
+        $date = $_POST['lesFraisHFDate'][$key];
+        $date = \App\Utils\Date::FrToEng($date);
+        $libelle = $_POST['lesFraisHFLibelle'][$key];
+        $montant = $_POST['lesFraisHFMontant'][$key];
+
         // on met à jour les frais hors forfait
-        $req = $this->db->majFraisHorsForfait($idVis, $mois, $_POST['lesFraisHF']);
+        $this->db->majFraisHorsForfait($idVis, $mois, $key, $date, $libelle, $montant);
     }
 
     /**

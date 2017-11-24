@@ -68,3 +68,7 @@ h2 {
     margin-top: 10px !important;
     width: fit-content;
 }
+
+#table-hors-forfait th {
+    width: 25%;
+}

@@ -76,6 +76,7 @@ class ValidationFraisController {
             'lesVisiteurs' => $this->lesVisiteurs,
             'visiteurASelectionner' => $this->idVisiteur,
             'lesFraisForfait' => $this->db->getLesFraisForfait($this->idVisiteurFinal, $this->moisFinal),
+            'lesFraisHorsForfait' => $this->db->getLesFraisHorsForfait($this->idVisiteurFinal, $this->moisFinal),
             'majFraisForfaitSucces' => $this->majFraisForfaitSucces
         ));
     }

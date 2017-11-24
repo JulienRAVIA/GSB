@@ -38,6 +38,7 @@
                     </select>
                 </div>
 
+                <!-- Partie validation frais forfait -->
                 <h2>Valider la fiche de frais </h2>
                 <h3>Eléments forfaitisés</h3>
                 <div class="form-group col-sm-12">
@@ -60,7 +61,54 @@
                     {% if majFraisForfaitSucces %}
                         {{ component.singleMsgAlert(majFraisForfaitSucces, 'success') }}
                     {% endif %} 
+                    <hr>
                 </div>
+
+                <!-- Partie validation frais hors forfait -->
+                <h3>Eléments hors forfait</h3>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Descriptif des éléments hors forfait </div>
+                    <table id="table-hors-forfait" class="table table-bordered table-responsive">
+                        <tr>   
+                            <th>Date</th>
+                            <th>Libellé</th>
+                            <th>Montant</th>                        
+                            <th></th>
+                        </tr>
+                        {% for unFraisHF in lesFraisHorsForfait %}
+                            <tr>
+                                <td class="table-frais-hors-forfait-input"> 
+                                    <input type="text"
+                                           name="lesFrais[{{ unFraisHF.id }}]"
+                                           size="10" maxlength="5" 
+                                           value="{{ unFraisHF.date }}" 
+                                           class="form-control"
+                                           style="width: 100%;">
+                                </td>
+                                <td class="table-frais-hors-forfait-input"> 
+                                    <input type="text" 
+                                           name="lesFrais[{{ unFraisHF.id }}]"
+                                           size="10" maxlength="5" 
+                                           value="{{ unFraisHF.libelle }}" 
+                                           class="form-control"
+                                           style="width: 100%;">
+                                </td>
+                                <td class="table-frais-hors-forfait-input"> 
+                                    <input type="text"
+                                           name="lesFrais[{{ unFraisHF.id }}]"
+                                           size="10" maxlength="5" 
+                                           value="{{ unFraisHF.montant }}" 
+                                           class="form-control"
+                                           style="width: 100%;">
+                                </td>
+                                <td> 
+                                    <input type="submit" name="corrigerHorsForfait" class="btn btn-success" value="Corriger"/>                      
+                                    <input type="submit" name="reinitForfait" class="btn btn-danger" value="Réinitialiser"/>   
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table> 
+                </div>               
             </form>
         </div>
     </div>

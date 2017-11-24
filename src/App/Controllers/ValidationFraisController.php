@@ -68,6 +68,8 @@ class ValidationFraisController {
             $this->corrigerForfait($this->idVisiteurFinal, $this->moisFinal);
             // TODO: ajouter un test avant d'afficher le succès de l'opération?
             $this->majFraisForfaitSucces = "La correction du frais forfaitisé a été prise en compte";
+        } else if (isset($_POST['corrigerHorsForfait'])) {
+            $this->corrigerHorsForfait($this->idVisiteurFinal, $this->moisFinal);
         }
 
         // Création de la vue
@@ -99,6 +101,21 @@ class ValidationFraisController {
         }
     }
 
+    /**
+     * Fonction permettant de corriger un frais forfait pour un visiteur et un mois donné.
+     * 
+     * @param type $idVis
+     * @param type $mois
+     */
+    public function corrigerHorsForfait($idVis, $mois) {
+        // on met à jour les frais hors forfait
+        $req = $this->db->majFraisHorsForfait($idVis, $mois, $_POST['lesFraisHF']);
+    }
+
+    /**
+     * Fonction permettant de réinitialiser les fiches de frais
+     * TODO: Séparer les réinitialisations !
+     */
     public function reinitForfait() {
         $this->index();
     }

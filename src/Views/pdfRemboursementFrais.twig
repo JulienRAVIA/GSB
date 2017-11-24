@@ -3,24 +3,184 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	<link rel="stylesheet" href="http://gsb.ppe/css/bootstrap.css">
 </head>
 <body>
-	
-{{ visiteur.prenom  ~ ' ' ~ visiteur.nom }}
-Mois : {{ mois }}
+	<p style="text-align: center;"><img class="center" src="img/logo.jpg" width="150" alt=""></p>
 
-<h1>TEST</h1>
-<table>
-	<tbody>
-	{% for fraisForfait in lesFraisForfait %}
-		<tr>
-	    	<td>{{ fraisForfait.libelle|e }}</td>
-	    	<td>{{ fraisForfait.quantite }}</td>
-	    	<td>{{ fraisForfait.quantite * 80 }}</td>
-		</tr>
-	{% endfor %}
-	</tbody>
-</table>
+	<div class="bloc">
+		<div class="bloc-head">REMBOURSEMENT DE FRAIS ENGAGES</div>
+		<div class="bloc-body">
+			<table id="table1">
+				<tr>
+					<td>Visiteur</td>
+					<td>NRD/125-01</td>
+					<td>Jamy LEPLAT AUFRAY</td>
+				</tr>
+				<tr>
+					<td>Mois</td>
+					<td>Juillet 2017</td>
+					<td></td>
+				</tr>
+			</table>
+                        {% set montant = 0 %}
+			<table id="table2">
+				<thead>
+					<tr>
+						<th class="first-child">Frais forfaitaires</th>
+						<th>Quantité</th>
+						<th>Montant unitaire</th>
+						<th class="last-child">Total</th>
+					</tr>
+				</thead>
+				<tbody>
+                                    {% for unFraisForfaitaire in lesFraisForfaitaires %}
+                                        {% set total = unFraisForfaitaire.quantite * unFraisForfaitaire.montant %}
+					<tr>
+						<td class="align-right">{{ unFraisForfaitaire.libelle }}</td>
+						<td>{{ unFraisForfaitaire.quantite }}</td>
+						<td>{{ unFraisForfaitaire.montant }}</td>
+						<td>{{ unFraisForfaitaire.quantite * unFraisForfaitaire.montant }}</td>
+					</tr>
+                                        {% set montant = montant + total %}
+                                    {% endfor %}
+				</tbody>
+			</table>
+			
+			<div class="div" style="border-right: 1px solid #1F497D; border-left: 1px solid #1F497D; width: 90%; margin-left: 5%;">
+				<p style="text-align: center;">Autres frais</p>	
+			</div>
+
+			<table id="table2">
+				<thead>
+					<tr>
+						<th class="first-child">Date</th>
+						<th>Libellé</th>
+						<th class="last-child">Montant</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+					</tr>
+                                        {% for unFrais in autresFrais %}
+					<tr>
+						<td class="align-right">{{ unFrais.date }}</td>
+						<td class="align-right">{{ unFrais.libelle }}</td>
+						<td>{{ unFrais.montant }}</td>
+					</tr>
+                                        {% set montant = montant + unFrais.montant %}
+                                        {% endfor %}
+				</tbody>
+			</table>
+
+            <div style="float: right; width: 29%; margin-top: 5%;">
+            	<table id="table3">
+            	    <tbody>
+            	        <tr>
+            	            <td>Total 07/2017</td>
+            	            <td>{{ montant }}€</td>
+            	        </tr>
+            	    </tbody>
+            	</table>
+			</div>
+		</div>
+	</div>
+	
+	<div style="float: right; width: 25%; margin-top: 5%;">
+		Fait à Paris, le 07/11 <br>
+		Vu l'agent comptable <br>
+		ekfezkfz
+	</div>
+
+	<style type="text/css">
+		.bloc {
+			margin: 5% auto;
+			border: 1px solid black;
+		}
+
+		.bloc-head {
+			border-bottom: 1px solid black;
+			text-align: center;
+			color: #1F497D;
+			font-weight: bold;
+		}
+
+		.bloc-body {
+			padding: 5px 20px;
+			color: #1F497D;
+		}
+
+		#table1 td {
+			padding: 10px 50px;
+		}
+
+		#table2 {
+			width: 95%;
+			margin-left: 5%;
+			border-collapse: collapse;
+			border: 1px solid #1F497D;
+		}
+
+		#table2 td {
+			border: 1px solid #1F497D;
+			border-collapse: collapse;
+			text-align: right;
+			padding: 8px 5px;
+		}
+                
+		#table2 td.align-right {
+			text-align: left;
+		}
+
+		#table2 th {
+			border-top: 1px solid #1F497D;
+			border-collapse: collapse;
+			text-align: center;
+			padding: 8px 5px;
+			font-style: italic;
+			color: #1F497D;
+		}
+
+		#table2 .first-child {
+			border-left: 1px solid #1F497D;
+		}
+
+		#table2 .last-child {
+			border-right: 1px solid #1F497D;
+		}
+                
+		#table3 td {
+			border: 1px solid #1F497D;
+			border-collapse: collapse;
+			text-align: right;
+                        padding: 6px;
+		}
+
+        #table3 {
+            border-spacing: 0;
+            margin-top: 2%;
+            float: right;
+        }
+                
+		#table2 th {
+			padding: 8px 5px;
+		}
+
+		#table2 td:first-child {
+			text-align: left;
+		}
+
+		#tableTotal {
+			border-collapse: collapse;
+		}
+
+		#tableTotal td:last-child {
+			text-align: right;
+		}
+
+		#tableTotal td {
+			border: 1px solid #1F497D;
+			border-collapse: collapse;
+		}
+	</style>
 </body>
 </html>

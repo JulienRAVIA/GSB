@@ -67,9 +67,10 @@ class AfficherFichesController
     
     public function renderPdf($request) {
         $lesFraisForfait = $this->db->getLesFraisForfait($request['user'], $request['mois']);
+        $autresFrais = $this->db->getLesFraisHorsForfait($request['user'], $request['mois']);
         $visiteur = array('nom' => 'Julien', 'prenom' => 'Julien');
         $mois = 'Juillet 2017';
-        View::make('pdfRemboursementFrais.twig', array('visiteur' => $visiteur, 'mois' => $mois, 'lesFraisForfait' => $lesFraisForfait));
+        View::make('pdfRemboursementFrais.twig', array('visiteur' => $visiteur, 'mois' => $mois, 'lesFraisForfaitaires' => $lesFraisForfait, 'autresFrais' => $autresFrais));
     }
     
     public function genPdf() {

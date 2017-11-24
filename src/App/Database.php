@@ -140,7 +140,8 @@ class Database
         $requetePrepare = Database::$dbh->prepare(
             'SELECT fraisforfait.id as idfrais, '
             . 'fraisforfait.libelle as libelle, '
-            . 'lignefraisforfait.quantite as quantite '
+            . 'lignefraisforfait.quantite as quantite, '
+            . 'fraisforfait.montant as montant '
             . 'FROM lignefraisforfait '
             . 'INNER JOIN fraisforfait '
             . 'ON fraisforfait.id = lignefraisforfait.idfraisforfait '

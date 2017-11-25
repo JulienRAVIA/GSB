@@ -74,6 +74,26 @@ class Database
     }
 
     /**
+     * Retourne les informations d'un visiteur à partir de son identifiant
+     *
+     * @param String $login Identifiant du visiteur
+     *
+     * @return On retourne l'identifiant, le nom et le prénom, le type sous la forme d'un tableau associatif
+     */
+    public function getInfosVisiteurFromId($id)
+    {
+        $requetePrepare = Database::$dbh->prepare(
+            'SELECT visiteur.id AS id, visiteur.nom AS nom, '
+            . 'visiteur.prenom AS prenom, visiteur.type as type '
+            . 'FROM visiteur '
+            . 'WHERE visiteur.id = :id'
+        );
+        $requetePrepare->bindParam(':id', $id,\PDO::PARAM_STR);
+        $requetePrepare->execute();
+        return $requetePrepare->fetch();
+    }
+
+    /**
      * Retourne sous forme d'un tableau associatif toutes les lignes de frais
      * hors forfait concernées par les deux arguments.
      * La boucle foreach ne peut être utilisée ici car on procède

@@ -1,12 +1,7 @@
-<h2>Mes fiches de frais</h2>
-<div class="row">
-    <div class="col-md-4">
-        <h3>Sélectionner un mois : </h3>
-    </div>
     <div class="col-md-4">
         <form action="{{ redirect }}" method="post" role="form">
             <div class="form-group">
-                <label for="lstMois" accesskey="n">Mois : </label>
+                <label for="lstMois" accesskey="n">Sélectionner un mois : </label>
                 <select id="lstMois" name="lstMois" class="form-control">
                 	{% for unMois in lesMois %}
                 	    {% if unMois.mois == moisASelectionner %}
@@ -23,4 +18,3 @@
                    role="button">
         </form>
     </div>
-</div>

@@ -421,42 +421,46 @@ class Database
     public function getLesInfosFicheFrais($idVisiteur, $mois) {
         if ($idVisiteur == "*") {
             $requetePrepare = Database::$dbh->prepare(
-                    'SELECT fichefrais.idetat as idEtat, '
+                    'SELECT fichefrais.idetat as etat, '
                     . 'fichefrais.datemodif as dateModif,'
-                    . 'fichefrais.idvisiteur as idVisiteur,'
+                    . 'visiteur.nom as nom,'
+                    . 'visiteur.prenom as prenom,'
+                    . 'fichefrais.idvisiteur as id,'
                     . 'fichefrais.nbjustificatifs as nbJustificatifs, '
-                    . 'fichefrais.montantvalide as montantValide, '
+                    . 'fichefrais.montantvalide as montantF, '
+                    . 'sum(lignefraishorsforfait.montant) as montantHF, '
                     . 'etat.libelle as libEtat '
                     . 'FROM fichefrais '
                     . 'INNER JOIN etat ON fichefrais.idetat = etat.id '
-                    . 'WHERE fichefrais.mois = :unMois'
+                    . 'INNER JOIN lignefraishorsforfait ON fichefrais.idvisiteur = lignefraishorsforfait.idvisiteur '
+                    . 'INNER JOIN visiteur ON fichefrais.idvisiteur = visiteur.id '
+                    . 'WHERE fichefrais.mois = :unMois AND lignefraishorsforfait.mois = :unMois '
+                    . 'group by fichefrais.idvisiteur'
             );
             $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
             $requetePrepare->execute();
             $lesLignes = array();
             while ($laLigne = $requetePrepare->fetch()) {
-                $idVisiteur = $laLigne['idVisiteur'];
-                $idEtat = $laLigne['idEtat'];
-                $dateModif = $laLigne['dateModif'];
-                $nbJustificatifs = $laLigne['nbJustificatifs'];
-                $montantValide = $laLigne['montantValide'];
-                $libEtat = $laLigne['libEtat'];
                 $lesLignes[] = array(
-                    'idVisiteur' => $idVisiteur,
-                    'idEtat' => $idEtat, 
-                    'dateModif' => $dateModif,
-                    'nbJustificatifs' => $nbJustificatifs,
-                    'montantValide' => $montantValide,
-                    'libEtat' => $libEtat
+                    'id' => $laLigne['id'],
+                    'etat' => $laLigne['etat'],
+                    'nom' => $laLigne['nom'], 
+                    'prenom' => $laLigne['prenom'], 
+                    'dateModif' => $laLigne['dateModif'],
+                    'nbJustificatifs' => $laLigne['nbJustificatifs'],
+                    'montantF' => $laLigne['montantF'],
+                    'montantHF' => $laLigne['montantHF'],
+                    'libEtat' => $laLigne['libEtat']
                 );
             }
             return $lesLignes;
         } else {
             $requetePrepare = Database::$dbh->prepare(
-                    'SELECT fichefrais.idetat as idEtat, '
+                    'SELECT fichefrais.idetat as etat, '
                     . 'fichefrais.datemodif as dateModif,'
                     . 'fichefrais.nbjustificatifs as nbJustificatifs, '
-                    . 'fichefrais.montantvalide as montantValide, '
+                    . 'fichefrais.montantvalide as montantF, '
+                    . '(select count(montant) from lignefraishorsforfait where mois = :unMois group by id) as montantHF, '
                     . 'etat.libelle as libEtat '
                     . 'FROM fichefrais '
                     . 'INNER JOIN etat ON fichefrais.idetat = etat.id '
@@ -493,5 +497,24 @@ class Database
         $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur,\PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMois', $mois,\PDO::PARAM_STR);
         $requetePrepare->execute();
+    }
+    
+    public function getVisiteursList() {
+            $requetePrepare = Database::$dbh->prepare(
+                    'SELECT nom,'
+                    . 'prenom,'
+                    . 'id '
+                    . 'FROM visiteur '
+            );
+            $requetePrepare->execute();
+            $lesVisiteurs = array();
+            while ($laLigne = $requetePrepare->fetch()) {
+                $lesVisiteurs[] = array(
+                    'id' => $laLigne['id'],
+                    'nom' => $laLigne['nom'], 
+                    'prenom' => $laLigne['prenom'], 
+                );
+            }
+            return $lesVisiteurs;
     }
 }

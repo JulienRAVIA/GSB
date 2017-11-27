@@ -3,9 +3,21 @@
 
 {% set uc = 'suivreFrais' %}
 
-{% block content %}
+{% block head %}
+    {{ parent() }}
+    <link href="{{ component.url('css/bootstrap-combobox.css')|trim }}" rel="stylesheet">
+    <script src="{{ component.url('js/jquery-3.2.1.js')|trim }}"></script>
+    <script src="{{ component.url('js/bootstrap-combobox.js')|trim }}"></script>
+{% endblock %}
 
-	{% include 'includes/listeMois.twig' with {'lesMois': lesMois, 'moisASelectionner' : moisASelectionner, 'redirect' : '/frais/suivre'} only %}
+{% block content %}
+        <h2>Suivis des paiements</h2>
+        <div class="row">
+            <div class="col-md-offset-2">
+                {% include 'includes/listeMois.twig' with {'lesMois': lesMois, 'moisASelectionner' : moisASelectionner, 'redirect' : '/frais/suivre'} only %}
+            </div>
+                {% include 'includes/visiteursList.twig' with {'listVisiteurs': listVisiteurs, 'redirect' : '/frais/suivre/'} only %}
+        </div>
 
 	{% if lesFiches is defined %}
 	<hr>
@@ -15,23 +27,32 @@
 	        {{ moisASelectionner|slice(4, 2) ~ '-' ~ moisASelectionner|slice(0, 4) }} : </div>
 	    <table class="table table-bordered table-responsive">
 	        <tr>
-	            <th class='chck'><input id="checkAlls" type="checkbox"></th>    
-	            <th class="etat">Etat</th>
+	            <th class="chck"><input id="checkAlls" type="checkbox"></th>    
 	            <th class="datemodif">DateModif</th>
-	            <th class='montant'>Montant</th>
-	            <th class='libelle'>Libellé</th>
+                    {% if singleUser %}
+                        <th class="visiteur">Visiteur</th>
+                    {% endif %}
+	            <th class="montantF">Montant F</th>
+                    <th class="montantHF">Montant HF</th>
+                    <th class="etat">Etat</th>
+	            <th class="libelle">Libellé</th>
 	        </tr>
 	        {% for uneFiche in lesFiches %}
-	            <tr id="{{ uneFiche.idVisiteur }}">
-	                <td><input class="chckbx" name="id[]" value="{{ uneFiche.idVisiteur }}" type="checkbox"></td>
-	                <td> {{ uneFiche.idEtat }} </td>
+	            <tr id="{{ uneFiche.id }}">
+	                <td><input class="chckbx" name="id[]" value="{{ uneFiche.id }}" type="checkbox"></td>
 	                <td> {{ uneFiche.dateModif }} </td>
-	                <td> {{ uneFiche.montantValide }} </td>
+                        {% if singleUser %}
+                            <td> {{ uneFiche.nom}} {{uneFiche.prenom  }} </td>
+                        {% endif %}
+	                <td> {{ uneFiche.montantF }} </td>
+                        <td> {{ uneFiche.montantHF }} </td>
+                        <td> {{ uneFiche.etat }} </td>
 	                <td> {{ uneFiche.libEtat }} </td>
 	            </tr>
 	        {% endfor %}
 	    </table>
 	</div>
+            <input type="hidden" name="lstMois" value="{{ moisASelectionner }}">
         {{ component.button('Mettre en Paiment', 'success') }}
         </form>
         <hr>

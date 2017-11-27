@@ -27,6 +27,7 @@ class SuivrePaiementController
             echo $e->getMessage();
         }
     	$this->lesMois = $this->db->getLesMoisDisponibles("*");
+        $this->lesVisiteurs = $this->db->getVisiteursList();
     }
 
     /**
@@ -35,19 +36,28 @@ class SuivrePaiementController
      */
     public function index() {
     	View::make('suiviPaiement.twig', array('lesMois' => $this->lesMois, 
-    										   'moisASelectionner' => $this->lesMois[0]));
+    						'moisASelectionner' => $this->lesMois[0],
+    						'listVisiteurs' => $this->lesVisiteurs));
     }
 
     /**
      * Affichage des fiches de frais de chaque utilisateur l'ayant remplie
      * @return view Vue du suivi de paiements avec les informations nécessaires pour l'affichage
      */	
-    public function showSuivi() {
+    public function showSuivi($user = 0) {
     	$leMois = $_POST['lstMois'];
-    	$lesFiches = $this->db->getLesInfosFicheFrais("*", $leMois);
+        $singleUser = true;
+        if ($user == 0) {
+            $lesFiches = $this->db->getLesInfosFicheFrais("*", $leMois);
+            $singleUser = false;
+        }
+        else{
+            $lesFiches = $this->db->getLesInfosFicheFrais($user, $leMois);
+        }            
     	View::make('suiviPaiement.twig', array('lesMois' => $this->lesMois, 
-    										   'moisASelectionner' => $leMois,
-    										   'lesFiches' => $lesFiches));
+                    'moisASelectionner' => $leMois,
+                    'lesFiches' => $lesFiches,
+                    'singleUser' => $singleUser));
     }
     
     public function miseEnPaiement(){
@@ -57,7 +67,7 @@ class SuivrePaiementController
         foreach($id as $unId){
             $this->db->majEtatFicheFrais($unId, $leMois, "VA");
         }
-        showSuivi();
+        $this->showSuivi($user);
     }
 }
 

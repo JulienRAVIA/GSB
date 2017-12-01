@@ -232,7 +232,7 @@ class Database {
      * @return null
      */
     public function majNbJustificatifs($idVisiteur, $mois, $nbJustificatifs) {
-        $requetePrepare = PdoGB::$monPdo->prepare(
+        $requetePrepare = Database::$dbh->prepare(
                 'UPDATE fichefrais '
                 . 'SET nbjustificatifs = :unNbJustificatifs '
                 . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '

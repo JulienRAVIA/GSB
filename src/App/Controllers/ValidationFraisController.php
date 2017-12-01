@@ -72,8 +72,8 @@ class ValidationFraisController {
         } else if (isset($_POST['corrigerHorsForfait'])) {
             $this->corrigerHorsForfait($this->idVisiteurFinal, $this->moisFinal);
             $this->majFraisHorsForfaitSucces = "La correction du frais non forfaitisé a été prise en compte";
-        } else if (isset($_POST['reinit'])) {
-            
+        } else if (isset($_POST['validerNbJustificatifs'])) {
+            $this->validerNbJustificatifs($this->idVisiteurFinal, $this->moisFinal, $_POST['nbJustificatifs']);
         }
 
         // Création de la vue
@@ -83,6 +83,7 @@ class ValidationFraisController {
             'visiteurASelectionner' => $this->idVisiteur,
             'lesFraisForfait' => $this->db->getLesFraisForfait($this->idVisiteurFinal, $this->moisFinal),
             'lesFraisHorsForfait' => $this->db->getLesFraisHorsForfait($this->idVisiteurFinal, $this->moisFinal),
+            'nbJustificatifs' => $this->db->getNbjustificatifs($this->idVisiteurFinal, $this->moisFinal),
             'majFraisForfaitSucces' => $this->majFraisForfaitSucces,
             'majFraisHorsForfaitSucces' => $this->majFraisHorsForfaitSucces
         ));
@@ -125,5 +126,9 @@ class ValidationFraisController {
 
         // on met à jour les frais hors forfait
         $this->db->majFraisHorsForfait($idVis, $mois, $key, $date, $libelle, $montant);
+    }
+    
+    public function validerNbJustificatifs($idVis, $mois, $nbJustificatifs) {
+        $this->db->majNbJustificatifs($idVis, $mois, $nbJustificatifs);
     }
 }

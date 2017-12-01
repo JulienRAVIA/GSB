@@ -104,22 +104,22 @@
                             </tr>
                         {% endfor %}
                     </table> 
-                </div>               
+                </div>     
+                {% if majFraisHorsForfaitSucces %}
+                    {{ component.singleMsgAlert(majFraisHorsForfaitSucces, 'success') }}
+                {% endif %} 
+                <label id="labelIdNbJustificatifs" for="idNbJustificatifs">Nombre de justificatifs : </label>
+                <input type="text" id="idNbJustificatifs" 
+                       name="nbJustificatifs"
+                       size="10" maxlength="5" 
+                       value="{{ nbJustificatifs }}" 
+                       class="form-control"
+                       style="width: 5%;">
+                <div id="gpeBtnsNbJustificatifs">
+                    <input type="submit" name="validerNbJustificatifs" class="btn btn-success" value="Valider"/>                      
+                    <input type="submit" name="reinitNbJustificatifs" class="btn btn-danger" value="Réinitialiser"/>  
+                </div>
             </form>
-            {% if majFraisHorsForfaitSucces %}
-                {{ component.singleMsgAlert(majFraisHorsForfaitSucces, 'success') }}
-            {% endif %} 
-            <label id="labelIdNbJustificatifs" for="idNbJustificatifs">Nombre de justificatifs : </label>
-            <input type="text" id="idNbJustificatifs" 
-                   name="nbJustificatifs"
-                   size="10" maxlength="5" 
-                   value="2" 
-                   class="form-control"
-                   style="width: 5%;">
-            <div id="gpeBtnsNbJustificatifs">
-                <input type="submit" name="validerNbJustificatifs" class="btn btn-success" value="Valider"/>                      
-                <input type="submit" name="reinitNbJustificatifs" class="btn btn-danger" value="Réinitialiser"/>  
-            </div>
         </div>
     </div>
 {% endblock %}

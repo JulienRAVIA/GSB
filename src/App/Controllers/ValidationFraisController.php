@@ -72,6 +72,8 @@ class ValidationFraisController {
         } else if (isset($_POST['corrigerHorsForfait'])) {
             $this->corrigerHorsForfait($this->idVisiteurFinal, $this->moisFinal);
             $this->majFraisHorsForfaitSucces = "La correction du frais non forfaitisé a été prise en compte";
+        } else if (isset($_POST['reinit'])) {
+            
         }
 
         // Création de la vue
@@ -124,13 +126,4 @@ class ValidationFraisController {
         // on met à jour les frais hors forfait
         $this->db->majFraisHorsForfait($idVis, $mois, $key, $date, $libelle, $montant);
     }
-
-    /**
-     * Fonction permettant de réinitialiser les fiches de frais
-     * TODO: Séparer les réinitialisations !
-     */
-    public function reinitForfait() {
-        $this->index();
-    }
-
 }

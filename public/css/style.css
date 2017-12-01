@@ -72,3 +72,14 @@ h2 {
 #table-hors-forfait th {
     width: 25%;
 }
+
+#labelIdNbJustificatifs {
+    margin-right: 5px;
+    margin-top: 7px;
+    float: left;
+}
+
+#gpeBtnsNbJustificatifs {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}

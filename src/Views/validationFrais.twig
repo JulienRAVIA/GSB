@@ -99,7 +99,7 @@
                                 </td>
                                 <td> 
                                     <input type="submit" name="corrigerHorsForfait[{{ unFraisHF.id }}]" class="btn btn-success" value="Corriger"/>                      
-                                    <input type="submit" name="reinitForfait" class="btn btn-danger" value="Réinitialiser"/>   
+                                    <input type="submit" name="reinitHorsForfait[{{ unFraisHF.id }}]" class="btn btn-danger" value="Réinitialiser"/>   
                                 </td>
                             </tr>
                         {% endfor %}
@@ -109,6 +109,17 @@
             {% if majFraisHorsForfaitSucces %}
                 {{ component.singleMsgAlert(majFraisHorsForfaitSucces, 'success') }}
             {% endif %} 
+            <label id="labelIdNbJustificatifs" for="idNbJustificatifs">Nombre de justificatifs : </label>
+            <input type="text" id="idNbJustificatifs" 
+                   name="nbJustificatifs"
+                   size="10" maxlength="5" 
+                   value="2" 
+                   class="form-control"
+                   style="width: 5%;">
+            <div id="gpeBtnsNbJustificatifs">
+                <input type="submit" name="validerNbJustificatifs" class="btn btn-success" value="Valider"/>                      
+                <input type="submit" name="reinitNbJustificatifs" class="btn btn-danger" value="Réinitialiser"/>  
+            </div>
         </div>
     </div>
 {% endblock %}

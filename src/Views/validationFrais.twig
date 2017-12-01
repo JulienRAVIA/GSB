@@ -106,6 +106,9 @@
                     </table> 
                 </div>               
             </form>
+            {% if majFraisHorsForfaitSucces %}
+                {{ component.singleMsgAlert(majFraisHorsForfaitSucces, 'success') }}
+            {% endif %} 
         </div>
     </div>
 {% endblock %}

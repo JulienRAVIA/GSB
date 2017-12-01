@@ -63,6 +63,7 @@ class ValidationFraisController {
         }
 
         $this->majFraisForfaitSucces = "";
+        $this->majFraisHorsForfaitSucces = "";
         // TODO: Si aucune modif de faite, pas la peine de faire la correction
         if (isset($_POST['corrigerForfait'])) {
             $this->corrigerForfait($this->idVisiteurFinal, $this->moisFinal);
@@ -70,6 +71,7 @@ class ValidationFraisController {
             $this->majFraisForfaitSucces = "La correction du frais forfaitisé a été prise en compte";
         } else if (isset($_POST['corrigerHorsForfait'])) {
             $this->corrigerHorsForfait($this->idVisiteurFinal, $this->moisFinal);
+            $this->majFraisHorsForfaitSucces = "La correction du frais non forfaitisé a été prise en compte";
         }
 
         // Création de la vue
@@ -79,7 +81,8 @@ class ValidationFraisController {
             'visiteurASelectionner' => $this->idVisiteur,
             'lesFraisForfait' => $this->db->getLesFraisForfait($this->idVisiteurFinal, $this->moisFinal),
             'lesFraisHorsForfait' => $this->db->getLesFraisHorsForfait($this->idVisiteurFinal, $this->moisFinal),
-            'majFraisForfaitSucces' => $this->majFraisForfaitSucces
+            'majFraisForfaitSucces' => $this->majFraisForfaitSucces,
+            'majFraisHorsForfaitSucces' => $this->majFraisHorsForfaitSucces
         ));
     }
 

@@ -36,7 +36,6 @@
                         {% endfor %}
                     </select>
                 </div>
-
                 <!-- Partie validation frais forfait -->
                 <h2>Valider la fiche de frais </h2>
                 <h3>Eléments forfaitisés</h3>
@@ -54,8 +53,8 @@
                             </div>
                         {% endfor %}
 
-                        <input type="submit" name="corrigerForfait" class="btn btn-success" value="Corriger"/>                      
-                        <input type="submit" name="reinitForfait" class="btn btn-danger" value="Réinitialiser"/>                     
+                        <button type="submit" name="corrigerForfait" class="btn btn-success">Corriger</button>                      
+                        <button type="reset" name="reinitForfait" class="btn btn-danger">Réinitialiser</button>                   
                     </fieldset>
                     {% if majFraisForfaitSucces %}
                         {{ component.singleMsgAlert(majFraisForfaitSucces, 'success') }}
@@ -98,8 +97,8 @@
                                            style="width: 100%;">
                                 </td>
                                 <td> 
-                                    <input type="submit" name="corrigerHorsForfait[{{ unFraisHF.id }}]" class="btn btn-success" value="Corriger"/>                      
-                                    <input type="submit" name="reinitHorsForfait[{{ unFraisHF.id }}]" class="btn btn-danger" value="Réinitialiser"/>   
+                                    <button type="submit" name="corrigerHorsForfait[{{ unFraisHF.id }}]" class="btn btn-success"><i class="fa fa-pencil"></i></button>                      
+                                    <button type="reset" name="reinitForfait" class="btn btn-danger"><i class="fa fa-ban"></i></button> 
                                 </td>
                             </tr>
                         {% endfor %}

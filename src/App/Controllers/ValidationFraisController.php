@@ -124,6 +124,13 @@ class ValidationFraisController {
         }
     }
     
+    /**
+     * Fonction pour changer le nombre de justificatifs 
+     * 
+     * @param type $idVis
+     * @param type $mois
+     * @param type $nbJustificatifs
+     */
     public function validerNbJustificatifs($idVis, $mois, $nbJustificatifs) {
         // on vérifie que le tableau de données envoyé soit un tableau d'entiers positif
         if (Form::isInt($nbJustificatifs)) {

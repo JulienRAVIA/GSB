@@ -83,7 +83,8 @@
                                            style="width: 100%;">
                                 </td>
                                 <td class="table-frais-hors-forfait-input"> 
-                                    <input type="text" 
+                                    <input type="text"
+                                           id="fraisHorsForfait_{{ unFraisHF.id }}" 
                                            name="lesFraisHFLibelle[{{ unFraisHF.id }}]"
                                            value="{{ unFraisHF.libelle }}" 
                                            class="form-control"
@@ -93,12 +94,13 @@
                                     <input type="text"
                                            name="lesFraisHFMontant[{{ unFraisHF.id }}]"
                                            value="{{ unFraisHF.montant }}" 
-                                           class="form-control"
+                                           class="form-control col-md-3"
                                            style="width: 100%;">
                                 </td>
                                 <td> 
-                                    <button type="submit" name="corrigerHorsForfait[{{ unFraisHF.id }}]" class="btn btn-success"><i class="fa fa-pencil"></i></button>                      
-                                    <button type="reset" name="reinitForfait" class="btn btn-danger"><i class="fa fa-ban"></i></button> 
+                                    <button type="submit" name="corrigerHorsForfait[{{ unFraisHF.id }}]" class="btn btn-success" title="Modifier"><i class="fa fa-pencil"></i></button>                      
+                                    <button type="reset" name="reinitForfait" class="btn btn-warning" title="Réinitialiser"><i class="fa fa-refresh"></i></button> 
+                                    <button type="button" onclick="refus({{ unFraisHF.id }});" id="buttonRefus_{{ unFraisHF.id }}" class="btn btn-danger" title="Refuser"><i class="fa fa-ban"></i></button>                   
                                 </td>
                             </tr>
                         {% endfor %}
@@ -117,8 +119,14 @@
                 <div id="gpeBtnsNbJustificatifs">
                     <input type="submit" name="validerNbJustificatifs" class="btn btn-success" value="Valider"/>                      
                     <input type="submit" name="reinitNbJustificatifs" class="btn btn-danger" value="Réinitialiser"/>  
+                    {# <button type="button" onclick="refus(1337);" id="{{ unFraisHF.id }}" class="btn btn-danger">Refus</button>                    #}
+
                 </div>
             </form>
         </div>
     </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ component.url('js/refusForfait.js') }}"></script>
 {% endblock %}

@@ -1,16 +1,14 @@
-<div class="col-md-4">
+<div class="col-md-offset-1 col-md-4">
     <form action="{{ redirect }}" method="post" role="form">
         <div class="form-group">
-            <label for="lstMois" accesskey="n">Renseignez un visiteur : </label>
-            <select id="lstMois" name="lstMois" class="flexselect form-control">
-                	{% for visiteur in listVisiteurs %}
-                                <option value="{{ visiteur.id }}">{{ visiteur.nom }} {{ visiteur.prenom }}</option>
-                	{% endfor %}
+            <label for="userlist" accesskey="n">Renseignez un visiteur : </label>
+            <select id="userlist" name="user" class="combobox form-control" autocomplete="on">
+                    <option value="" selected="selected">Entrez un visiteur</option>
+                    {% for visiteur in listVisiteurs %}
+                            <option value="{{ visiteur.id }}">{{ visiteur.nom }} {{ visiteur.prenom }}</option>
+                    {% endfor %}
                 </select>
-            <input id="ok" type="submit" value="Valider" class="btn btn-success" 
-                   role="button">
-            <input id="annuler" type="reset" value="Effacer" class="btn btn-danger" 
-                   role="button">
         </div>
+        <input id="ok" type="submit" value="Valider" class="btn btn-success" role="button">
     </form>
 </div>

@@ -42,8 +42,10 @@ $router->addRoutes(array(
 $router->addRoutes(array(
     // page d'accueil du suivi des fiches de frais
     array('GET','/frais/suivre', 'App\\Controllers\\SuivrePaiementController@index', 'frais.suivre'),
-    array('POST','/frais/suivre', 'App\\Controllers\\SuivrePaiementController@showSuivi', 'frais.suivre.post'),
-    array('POST','/frais/suivre/miseEnPaiement', 'App\\Controllers\\SuivrePaiementController@miseEnPaiement', 'frais.suivre.mep'),
+    array('POST','/frais/suivre/suivis-multiple', 'App\\Controllers\\SuivrePaiementController@SuivisMultiple', 'frais.suivre.suivisMultiple'),
+    array('POST','/frais/suivre/suivis-unique', 'App\\Controllers\\SuivrePaiementController@SuivisUnique', 'frais.suivre.suivisUnique'),
+    array('POST','/frais/suivre/suivis-multiple/miseEnPaiement', 'App\\Controllers\\SuivrePaiementController@mepMultiple', 'frais.suivre.mep-m'),
+    array('POST','/frais/suivre/suivis-unique/miseEnPaiement', 'App\\Controllers\\SuivrePaiementController@mepUnique', 'frais.suivre.mep-u'),
 ));
 
 

@@ -456,22 +456,41 @@ class Database
             return $lesLignes;
         } else {
             $requetePrepare = Database::$dbh->prepare(
-                    'SELECT fichefrais.idetat as etat, '
-                    . 'fichefrais.datemodif as dateModif,'
-                    . 'fichefrais.nbjustificatifs as nbJustificatifs, '
-                    . 'fichefrais.montantvalide as montantF, '
-                    . '(select count(montant) from lignefraishorsforfait where mois = :unMois group by id) as montantHF, '
-                    . 'etat.libelle as libEtat '
-                    . 'FROM fichefrais '
-                    . 'INNER JOIN etat ON fichefrais.idetat = etat.id '
-                    . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
-                    . 'AND fichefrais.mois = :unMois'
+                        'SELECT fichefrais.idetat as etat, '
+                            .'fichefrais.datemodif as dateModif,'
+                            .'fichefrais.mois as mois,'
+                            . 'visiteur.nom as nom,'
+                            . 'visiteur.prenom as prenom,'
+                            .'fichefrais.idvisiteur as id,'
+                            .'fichefrais.nbjustificatifs as nbJustificatifs, '
+                            .'fichefrais.montantvalide as montantF, '
+                            .'sum(lignefraishorsforfait.montant) as montantHF, ' 
+                            .'etat.libelle as libEtat '
+                            .'FROM fichefrais '
+                            .'INNER JOIN etat ON fichefrais.idetat = etat.id '
+                            . 'INNER JOIN visiteur ON fichefrais.idvisiteur = visiteur.id '
+                            .'INNER JOIN lignefraishorsforfait ON fichefrais.idvisiteur = lignefraishorsforfait.idvisiteur '
+                            .'WHERE fichefrais.idVisiteur = :unIdVisiteur and lignefraishorsforfait.mois = fichefrais.mois '
+                            .'group by fichefrais.mois desc'
             );
             $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
-            $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
             $requetePrepare->execute();
-            $laLigne = $requetePrepare->fetch();
-            return $laLigne;
+            $lesLignes = array();
+            while ($laLigne = $requetePrepare->fetch()) {
+                $lesLignes[] = array(
+                    'nom' => $laLigne['nom'], 
+                    'prenom' => $laLigne['prenom'],
+                    'etat' => $laLigne['etat'],
+                    'mois' => $laLigne['mois'],
+                    'id' => $laLigne['id'],
+                    'dateModif' => $laLigne['dateModif'],
+                    'nbJustificatifs' => $laLigne['nbJustificatifs'],
+                    'montantF' => $laLigne['montantF'],
+                    'montantHF' => $laLigne['montantHF'],
+                    'libEtat' => $laLigne['libEtat']
+                );
+            }
+            return $lesLignes;
         }
     }
 

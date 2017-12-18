@@ -42,10 +42,12 @@ $router->addRoutes(array(
 $router->addRoutes(array(
     // page d'accueil du suivi des fiches de frais
     array('GET','/frais/suivre', 'App\\Controllers\\SuivrePaiementController@index', 'frais.suivre'),
-    array('POST','/frais/suivre/suivis-multiple', 'App\\Controllers\\SuivrePaiementController@SuivisMultiple', 'frais.suivre.suivisMultiple'),
-    array('POST','/frais/suivre/suivis-unique', 'App\\Controllers\\SuivrePaiementController@SuivisUnique', 'frais.suivre.suivisUnique'),
-    array('POST','/frais/suivre/suivis-multiple/miseEnPaiement', 'App\\Controllers\\SuivrePaiementController@mepMultiple', 'frais.suivre.mep-m'),
-    array('POST','/frais/suivre/suivis-unique/miseEnPaiement', 'App\\Controllers\\SuivrePaiementController@mepUnique', 'frais.suivre.mep-u'),
+    
+    array('GET','/frais/suivre/[multiple|unique]', 'App\\Controllers\\SuivrePaiementController@index', 'frais.suivre.indexSuivis'),
+    array('POST','/frais/suivre/[multiple|unique:type]', 'App\\Controllers\\SuivrePaiementController@suivis', 'frais.suivre.suivis'),
+    
+    array('GET','/frais/suivre/[multiple|unique]/miseEnPaiement', 'App\\Controllers\\SuivrePaiementController@index', 'frais.suivre.indexMEP'),
+    array('POST','/frais/suivre/[multiple|unique:type]/miseEnPaiement', 'App\\Controllers\\SuivrePaiementController@mep', 'frais.suivre.MEP'),
 ));
 
 

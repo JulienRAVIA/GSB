@@ -15,13 +15,13 @@
     </br>
     <div class="row">
         <div class="col-md-offset-1">
-            {% include 'includes/listeMois.twig' with {'lesMois': lesMois, 'selection' : selectionMois, 'redirect' : '/frais/suivre/suivis-multiple'} only %}
+            {% include 'includes/listeMois.twig' with {'lesMois': lesMois, 'selection' : selectionMois, 'redirect' : '/frais/suivre/multiple'} only %}
         </div>
-        {% include 'includes/visiteursList.twig' with {'listVisiteurs': listVisiteurs, 'redirect' : '/frais/suivre/suivis-unique'} only %}
+        {% include 'includes/visiteursList.twig' with {'listVisiteurs': listVisiteurs, 'redirect' : '/frais/suivre/unique'} only %}
     </div>
     {% if lesFiches is defined %}
         <hr>
-        <form role="form" method="post" action="/frais/suivre/suivis-unique/miseEnPaiement">
+        <form role="form" method="post" action="/frais/suivre/unique/miseEnPaiement">
             <div class="panel panel-primary">
                 <div class="panel-heading">Fiches de Frais de {{nom}} {{prenom}}</div>
 

@@ -79,40 +79,44 @@ class SuivrePaiementController
         }
     }
     
-    public function SuivisMultiple() {
+    public function suivis($request) {
+        if ($request['type'] == 'multiple') {
             $this->showSuivi();
-    }
-    
-    public function SuivisUnique() {
+        }
+        elseif($request['type'] == 'unique'){
             $this->showSuivi(true);
-    }
-    
-    public function mepMultiple(){
-        if (isset($_POST['id'])) {
-            if (is_array($_POST['id'])) {
-                for ($i=0; $i<count($_POST['id']); $i++) {
-                     $this->db->majEtatFicheFrais($_POST['id'][$i], $_POST['lstMois'], "VA");
-                } 
-            }
-            else{
-                $this->db->majEtatFicheFrais($_POST['id'], $_POST['lstMois'], "VA");
-            }       
         }
-        $this->showSuivi();
     }
+
     
-    public function mepUnique(){
-        if (isset ($_POST['lstMois'])) {
-            if (is_array($_POST['lstMois'])) {
-                for ($i=0; $i<count($_POST['lstMois']); $i++) {
-                    $this->db->majEtatFicheFrais($_POST['user'], $_POST['lstMois'][$i], "VA");
+    public function mep($request){
+        if ($request['type'] == 'multiple') {
+            if (isset($_POST['id'])) {
+                if (is_array($_POST['id'])) {
+                    for ($i=0; $i<count($_POST['id']); $i++) {
+                         $this->db->majEtatFicheFrais($_POST['id'][$i], $_POST['lstMois'], "VA");
+                    } 
+                }
+                else{
+                    $this->db->majEtatFicheFrais($_POST['id'], $_POST['lstMois'], "VA");
+                }       
             }
-            }
-            else{        
-              $this->db->majEtatFicheFrais($_POST['user'], $_POST['lstMois'], "VA");
-            }  
+            $this->showSuivi();
         }
-       $this->showSuivi(true);
+        elseif($request['type'] == 'unique'){
+            if (isset ($_POST['lstMois'])) {
+                if (is_array($_POST['lstMois'])) {
+                    for ($i=0; $i<count($_POST['lstMois']); $i++) {
+                        $this->db->majEtatFicheFrais($_POST['user'], $_POST['lstMois'][$i], "VA");
+                }
+                }
+                else{        
+                  $this->db->majEtatFicheFrais($_POST['user'], $_POST['lstMois'], "VA");
+                }  
+            }
+           $this->showSuivi(true);
+        }
+        
     }
 }
 

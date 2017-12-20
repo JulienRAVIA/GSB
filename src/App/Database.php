@@ -522,6 +522,25 @@ class Database {
         }
     }
 
+    public function getInfosUneFicheFrais($idVisiteur, $mois) {
+        $requetePrepare = Database::$dbh->prepare(
+                    'SELECT fichefrais.idetat as idEtat, '
+                    . 'fichefrais.datemodif as dateModif,'
+                    . 'fichefrais.nbjustificatifs as nbJustificatifs, '
+                    . 'fichefrais.montantvalide as montantValide, '
+                    . 'etat.libelle as libEtat '
+                    . 'FROM fichefrais '
+                    . 'INNER JOIN etat ON fichefrais.idetat = etat.id '
+                    . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
+                    . 'AND fichefrais.mois = :unMois'
+        );
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
+        $requetePrepare->execute();
+        $laLigne = $requetePrepare->fetch();
+        return $laLigne;
+    }
+
     /**
      * Modifie l'état et la date de modification d'une fiche de frais.
      * Modifie le champ idEtat et met la date de modif à aujourd'hui.
@@ -577,11 +596,20 @@ class Database {
     */
     public function getVisiteursList() {
             $requetePrepare = Database::$dbh->prepare(
-                    'SELECT nom, prenom, id'
-                    . 'FROM visiteur'
+                    'SELECT nom,'
+                    . 'prenom,'
+                    . 'id '
+                    . 'FROM visiteur '
             );
             $requetePrepare->execute();
-            $lesVisiteurs = $requetePrepare->fetchAll();
+            $lesVisiteurs = array();
+            while ($laLigne = $requetePrepare->fetch()) {
+                $lesVisiteurs[] = array(
+                    'id' => $laLigne['id'],
+                    'nom' => $laLigne['nom'], 
+                    'prenom' => $laLigne['prenom'], 
+                );
+            }
             return $lesVisiteurs;
     }
 }

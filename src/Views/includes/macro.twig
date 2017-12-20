@@ -12,7 +12,7 @@
 	</div>
 {% endmacro %}
 
-{% macro url(path) %}http://gsb.ppe/{{path}}{% endmacro %}
+{% macro url(path) %}http://{{ domain }}/{{path}}{% endmacro %}
 
 {% macro input_group(name, placeholder, icon, type, label, maxlength) %}
     <div class="form-group">

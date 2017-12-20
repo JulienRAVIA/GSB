@@ -22,6 +22,7 @@ class Twig
 		));
         $this->_twig->addExtension(new \Twig_Extension_Debug());
         $this->_twig->addGlobal('session', $_SESSION);
+        $this->_twig->addGlobal('domain', $_SERVER['HTTP_HOST']);
 		return $this->_twig;
     }
 

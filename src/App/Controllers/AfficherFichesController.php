@@ -104,7 +104,7 @@ class AfficherFichesController {
         // Si le fichier n'existe pas, on le créé                    
         if(!file_exists($filename)) {
             $mpdf = new \Mpdf\Mpdf();
-            $source = file_get_contents('http://gsb.ppe/frais/pdf/'.\App\Utils\Session::get('idVisiteur').'/'.$_POST['mois']);
+            $source = file_get_contents('http://'.$_SERVER['HTTP_HOST'].'/frais/pdf/'.\App\Utils\Session::get('idVisiteur').'/'.$_POST['mois']);
             $mpdf->WriteHTML($source);
             $mpdf->Output($filename, 'F');
         }

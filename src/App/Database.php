@@ -581,7 +581,7 @@ class Database {
                     . 'FROM visiteur'
             );
             $requetePrepare->execute();
-            $lesVisiteurs = $requetePrepare->fetchAll());
+            $lesVisiteurs = $requetePrepare->fetchAll();
             return $lesVisiteurs;
     }
 }

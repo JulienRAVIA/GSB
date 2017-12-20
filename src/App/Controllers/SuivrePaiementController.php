@@ -24,7 +24,8 @@ class SuivrePaiementController {
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
-        $this->lesMois = $this->db->getLesMoisDisponibles("*");
+    	  $this->lesMois = $this->db->getLesMoisDisponibles("*");
+        $this->lesVisiteurs = $this->db->getVisiteursList();
     }
 
     /**
@@ -32,22 +33,89 @@ class SuivrePaiementController {
      * @return view Vue du suivi de paiements avec la liste de séléction des mois
      */
     public function index() {
-        View::make('suiviPaiement.twig', array('lesMois' => $this->lesMois,
-            'moisASelectionner' => $this->lesMois[0]));
+    	  View::make('suiviPaiementMulti.twig', array('lesMois' => $this->lesMois, 
+                                                    'selectionMois' => $this->lesMois[0],
+                                                    'listVisiteurs' => $this->lesVisiteurs,
+                                                    'index' => true));
     }
 
     /**
      * Affichage des fiches de frais de chaque utilisateur l'ayant remplie
      * @return view Vue du suivi de paiements avec les informations nécessaires pour l'affichage
-     */
-    public function showSuivi() {
-        $leMois = $_POST['lstMois'];
-        $lesFiches = $this->db->getLesInfosFicheFrais("*", $leMois);
-        View::make('suiviPaiement.twig', array('lesMois' => $this->lesMois,
-            'moisASelectionner' => $leMois,
-            'lesFiches' => $lesFiches));
+     */	
+    public function showSuivi($singleUser = false) {
+        if ($singleUser) {
+            $lesFiches = $this->db->getLesInfosFicheFrais($_POST['user'], "*");
+            if (empty($lesFiches)) {
+                View::make('suiviPaiementUnique.twig', array('lesMois' => $this->lesMois, 
+                                                             'selectionMois' => $this->lesMois[0],
+                                                             'listVisiteurs' => $this->lesVisiteurs));
+            }
+            else{
+                View::make('suiviPaiementUnique.twig', array('lesMois' => $this->lesMois, 
+                                                             'selectionMois' => $this->lesMois[0],
+                                                             'lesFiches' => $lesFiches,
+                                                             'nom' => $lesFiches[0]['nom'],
+                                                             'prenom' => $lesFiches[0]['prenom'],
+                                                             'user' => $_POST['user'],
+                                                             'listVisiteurs' => $this->lesVisiteurs));
+            }
+        }
+        else{
+            $lesFiches = $this->db->getLesInfosFicheFrais("*", $_POST['lstMois']);
+            if (empty($lesFiches)) {
+                View::make('suiviPaiementMulti.twig', array('lesMois' => $this->lesMois, 
+                                                            'selectionMois' => $_POST['lstMois'],
+                                                            'listVisiteurs' => $this->lesVisiteurs));
+            }
+            else{
+                View::make('suiviPaiementMulti.twig', array('lesMois' => $this->lesMois, 
+                                                            'selectionMois' => $_POST['lstMois'],
+                                                            'lesFiches' => $lesFiches,
+                                                            'listVisiteurs' => $this->lesVisiteurs));
+            }
+        }
+    }
+    
+    public function suivis($request) {
+        if ($request['type'] == 'multiple') {
+            $this->showSuivi();
+        }
+        elseif($request['type'] == 'unique'){
+            $this->showSuivi(true);
+        }
     }
 
+    
+    public function mep($request){
+        if ($request['type'] == 'multiple') {
+            if (isset($_POST['id'])) {
+                if (is_array($_POST['id'])) {
+                    for ($i=0; $i<count($_POST['id']); $i++) {
+                         $this->db->majEtatFicheFrais($_POST['id'][$i], $_POST['lstMois'], "VA");
+                    } 
+                }
+                else{
+                    $this->db->majEtatFicheFrais($_POST['id'], $_POST['lstMois'], "VA");
+                }       
+            }
+            $this->showSuivi();
+        }
+        elseif($request['type'] == 'unique'){
+            if (isset ($_POST['lstMois'])) {
+                if (is_array($_POST['lstMois'])) {
+                    for ($i=0; $i<count($_POST['lstMois']); $i++) {
+                        $this->db->majEtatFicheFrais($_POST['user'], $_POST['lstMois'][$i], "VA");
+                }
+                }
+                else{        
+                  $this->db->majEtatFicheFrais($_POST['user'], $_POST['lstMois'], "VA");
+                }  
+            }
+           $this->showSuivi(true);
+        }
+        
+    }
 }
 
 ?>

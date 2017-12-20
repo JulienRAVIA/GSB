@@ -1,0 +1,76 @@
+{% extends 'includes/template.twig' %}
+{% import 'includes/macro.twig' as component %}
+
+{% set uc = 'suivreFrais' %}
+
+{% block head %}
+    {{ parent() }}
+    <link href="{{ component.url('css/bootstrap-combobox.css')|trim }}" rel="stylesheet">
+    <script src="{{ component.url('js/jquery-3.2.1.js')|trim }}"></script>
+    <script src="{{ component.url('js/bootstrap-combobox.js')|trim }}"></script>
+{% endblock %}
+
+{% block content %}
+    <h2>Suivis des paiements</h2>
+    </br>
+    <div class="row">
+        <div class="col-md-offset-1">
+            {% include 'includes/listeMois.twig' with {'lesMois': lesMois, 'selection' : selectionMois, 'redirect' : '/frais/suivre/multiple'} only %}
+        </div>
+        {% include 'includes/visiteursList.twig' with {'listVisiteurs': listVisiteurs, 'redirect' : '/frais/suivre/unique'} only %}
+    </div>
+
+    {% if lesFiches is defined %}
+        <hr>
+        <form role="form" method="post" action="/frais/suivre/multiple/miseEnPaiement">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Fiches de Frais du {{ selectionMois|slice(4, 2) ~ '-' ~ selectionMois|slice(0, 4) }}</div>
+
+                <table class="table table-bordered table-responsive">
+                        <tr>
+                            <th class="chck"><input id="checkAlls" type="checkbox"></th>
+                            <th class="mois">Visiteur</th>
+                            <th class="datemodif">Derniere Modification</th>
+                            <th class="montantF">Montant F</th>
+                            <th class="montantHF">Montant HF</th>
+                            <th class="libelle">Libellé</th>
+                        </tr>
+                        {% for uneFiche in lesFiches %}
+                            {% set mois = uneFiche.mois|split('', 4) %}
+                            <tr id="{{ uneFiche.id }}">
+                                <td><input class="chckbx" name="id[]" value="{{ uneFiche.id }}" type="checkbox" {% if uneFiche.etat !="CR" %}disabled{% endif %}></td>
+                                <td> {{ uneFiche.nom}} {{uneFiche.prenom  }} </td>
+                                <td> {{ uneFiche.dateModif }} </td>
+                                <td> {{ uneFiche.montantF }} </td>
+                                <td> {{ uneFiche.montantHF }} </td>
+                                <td> {{ uneFiche.libEtat }} </td>
+                            </tr>
+                        {% endfor %}
+                </table>
+            </div>
+            <input type="hidden" name="lstMois" value="{{ selectionMois }}">
+            {{ component.button('Mettre en Paiment', 'success') }}
+        </form>
+        <hr>
+    {% else %}
+        </br>
+        </br>
+        </br>
+        <hr>
+        <h2>Veuillez renseigner le mois ou visiteur que vous souhaitez consulter.</h2>
+        <hr>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.combobox').combobox();
+        });
+    </script>
+    <script>
+        $('#checkAlls').click(function() {
+            $('.chckbx:enabled').prop('checked', this.checked);
+        });
+    </script>
+{% endblock %}

@@ -66,7 +66,7 @@ class ConnexionController
             // on lui créé sa session
             Session::connect($visiteur['id'], $visiteur['nom'], $visiteur['prenom'], $visiteur['type']);
         	// on le redirige vers l'accueil
-            View::redirect('/accueil');
+            View::redirect('/');
         } else {
         	ErrorLogger::add('Login ou mot de passe incorrects');
             // on affiche la page de connexion avec les erreurs

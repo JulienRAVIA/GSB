@@ -48,9 +48,18 @@ $router->addRoutes(array(
 ));
 
 
+// Validation des fiches de frais
+$router->addRoutes(array(
+    // page d'accueil de la validation des fiches de frais
+    array('GET','/frais/valider', 'App\\Controllers\\ValidationFraisController@index', 'frais.valider'),
+    array('POST', '/frais/valider', 'App\\Controllers\\ValidationFraisController@index', 'frais.valider.post')
+));
+
+
+
 $match = $router->match();
 
-if (!$match) {
+if (!$match) { 
     App\View\View::redirect('/');
 } else {
     if(!\App\Utils\Session::isConnected() && $match['name'] != 'connexion' && $match['name'] != 'frais.pdf') {

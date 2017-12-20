@@ -51,6 +51,35 @@ a {
     border-color: var(--couleurUIDeconBorder);
 }
 
-.btn-primary:hover {
-    background-color: var(--couleurUIHover);
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--couleurUIHover) !important;
+    border-color: var(--couleurUIDeconBorder) !important;
+}
+
+h2 {
+    color : var(--couleurUI);
+}
+
+#choix-visiteur {
+    margin-top: 15px;
+}
+
+.alert.alert-success {
+    margin-top: 10px !important;
+    width: fit-content;
+}
+
+#table-hors-forfait th {
+    width: 25%;
+}
+
+#labelIdNbJustificatifs {
+    margin-right: 5px;
+    margin-top: 7px;
+    float: left;
+}
+
+#gpeBtnsNbJustificatifs {
+    margin-top: 20px;
+    margin-bottom: 30px;
 }

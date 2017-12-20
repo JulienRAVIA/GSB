@@ -4,5 +4,5 @@
 .phpintel
 /nbproject/
 /testzone/
-/public/pdf
+/public/pdf/*.pdf
 database.sql

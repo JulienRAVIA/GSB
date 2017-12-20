@@ -1,0 +1,132 @@
+{% extends 'includes/template.twig' %}
+{% import 'includes/macro.twig' as component %}
+
+{% set uc = 'validerFrais' %}
+
+{% block content %}
+
+    <div class="row">  
+        {% if erreurs %}
+            {{ component.alert(erreurs, danger) }}
+        {% endif %}  
+
+        <div id="choix-visiteur" class="col-12">
+            <form method="post" action="/frais/valider" role="form">
+                <div class="form-group col-sm-6">
+                    <label for="lstVisiteurs">Choisir le visiteur : </label>
+                    <select id="visiteurName" name="lstVisiteurs" class="form-control" onchange="this.form.submit()"> 
+                        {% for unVisiteur in lesVisiteurs %}
+                            {% if unVisiteur.id == visiteurASelectionner %}
+                                <option selected value="{{ unVisiteur.id }}">{{ unVisiteur.nom }} {{ unVisiteur.prenom }}</option>
+                            {% else %}
+                                <option value="{{ unVisiteur.id }}">{{ unVisiteur.nom }} {{ unVisiteur.prenom }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="lstMois" accesskey="n">Mois : </label>
+                    <select id="lstMois" name="lstMois" class="form-control" onchange="this.form.submit()">
+                        {% for unMois in lesMois %}
+                            {% if unMois.mois == moisASelectionner %}
+                                <option selected value="{{ unMois.mois }}">{{ unMois.numMois }} / {{ unMois.numAnnee }}</option>
+                            {% else %}
+                                <option value="{{ unMois.mois }}">{{ unMois.numMois }} / {{ unMois.numAnnee }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Partie validation frais forfait -->
+                <h2>Valider la fiche de frais </h2>
+                <h3>Eléments forfaitisés</h3>
+                <div class="form-group col-sm-12">
+                    <fieldset>       
+                        {% for unFrais in lesFraisForfait %} 
+                            <div class="form-group">
+                                <label for="idFrais">{{ unFrais.libelle }}</label>
+                                <input type="text" id="idFrais" 
+                                       name="lesFrais[{{ unFrais.idfrais }}]"
+                                       size="10" maxlength="5" 
+                                       value="{{ unFrais.quantite }}" 
+                                       class="form-control"
+                                       style="width: 13%;">
+                            </div>
+                        {% endfor %}
+
+                        <button type="submit" name="corrigerForfait" class="btn btn-success">Corriger</button>                      
+                        <button type="reset" name="reinitForfait" class="btn btn-danger">Réinitialiser</button>                   
+                    </fieldset>
+                    {% if majFraisForfaitSucces %}
+                        {{ component.singleMsgAlert(majFraisForfaitSucces, 'success') }}
+                    {% endif %} 
+                    <hr>
+                </div>
+
+                <!-- Partie validation frais hors forfait -->
+                <h3>Eléments hors forfait</h3>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Descriptif des éléments hors forfait </div>
+                    <table id="table-hors-forfait" class="table table-bordered table-responsive">
+                        <tr>   
+                            <th>Date</th>
+                            <th>Libellé</th>
+                            <th>Montant</th>                        
+                            <th></th>
+                        </tr>
+                        {% for unFraisHF in lesFraisHorsForfait %}
+                            <tr>
+                                <td class="table-frais-hors-forfait-input"> 
+                                    <input type="text"
+                                           name="lesFraisHFDate[{{ unFraisHF.id }}]"
+                                           value="{{ unFraisHF.date }}" 
+                                           class="form-control"
+                                           style="width: 100%;">
+                                </td>
+                                <td class="table-frais-hors-forfait-input"> 
+                                    <input type="text"
+                                           id="fraisHorsForfait_{{ unFraisHF.id }}" 
+                                           name="lesFraisHFLibelle[{{ unFraisHF.id }}]"
+                                           value="{{ unFraisHF.libelle }}" 
+                                           class="form-control"
+                                           style="width: 100%;">
+                                </td>
+                                <td class="table-frais-hors-forfait-input"> 
+                                    <input type="text"
+                                           name="lesFraisHFMontant[{{ unFraisHF.id }}]"
+                                           value="{{ unFraisHF.montant }}" 
+                                           class="form-control col-md-3"
+                                           style="width: 100%;">
+                                </td>
+                                <td> 
+                                    <button type="submit" name="corrigerHorsForfait[{{ unFraisHF.id }}]" class="btn btn-success" title="Modifier"><i class="fa fa-pencil"></i></button>                      
+                                    <button type="reset" name="reinitForfait" class="btn btn-warning" title="Réinitialiser"><i class="fa fa-refresh"></i></button> 
+                                    <button type="button" onclick="refus({{ unFraisHF.id }});" id="buttonRefus_{{ unFraisHF.id }}" class="btn btn-danger" title="Refuser"><i class="fa fa-ban"></i></button>                   
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table> 
+                </div>     
+                {% if majFraisHorsForfaitSucces %}
+                    {{ component.singleMsgAlert(majFraisHorsForfaitSucces, 'success') }}
+                {% endif %} 
+                <label id="labelIdNbJustificatifs" for="idNbJustificatifs">Nombre de justificatifs : </label>
+                <input type="text" id="idNbJustificatifs" 
+                       name="nbJustificatifs"
+                       size="10" maxlength="5" 
+                       value="{{ nbJustificatifs }}" 
+                       class="form-control"
+                       style="width: 5%;">
+                <div id="gpeBtnsNbJustificatifs">
+                    <input type="submit" name="validerNbJustificatifs" class="btn btn-success" value="Valider"/>                      
+                    <input type="submit" name="reinitNbJustificatifs" class="btn btn-danger" value="Réinitialiser"/>  
+                    {# <button type="button" onclick="refus(1337);" id="{{ unFraisHF.id }}" class="btn btn-danger">Refus</button>                    #}
+
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ component.url('js/refusForfait.js') }}"></script>
+{% endblock %}

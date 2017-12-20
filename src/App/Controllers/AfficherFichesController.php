@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers;
 
@@ -8,13 +8,12 @@ use Jenssegers\Date\Date;
 /**
  * Contrôleur de la page d'affichage des fiches de frais
  */
-class AfficherFichesController
-{
+class AfficherFichesController {
+
     /**
      * Récupération du singleton de base de données
      */
-    public function __construct()
-    {
+    public function __construct() {
         try {
             $this->db = \App\Database::getInstance();
             $this->idVisiteur = \App\Utils\Session::get('idVisiteur');
@@ -27,28 +26,25 @@ class AfficherFichesController
      * Affichage de la page de sélection de mois
      * @return view Vue de la page d'affichage de fiches de frais
      */
-    public function index()
-    {
-    	$lesMois = $this->db->getLesMoisDisponibles($this->idVisiteur);
-    	$lesCles = array_keys($lesMois);
-    	$moisASelectionner = $lesCles[0];
-    	View::make('afficherFicheFrais.twig', array('lesMois' => $lesMois,
-                                               		'moisASelectionner' => $moisASelectionner));
+    public function index() {
+        $lesMois = $this->db->getLesMoisDisponibles($this->idVisiteur);
+        $lesCles = array_keys($lesMois);
+        $moisASelectionner = $lesCles[0];
+        View::make('afficherFicheFrais.twig', array('lesMois' => $lesMois,
+            'moisASelectionner' => $moisASelectionner));
     }
 
     /**
      * Affichage des fiches de frais d'un mois
      * @return view Vue de la page d'affichage des fiches de frais avec état
      */
-    public function showEtat()
-    {
-    	$lesMois = $this->db->getLesMoisDisponibles($this->idVisiteur);
+    public function showEtat() {
+        $lesMois = $this->db->getLesMoisDisponibles($this->idVisiteur);
         $leMois = $_POST['lstMois'];
         $lesInfosFicheFrais = $this->db->getLesInfosFicheFrais($this->idVisiteur, $leMois);
         $numAnnee = substr($leMois, 0, 4);
         $numMois = substr($leMois, 4, 2);
         $libEtat = $lesInfosFicheFrais['libEtat'];
-        $idEtat = $lesInfosFicheFrais['idEtat'];
         $montantValide = $lesInfosFicheFrais['montantValide'];
         $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
         $lesFraisHorsForfait = $this->db->getLesFraisHorsForfait($this->idVisiteur, $leMois);
@@ -118,5 +114,3 @@ class AfficherFichesController
         readfile($filename);
     }
 }
-
-

@@ -55,9 +55,12 @@ class ConnexionController
      * @return view Page de connexion ou page d'accueil si connexion avec succès
      */
 	public function connect() {
+        // cryptage en sha512 du mot de passe
+        $password = hash('sha512', $_POST['mdp']);
+
         /* on vérifie que les données rentrées coordonnent avec les données dans la
         base de données */
-        $visiteur = $this->db->getInfosVisiteur($_POST['login'], $_POST['mdp']);
+        $visiteur = $this->db->getInfosVisiteur($_POST['login'], $password);
         // si le login et le mdp sont corrects
         if($visiteur) {
             // on lui créé sa session
@@ -71,5 +74,3 @@ class ConnexionController
         }	
 	}
 }
-
-?>

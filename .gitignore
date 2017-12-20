@@ -1,6 +1,8 @@
 /vendor/
+.vscode
 .idea
 .phpintel
 /nbproject/
 /testzone/
+/public/pdf
 database.sql

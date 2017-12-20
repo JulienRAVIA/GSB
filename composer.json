@@ -5,7 +5,9 @@
     "require": {
         "twig/twig": "^2.4",
         "jenssegers/date": "^3.2",
-        "altorouter/altorouter": "^1.2"
+        "altorouter/altorouter": "^1.2",
+        "dompdf/dompdf": "^0.8.1",
+        "mpdf/mpdf": "^7.0"
     },
 	"authors": [
         {

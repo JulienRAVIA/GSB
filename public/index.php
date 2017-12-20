@@ -33,6 +33,8 @@ $router->addRoutes(array(
 $router->addRoutes(array(
     // page d'accueil du renseignement de fiche de frais
     array('GET','/frais/afficher', 'App\\Controllers\\AfficherFichesController@index', 'frais.afficher'),
+    array('GET','/frais/pdf/[a:user]/[i:mois]', 'App\\Controllers\\AfficherFichesController@renderPdf', 'frais.pdf'),
+    array('POST','/frais/pdf', 'App\\Controllers\\AfficherFichesController@genPdf', 'frais.pdf.gen'),
     array('POST','/frais/etat', 'App\\Controllers\\AfficherFichesController@showEtat', 'frais.etat'),
     array('GET','/frais/etat', 'App\\Controllers\\AfficherFichesController@index', 'frais.etat.get')
 ));
@@ -51,7 +53,7 @@ $match = $router->match();
 if (!$match) {
     App\View\View::redirect('/');
 } else {
-    if(!\App\Utils\Session::isConnected() && $match['name'] != 'connexion') {
+    if(!\App\Utils\Session::isConnected() && $match['name'] != 'connexion' && $match['name'] != 'frais.pdf') {
         \App\View\View::make('connexion.twig');
     } else {
         list($controller, $action) = explode('@', $match['target']);

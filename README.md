@@ -34,6 +34,7 @@ Lancer la mise à jour/regénération de la documentation avec la commande suiva
 * [date](https://github.com/jenssegers/date) - Librairie pour la gestion des dates
 * [AltoRouter](http://altorouter.com) - Système de routeur pour PHP
 * [ApiGen](https://github.com/ApiGen/ApiGen) - Génération de la documentation (PHP 7.1)
+* [mPDF](https://mpdf.github.io) - Génération d'un document PDF [Github](https://github.com/mpdf/mpdf)
 
 ## Auteurs
 

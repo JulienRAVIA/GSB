@@ -40,7 +40,7 @@ Lancer la mise à jour/regénération de la documentation avec la commande suiva
 
 - [x] Tache 1 : Validation de fiche de frais
 - [x] Tache 2 : Suivi du paiement des fiches de frais
-- [x] Tache 3 : Production de la documentation (dernière version : 11/11/2017)
+- [x] Tache 3 : Production de la documentation (dernière version : 20/12/2017)
 - [x] Tache 4 : Gestion du refus de certains frais hors forfait
 - [x] Tache 5 : Sécurisation des mots de passe stockés. Hashage utilisé : SHA-512
 - [ ] Tache 6 : Gestion plus fine de l'indeminisation kilométrique

@@ -6,15 +6,22 @@ Projet Personnel Encadré de deuxième année de BTS SIO
 
 ## Installation
 
-Installer les composants: Executez la commande ``composer install`` dans l'invite de commande à la racine du dossier
+Installer les composants: 
+Executez la commande ``composer install --no-dev`` dans l'invite de commande à la racine du dossier
+
+**Si en environnement de dev pour générer les tests unitaires, la documentation, executer la commande ``composer install --dev``**
 
 Changer les identifiants de base de données: Dans le fichier ``src\App\Database.php`` changer les valeurs des variables de la classe
 
 ## Démarrage
 
 Il faut placer le projet dans un serveur local
-Si possible, créer un virtual host avec pour nom : gsb.ppe (sinon, c'est relou)
-Si le nom de virtual host n'est pas gsb.ppe, changer l'url dans le macro url du fichier ``src\Views\macro.twig``
+Si possible, créer un virtual host (avec WAMP par exemple) qui pointe vers public, sinon decommenter la ligne suivante dans ``/public/index.php`` (ligne 7) :
+```
+// $router->setBasePath('/GSB/public');
+```
+
+Ne mettre en production que la version de "prod", c'est à dire sans les dépendances de dev, pour supprimer les dépendances de dev si elles sont installées, executer la commande ``composer install --no-dev`` avant d'envoyer en production
 
 ## Tests unitaires
 
@@ -23,6 +30,8 @@ Lancer la commande suivante : ``phpunit --bootstrap src/Class.php tests/ClassTes
 Lancer la commande suivante : ``phpunit --bootstrap src/Class.php --testdox tests/ClassTest`` pour lancer un test sur une classe en particulier (avec détails)
 
 ## Documentation
+
+Lien vers la documentation : https://julienravia.github.io/GSB/
 
 Lancer la mise à jour/regénération de la documentation avec la commande suivante (à la racine du projet) : 
 ``vendor\bin\apigen generate src --destination docs``

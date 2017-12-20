@@ -574,9 +574,10 @@ class Database {
      * Récupère la liste des visiteurs
      * 
      * 
+    */
     public function getVisiteursList() {
             $requetePrepare = Database::$dbh->prepare(
-                    'SELECT nom, prenom, id
+                    'SELECT nom, prenom, id'
                     . 'FROM visiteur'
             );
             $requetePrepare->execute();

@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="resources/style.css">
 
         <title>
-            Class App\Utils\Date
+            Class App\Controllers\ValidationFraisController
         </title>
     </head>
 
@@ -61,11 +61,11 @@
         </li>
             <li class="backslash">\</li>
         <li>
-            <a href="namespace-App.Utils.html">Utils</a>
+            <a href="namespace-App.Controllers.html">Controllers</a>
         </li>
 
         <li class="backslash">\</li>
-        <li class="active">Date</li>
+        <li class="active">ValidationFraisController</li>
 </ol>
                         </div>
                     </div>
@@ -75,11 +75,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-    <h1>Date</h1>
+    <h1>ValidationFraisController</h1>
 
         <div class="panel panel-default">
             <div class="panel-body">
-                Utilitaire pour les dates
+                Contrôleur du suivi de paiement de fiche de frais
             </div>
         </div>
 
@@ -89,7 +89,7 @@
     <div class="info">
         
 
-            <a href="source-class-App.Utils.Date.html" class="open-source-code">Open source code</a>
+            <a href="source-class-App.Controllers.ValidationFraisController.html" class="open-source-code">Open source code</a>
         <br>
     </div>
 
@@ -98,11 +98,11 @@
 
 
 
-<tr id="_EngToFr">
+<tr id="___construct">
 
     <td class="attributes col-md-1">
         <code class="keyword">
-                 public static
+                 public 
                 
                 
         </code>
@@ -110,11 +110,13 @@
 
     <td class="name">
         <div>
-            <a class="anchor pull-right" href="#_EngToFr">#</a>
-            <code><a href="source-class-App.Utils.Date.html#16-21">EngToFr</a>( <span> string <span class="property-name">$maDate</span> </span> )</code>
+            <a class="anchor pull-right" href="#___construct">#</a>
+            <code><a href="source-class-App.Controllers.ValidationFraisController.html#21-31">__construct</a>( )</code>
 
             <div class="description">
-                Conversion d'une date au format français vers une date au format anglais
+                Récupération du singleton de base de données
+Vérification du type de l'utilisateur
+S'il n'est pas comptable, on le redirige vers la page d'accueil
 
 
 
@@ -130,11 +132,11 @@
 
 
 
-<tr id="_FrToEng">
+<tr id="_index">
 
     <td class="attributes col-md-1">
         <code class="keyword">
-                 public static
+                 public 
                 
                 
         </code>
@@ -142,11 +144,11 @@
 
     <td class="name">
         <div>
-            <a class="anchor pull-right" href="#_FrToEng">#</a>
-            <code><a href="source-class-App.Utils.Date.html#28-32">FrToEng</a>( <span> string <span class="property-name">$maDate</span> </span> )</code>
+            <a class="anchor pull-right" href="#_index">#</a>
+            <code><a href="source-class-App.Controllers.ValidationFraisController.html#37-85">index</a>( )</code>
 
             <div class="description">
-                Conversion d'une date au format français vers une date au format anglais
+                Page d'accueil de la validation des fiches de frais avec la sélection du visiteur et du mois
 
 
 
@@ -162,11 +164,11 @@
 
 
 
-<tr id="_getMois">
+<tr id="_corrigerForfait">
 
     <td class="attributes col-md-1">
         <code class="keyword">
-                 public static
+                 public 
                 
                 
         </code>
@@ -174,11 +176,11 @@
 
     <td class="name">
         <div>
-            <a class="anchor pull-right" href="#_getMois">#</a>
-            <code><a href="source-class-App.Utils.Date.html#39-47">getMois</a>( <span> string <span class="property-name">$date</span> </span> )</code>
+            <a class="anchor pull-right" href="#_corrigerForfait">#</a>
+            <code><a href="source-class-App.Controllers.ValidationFraisController.html#93-101">corrigerForfait</a>( <span> \type <span class="property-name">$idVis</span> </span>, <span> \type <span class="property-name">$mois</span> </span> )</code>
 
             <div class="description">
-                Récupèration du mois à partir de l'année (concatené avec l'année en cours)
+                Fonction permettant de corriger un frais forfait pour un visiteur et un mois donné.
 
 
 
@@ -194,11 +196,11 @@
 
 
 
-<tr id="_outdated">
+<tr id="_corrigerHorsForfait">
 
     <td class="attributes col-md-1">
         <code class="keyword">
-                 public static
+                 public 
                 
                 
         </code>
@@ -206,21 +208,17 @@
 
     <td class="name">
         <div>
-            <a class="anchor pull-right" href="#_outdated">#</a>
-            <code><a href="source-class-App.Utils.Date.html#55-62">outdated</a>( <span> string <span class="property-name">$date</span> </span> )</code>
+            <a class="anchor pull-right" href="#_corrigerHorsForfait">#</a>
+            <code><a href="source-class-App.Controllers.ValidationFraisController.html#109-125">corrigerHorsForfait</a>( <span> \type <span class="property-name">$idVis</span> </span>, <span> \type <span class="property-name">$mois</span> </span> )</code>
 
             <div class="description">
-                Vérification que la date ne soit pas dépassée de un an;
+                Fonction permettant de corriger un frais forfait pour un visiteur et un mois donné.
 
 
 
 
 
 
-                    <h2>todo</h2>
-                    <div class="list">
-                        <br>
-                    </div>
 
 
             </div>
@@ -230,11 +228,11 @@
 
 
 
-<tr id="_check">
+<tr id="_validerNbJustificatifs">
 
     <td class="attributes col-md-1">
         <code class="keyword">
-                 public static
+                 public 
                 
                 
         </code>
@@ -242,11 +240,11 @@
 
     <td class="name">
         <div>
-            <a class="anchor pull-right" href="#_check">#</a>
-            <code><a href="source-class-App.Utils.Date.html#69-75">check</a>( <span> string <span class="property-name">$value</span> </span> )</code>
+            <a class="anchor pull-right" href="#_validerNbJustificatifs">#</a>
+            <code><a href="source-class-App.Controllers.ValidationFraisController.html#134-140">validerNbJustificatifs</a>( <span> \type <span class="property-name">$idVis</span> </span>, <span> \type <span class="property-name">$mois</span> </span>, <span> \type <span class="property-name">$nbJustificatifs</span> </span> )</code>
 
             <div class="description">
-                On vérifie que la date soit correctement formatée
+                Fonction pour changer le nombre de justificatifs
 
 
 

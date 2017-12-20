@@ -46,10 +46,10 @@ $router->addRoutes(array(
     array('GET','/frais/suivre', 'App\\Controllers\\SuivrePaiementController@index', 'frais.suivre'),
     
     array('GET','/frais/suivre/[multiple|unique]', 'App\\Controllers\\SuivrePaiementController@index', 'frais.suivre.indexSuivis'),
-    array('POST','/frais/suivre/[multiple|unique:type]', 'App\\Controllers\\SuivrePaiementController@suivis', 'frais.suivre.suivis'),
+    array('POST','/frais/suivre/[multiple|unique:type]', 'App\\Controllers\\SuivrePaiementController@suivi', 'frais.suivre.suivis'),
     
     array('GET','/frais/suivre/[multiple|unique]/miseEnPaiement', 'App\\Controllers\\SuivrePaiementController@index', 'frais.suivre.indexMEP'),
-    array('POST','/frais/suivre/[multiple|unique:type]/miseEnPaiement', 'App\\Controllers\\SuivrePaiementController@mep', 'frais.suivre.MEP'),
+    array('POST','/frais/suivre/[multiple|unique:type]/miseEnPaiement', 'App\\Controllers\\SuivrePaiementController@miseEnPaiement', 'frais.suivre.MEP'),
 ));
 
 

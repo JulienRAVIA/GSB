@@ -77,7 +77,10 @@ class SuivrePaiementController {
         }
     }
     
-    public function suivis($request) {
+    /**
+     * Gestion du suivi multiple ou unique pour le routeur
+     */
+    public function suivi($request) {
         if ($request['type'] == 'multiple') {
             $this->showSuivi();
         }
@@ -87,7 +90,13 @@ class SuivrePaiementController {
     }
 
     
-    public function mep($request){
+    /**
+     * Mise en paiement des fiches de frais selectionnées
+     */
+    public function miseEnPaiement($request){
+        /**
+         * Si on à séléctionné un mois à filtrer
+         */
         if ($request['type'] == 'multiple') {
             if (isset($_POST['id'])) {
                 if (is_array($_POST['id'])) {
@@ -101,6 +110,7 @@ class SuivrePaiementController {
             }
             $this->showSuivi();
         }
+        // ou un utilisateur en particulier à filtrer
         elseif($request['type'] == 'unique'){
             if (isset ($_POST['lstMois'])) {
                 if (is_array($_POST['lstMois'])) {

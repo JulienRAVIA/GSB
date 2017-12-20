@@ -17,6 +17,9 @@ class Database {
     private $_port = 3306;
     private static $instance;
 
+    /**
+     * Constructeur avec la création de l'instance de base de données
+     */
     private function __construct() {
         $user = $this->_user;
         $password = $this->_password;
@@ -37,7 +40,11 @@ class Database {
         }
     }
 
-    // Singleton
+    /**
+     * Méthode statique de récupération de l'instance
+     * 
+     * @return PDO Instance de base de données
+     */
     public static function getInstance() {
         if (!isset(self::$instance)) {
             $object = __CLASS__;
@@ -437,8 +444,7 @@ class Database {
     }
 
     /**
-     * Retourne les informations d'une fiche de frais d'un visiteur pour un
-     * mois donné
+     * Retourne les informations d'une fiche de frais d'un visiteur ou alors les informations de toutes les fiches de frais des utilisateur pour un mois donné
      *
      * @param String $idVisiteur ID du visiteur
      * @param String $mois       Mois sous la forme aaaamm
@@ -522,6 +528,14 @@ class Database {
         }
     }
 
+    /**
+     * Retourne les informations d'une fiche de frais d'un visiteur pour un mois donné
+     *
+     * @param String $idVisiteur ID du visiteur
+     * @param String $mois       Mois sous la forme aaaamm
+     *
+     * @return les informations de la fiche de frais
+     **/
     public function getInfosUneFicheFrais($idVisiteur, $mois) {
         $requetePrepare = Database::$dbh->prepare(
                     'SELECT fichefrais.idetat as idEtat, '

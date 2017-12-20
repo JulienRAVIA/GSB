@@ -36,6 +36,26 @@ Lancer la mise à jour/regénération de la documentation avec la commande suiva
 * [ApiGen](https://github.com/ApiGen/ApiGen) - Génération de la documentation (PHP 7.1)
 * [mPDF](https://mpdf.github.io) - Génération d'un document PDF [Github](https://github.com/mpdf/mpdf)
 
+## Avancée
+
+- [x] Tache 1 : Validation de fiche de frais
+- [x] Tache 2 : Suivi du paiement des fiches de frais
+- [x] Tache 3 : Production de la documentation (dernière version : 11/11/2017)
+- [x] Tache 4 : Gestion du refus de certains frais hors forfait
+- [x] Tache 5 : Sécurisation des mots de passe stockés. Hashage utilisé : SHA-512
+- [ ] Tache 6 : Gestion plus fine de l'indeminisation kilométrique
+- [x] Tache 7 : Génération d'un état de frais au format PDF
+- [x] Tache 8 : Davantage d'écologie dans l'application
+
+## TODO
+
+- Correction de bugs sur la page de validation de fiches de frais (certains visiteurs ou fiches de frais n'apparaissent pas)
+- Report hors forfait
+- Décompte des frais hors forfait refusés lors de la génération du pdf
+- Ajout d'un datepicker pour l'ajout d'élément hors forfait
+- Compte avec l'indemnisation kilométrique pour le PDF
+- Gestion de 
+
 ## Auteurs
 
 * [Guillaume Cauvet](http://www.cauvet-guillaume.fr)

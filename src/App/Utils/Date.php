@@ -2,6 +2,9 @@
 
 namespace App\Utils;
 
+/**
+ * Utilitaire pour les dates
+ */
 class Date
 {
 

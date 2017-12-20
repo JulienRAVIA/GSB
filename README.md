@@ -50,11 +50,11 @@ Lancer la mise à jour/regénération de la documentation avec la commande suiva
 ## TODO
 
 - Correction de bugs sur la page de validation de fiches de frais (certains visiteurs ou fiches de frais n'apparaissent pas)
-- Report hors forfait
-- Décompte des frais hors forfait refusés lors de la génération du pdf
+- Report d'un frais hors forfait
+- Décompte des frais hors forfait refusés lors de la génération du pdf et du suivi de paiement
 - Ajout d'un datepicker pour l'ajout d'élément hors forfait
 - Compte avec l'indemnisation kilométrique pour le PDF
-- Gestion de 
+- Ajout du montant total au suivi des fiches de frais et calcul avec indemnité kilométrique selon voiture
 
 ## Auteurs
 

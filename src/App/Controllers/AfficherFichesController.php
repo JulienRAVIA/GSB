@@ -41,10 +41,11 @@ class AfficherFichesController {
     public function showEtat() {
         $lesMois = $this->db->getLesMoisDisponibles($this->idVisiteur);
         $leMois = $_POST['lstMois'];
-        $lesInfosFicheFrais = $this->db->getLesInfosFicheFrais($this->idVisiteur, $leMois);
+        $lesInfosFicheFrais = $this->db->getInfosUneFicheFrais($this->idVisiteur, $leMois);
         $numAnnee = substr($leMois, 0, 4);
         $numMois = substr($leMois, 4, 2);
         $libEtat = $lesInfosFicheFrais['libEtat'];
+        $idEtat = $lesInfosFicheFrais['idEtat'];
         $montantValide = $lesInfosFicheFrais['montantValide'];
         $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
         $lesFraisHorsForfait = $this->db->getLesFraisHorsForfait($this->idVisiteur, $leMois);

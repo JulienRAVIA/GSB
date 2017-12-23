@@ -4,20 +4,22 @@
 {% set uc = 'etatFrais' %}
 
 {% block content %}
-
-    {% include 'includes/listeMois.twig' with {'lesMois': lesMois, 'moisASelectionner' : moisASelectionner ,'redirect' : '/frais/etat'} only %}
+    <div id="listeMois">
+        {% include 'includes/listeMois.twig' with {'lesMois': lesMois, 'moisASelectionner' : moisASelectionner ,'redirect' : '/frais/etat'} only %}
+    </div>
 
 {% if showEtat %}
-{% if idEtat != 'CR' %}
-<form action="pdf" method="post">
-    <input type="hidden" name="mois" value="{{ moisASelectionner }}">
-    <button class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Télécharger le PDF</button>
-</form>
-{% endif %}
 <hr>
 <div class="panel panel-primary">
     <div class="panel-heading">Fiche de frais du mois 
-        {{ numMois }} - {{ numAnnee }} : </div>
+        {{ numMois }} - {{ numAnnee }} : 
+        {% if idEtat != 'CR' %}
+        <form action="pdf" method="post" class="pull-right">
+            <input type="hidden" name="mois" value="{{ moisASelectionner }}">
+            <button class="btn btn-default btn-xs"><i class="fa fa-file-pdf-o"></i> Télécharger le PDF</button>
+        </form>
+        {% endif %}
+    </div>
     <div class="panel-body">
         <strong><u>Etat :</u></strong> {{ libEtat }}
         depuis le {{ dateModif }} <br> 

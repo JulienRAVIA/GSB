@@ -391,6 +391,40 @@ un mois donné en enregistrant les nouveaux montants
 
 
 
+<tr id="_reporteLeHorsForfait">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                 public 
+                
+                
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_reporteLeHorsForfait">#</a>
+            <code><a href="source-class-App.Database.html#264-273">reporteLeHorsForfait</a>( <span> string <span class="property-name">$idFrais</span> </span>, <span> string <span class="property-name">$mois</span> </span> )</code>
+
+            <div class="description">
+                Met à jour la table ligneFraisHorsForfait
+Met à jour la table ligneFraisHorsForfait pour un visiteur et
+un mois donné en enregistrant les nouveaux montants
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
 <tr id="_majNbJustificatifs">
 
     <td class="attributes col-md-1">
@@ -404,7 +438,7 @@ un mois donné en enregistrant les nouveaux montants
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_majNbJustificatifs">#</a>
-            <code><a href="source-class-App.Database.html#262-275">majNbJustificatifs</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span>, <span> int <span class="property-name">$nbJustificatifs</span> </span> )</code>
+            <code><a href="source-class-App.Database.html#285-298">majNbJustificatifs</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span>, <span> int <span class="property-name">$nbJustificatifs</span> </span> )</code>
 
             <div class="description">
                 Met à jour le nombre de justificatifs de la table ficheFrais
@@ -437,7 +471,7 @@ pour le mois et le visiteur concerné
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_estPremierFraisMois">#</a>
-            <code><a href="source-class-App.Database.html#285-299">estPremierFraisMois</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span> )</code>
+            <code><a href="source-class-App.Database.html#308-322">estPremierFraisMois</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span> )</code>
 
             <div class="description">
                 Teste si un visiteur possède une fiche de frais pour le mois passé en argument
@@ -469,7 +503,7 @@ pour le mois et le visiteur concerné
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_dernierMoisSaisi">#</a>
-            <code><a href="source-class-App.Database.html#308-319">dernierMoisSaisi</a>( <span> string <span class="property-name">$idVisiteur</span> </span> )</code>
+            <code><a href="source-class-App.Database.html#331-342">dernierMoisSaisi</a>( <span> string <span class="property-name">$idVisiteur</span> </span> )</code>
 
             <div class="description">
                 Retourne le dernier mois en cours d'un visiteur
@@ -501,7 +535,7 @@ pour le mois et le visiteur concerné
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_creeNouvellesLignesFrais">#</a>
-            <code><a href="source-class-App.Database.html#334-362">creeNouvellesLignesFrais</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span> )</code>
+            <code><a href="source-class-App.Database.html#357-385">creeNouvellesLignesFrais</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span> )</code>
 
             <div class="description">
                 Crée une nouvelle fiche de frais et les lignes de frais au forfait
@@ -538,7 +572,7 @@ les lignes de frais forfait de quantités nulles
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_creeNouveauFraisHorsForfait">#</a>
-            <code><a href="source-class-App.Database.html#376-391">creeNouveauFraisHorsForfait</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span>, <span> string <span class="property-name">$libelle</span> </span>, <span> string <span class="property-name">$date</span> </span>, <span> float <span class="property-name">$montant</span> </span> )</code>
+            <code><a href="source-class-App.Database.html#399-414">creeNouveauFraisHorsForfait</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span>, <span> string <span class="property-name">$libelle</span> </span>, <span> string <span class="property-name">$date</span> </span>, <span> float <span class="property-name">$montant</span> </span> )</code>
 
             <div class="description">
                 Crée un nouveau frais hors forfait pour un visiteur un mois donné
@@ -571,7 +605,7 @@ les lignes de frais forfait de quantités nulles
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_supprimerFraisHorsForfait">#</a>
-            <code><a href="source-class-App.Database.html#400-407">supprimerFraisHorsForfait</a>( <span> string <span class="property-name">$idFrais</span> </span> )</code>
+            <code><a href="source-class-App.Database.html#423-430">supprimerFraisHorsForfait</a>( <span> string <span class="property-name">$idFrais</span> </span> )</code>
 
             <div class="description">
                 Supprime le frais hors forfait dont l'id est passé en argument
@@ -603,7 +637,7 @@ les lignes de frais forfait de quantités nulles
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_getLesMoisDisponibles">#</a>
-            <code><a href="source-class-App.Database.html#417-444">getLesMoisDisponibles</a>( <span> string <span class="property-name">$idVisiteur</span> </span> )</code>
+            <code><a href="source-class-App.Database.html#440-467">getLesMoisDisponibles</a>( <span> string <span class="property-name">$idVisiteur</span> </span> )</code>
 
             <div class="description">
                 Retourne les mois pour lesquel un visiteur a une fiche de frais
@@ -635,7 +669,7 @@ les lignes de frais forfait de quantités nulles
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_getLesInfosFicheFrais">#</a>
-            <code><a href="source-class-App.Database.html#455-529">getLesInfosFicheFrais</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span> )</code>
+            <code><a href="source-class-App.Database.html#478-553">getLesInfosFicheFrais</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span> )</code>
 
             <div class="description">
                 Retourne les informations d'une fiche de frais d'un visiteur ou alors les informations de toutes les fiches de frais des utilisateur pour un mois donné
@@ -667,7 +701,7 @@ les lignes de frais forfait de quantités nulles
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_getInfosUneFicheFrais">#</a>
-            <code><a href="source-class-App.Database.html#539-556">getInfosUneFicheFrais</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span> )</code>
+            <code><a href="source-class-App.Database.html#563-580">getInfosUneFicheFrais</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span> )</code>
 
             <div class="description">
                 Retourne les informations d'une fiche de frais d'un visiteur pour un mois donné
@@ -699,7 +733,7 @@ les lignes de frais forfait de quantités nulles
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_majEtatFicheFrais">#</a>
-            <code><a href="source-class-App.Database.html#568-579">majEtatFicheFrais</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span>, <span> string <span class="property-name">$etat</span> </span> )</code>
+            <code><a href="source-class-App.Database.html#592-603">majEtatFicheFrais</a>( <span> string <span class="property-name">$idVisiteur</span> </span>, <span> string <span class="property-name">$mois</span> </span>, <span> string <span class="property-name">$etat</span> </span> )</code>
 
             <div class="description">
                 Modifie l'état et la date de modification d'une fiche de frais.
@@ -733,7 +767,7 @@ Modifie le champ idEtat et met la date de modif à aujourd'hui.
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_getLesVisiteursAyantFichesFrais">#</a>
-            <code><a href="source-class-App.Database.html#588-604">getLesVisiteursAyantFichesFrais</a>( )</code>
+            <code><a href="source-class-App.Database.html#612-628">getLesVisiteursAyantFichesFrais</a>( )</code>
 
             <div class="description">
                 Supprime le frais hors forfait dont l'id est passé en argument
@@ -765,7 +799,7 @@ Modifie le champ idEtat et met la date de modif à aujourd'hui.
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_getVisiteursList">#</a>
-            <code><a href="source-class-App.Database.html#611-628">getVisiteursList</a>( )</code>
+            <code><a href="source-class-App.Database.html#635-653">getVisiteursList</a>( )</code>
 
             <div class="description">
                 Récupère la liste des visiteurs

@@ -31,7 +31,7 @@ class AfficherFichesController {
         $lesCles = array_keys($lesMois);
         $moisASelectionner = $lesCles[0];
         View::make('afficherFicheFrais.twig', array('lesMois' => $lesMois,
-            'moisASelectionner' => $moisASelectionner));
+                                                    'moisASelectionner' => $moisASelectionner));
     }
 
     /**

@@ -38,7 +38,7 @@
                         {% for uneFiche in lesFiches %}
                             {% set mois = uneFiche.mois|split('', 4) %}
                             <tr id="{{ uneFiche.id }}">
-                                <td><input class="chckbx" name="id[]" value="{{ uneFiche.id }}" type="checkbox" {% if uneFiche.etat !="CR" %}disabled{% endif %}></td>
+                                <td><input class="chckbx" name="id[]" value="{{ uneFiche.id }}" type="checkbox" {% if uneFiche.idEtat !="CL" %}disabled{% endif %}></td>
                                 <td> {{ uneFiche.nom}} {{uneFiche.prenom  }} </td>
                                 <td> {{ uneFiche.dateModif }} </td>
                                 <td> {{ uneFiche.montantF }} </td>
@@ -49,7 +49,7 @@
                 </table>
             </div>
             <input type="hidden" name="lstMois" value="{{ selectionMois }}">
-            {{ component.button('Mettre en Paiment', 'success') }}
+            {{ component.button('Mettre en paiement', 'success') }}
         </form>
         <hr>
     {% else %}
@@ -63,12 +63,13 @@
 {% endblock %}
 
 {% block javascript %}
+    {{ parent() }}
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('.combobox').combobox();
         });
-    </script>
-    <script>
+
         $('#checkAlls').click(function() {
             $('.chckbx:enabled').prop('checked', this.checked);
         });

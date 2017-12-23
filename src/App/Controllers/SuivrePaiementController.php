@@ -24,7 +24,7 @@ class SuivrePaiementController {
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
-    	  $this->lesMois = $this->db->getLesMoisDisponibles("*");
+    	$this->lesMois = $this->db->getLesMoisDisponibles("*");
         $this->lesVisiteurs = $this->db->getVisiteursList();
     }
 
@@ -114,9 +114,9 @@ class SuivrePaiementController {
         elseif($request['type'] == 'unique'){
             if (isset ($_POST['lstMois'])) {
                 if (is_array($_POST['lstMois'])) {
-                    for ($i=0; $i<count($_POST['lstMois']); $i++) {
+                    for ($i=0; $i < count($_POST['lstMois']); $i++) {
                         $this->db->majEtatFicheFrais($_POST['user'], $_POST['lstMois'][$i], "VA");
-                }
+                    }
                 }
                 else{        
                   $this->db->majEtatFicheFrais($_POST['user'], $_POST['lstMois'], "VA");

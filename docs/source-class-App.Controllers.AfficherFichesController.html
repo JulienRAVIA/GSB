@@ -84,7 +84,7 @@
 </span><span class="l" id="line-31">        <span class="php-var">$lesCles</span> = <span class="php-keyword2">array_keys</span>(<span class="php-var">$lesMois</span>);
 </span><span class="l" id="line-32">        <span class="php-var">$moisASelectionner</span> = <span class="php-var">$lesCles</span>[<span class="php-num">0</span>];
 </span><span class="l" id="line-33">        View::make(<span class="php-quote">'afficherFicheFrais.twig'</span>, <span class="php-keyword1">array</span>(<span class="php-quote">'lesMois'</span> =&gt; <span class="php-var">$lesMois</span>,
-</span><span class="l" id="line-34">            <span class="php-quote">'moisASelectionner'</span> =&gt; <span class="php-var">$moisASelectionner</span>));
+</span><span class="l" id="line-34">                                                    <span class="php-quote">'moisASelectionner'</span> =&gt; <span class="php-var">$moisASelectionner</span>));
 </span><span class="l" id="line-35">    }
 </span><span class="l" id="line-36">
 </span><span class="l" id="line-37">    <span class="php-comment">/**
@@ -157,7 +157,7 @@
 </span><span class="l" id="line-104">        <span class="php-comment">// Si le fichier n'existe pas, on le créé                    </span>
 </span><span class="l" id="line-105">        <span class="php-keyword1">if</span>(!<span class="php-keyword2">file_exists</span>(<span class="php-var">$filename</span>)) {
 </span><span class="l" id="line-106">            <span class="php-var">$mpdf</span> = <span class="php-keyword1">new</span> \Mpdf\Mpdf();
-</span><span class="l" id="line-107">            <span class="php-var">$source</span> = <span class="php-keyword2">file_get_contents</span>(<span class="php-quote">'http://gsb.ppe/frais/pdf/'</span>.\App\Utils\Session::get(<span class="php-quote">'idVisiteur'</span>).<span class="php-quote">'/'</span>.<span class="php-var">$_POST</span>[<span class="php-quote">'mois'</span>]);
+</span><span class="l" id="line-107">            <span class="php-var">$source</span> = <span class="php-keyword2">file_get_contents</span>(<span class="php-quote">'http://'</span>.<span class="php-var">$_SERVER</span>[<span class="php-quote">'HTTP_HOST'</span>].<span class="php-quote">'/frais/pdf/'</span>.\App\Utils\Session::get(<span class="php-quote">'idVisiteur'</span>).<span class="php-quote">'/'</span>.<span class="php-var">$_POST</span>[<span class="php-quote">'mois'</span>]);
 </span><span class="l" id="line-108">            <span class="php-var">$mpdf</span>-&gt;WriteHTML(<span class="php-var">$source</span>);
 </span><span class="l" id="line-109">            <span class="php-var">$mpdf</span>-&gt;Output(<span class="php-var">$filename</span>, <span class="php-quote">'F'</span>);
 </span><span class="l" id="line-110">        }

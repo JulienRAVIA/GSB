@@ -63,11 +63,13 @@ class ValidationFraisController {
             $this->corrigerForfait($this->idVisiteurFinal, $this->moisFinal);
             // TODO: ajouter un test avant d'afficher le succès de l'opération?
             $this->majFraisForfaitSucces = "La correction du frais forfaitisé a été prise en compte";
-        } else if (isset($_POST['corrigerHorsForfait'])) {
+        } else if (isset($_POST['corrigerLesHorsForfait'])) {
             $this->corrigerHorsForfait($this->idVisiteurFinal, $this->moisFinal);
             $this->majFraisHorsForfaitSucces = "La correction du frais non forfaitisé a été prise en compte";
         } else if (isset($_POST['validerNbJustificatifs'])) {
             $this->validerNbJustificatifs($this->idVisiteurFinal, $this->moisFinal, $_POST['nbJustificatifs']);
+        } else if (isset($_POST['reporterLesHorsForfait'])) {
+            $this->reporterLesHorsForfait($this->idVisiteurFinal, $this->moisFinal);
         }
 
         // Création de la vue
@@ -107,23 +109,56 @@ class ValidationFraisController {
      * @param type $mois
      */
     public function corrigerHorsForfait($idVis, $mois) {
-        // TODO: ajouter des controles sur les champs du form
-        // Récupération de la clé de la ligne à traiter
-        $key = array_keys($_POST['corrigerHorsForfait'])[0];
+        if(isset($_POST['fraisHorsForfait'])) {
+            $lesFraisHorsForfait = $_POST['fraisHorsForfait'];
 
-        // Récupération des valeurs de la ligne à modifier
-        $date = $_POST['lesFraisHFDate'][$key];
-        if(Form::isDate($date)) {
-            $date = \App\Utils\Date::FrToEng($date);
+            foreach ($lesFraisHorsForfait as $id => $unFraisHorsForfait) {
+                $date = \App\Utils\Form::isDate($unFraisHorsForfait['date']);
+                $date = \App\Utils\Date::FrToEng($date);
+                $libelle = Form::isString($unFraisHorsForfait['libelle']);
+                $montant = Form::isInt($unFraisHorsForfait['montant']);
+                if(ErrorLogger::count() == 0) {
+                    $this->db->majFraisHorsForfait($idVis, $mois, $id, $date, $libelle, $montant);
+                    if (isset($unFraisHorsForfait['reporter'])) {
+                        $nvMois = \App\Utils\Date::report($mois);
+                        if ($this->db->estPremierFraisMois($idVis, $nvMois)) {
+                            $this->db->creeNouvellesLignesFrais($idVis, $nvMois);
+                        }
+                        $this->db->reporteLeHorsForfait($id, $nvMois);
+                    }
+                }
+            }
+        } else {
+            ErrorLogger::add('Il n\'y à pas de frais hors forfait à mettre à jour');
         }
-        $libelle = Form::isString($_POST['lesFraisHFLibelle'][$key]);
-        $montant = Form::isInt($_POST['lesFraisHFMontant'][$key]);
-
-        if(ErrorLogger::count() == 0) {
-            $this->db->majFraisHorsForfait($idVis, $mois, $key, $date, $libelle, $montant);
-        }
+        View::redirect('/frais/valider');
     }
     
+
+    /**
+     * Fonction permettant de reporter plusieurs hors forfait d'un visiteur et du mois selectionné
+     * 
+     * @param type $idVis
+     * @param type $mois
+     */
+    public function reporterLesHorsForfait($idVis, $mois) {
+        if(isset($_POST['fraisHorsForfait'])) {
+            $lesFraisHorsForfait = $_POST['fraisHorsForfait'];
+            foreach ($lesFraisHorsForfait as $id => $unFraisHorsForfait) {
+                if (isset($unFraisHorsForfait['reporter'])) {
+                    $nvMois = \App\Utils\Date::report($mois);
+                    if ($this->db->estPremierFraisMois($idVis, $nvMois)) {
+                        $this->db->creeNouvellesLignesFrais($idVis, $nvMois);
+                    }
+                    $this->db->reporteLeHorsForfait($id, $nvMois);
+                }
+            }
+        } else {
+            ErrorLogger::add('Il n\'y à pas de frais hors forfait à reporter');
+        }
+        View::redirect('/frais/valider');
+    }
+
     /**
      * Fonction pour changer le nombre de justificatifs 
      * 
@@ -138,4 +173,5 @@ class ValidationFraisController {
             $this->db->majNbJustificatifs($idVis, $mois, $nbJustificatifs);
         }
     }
+
 }

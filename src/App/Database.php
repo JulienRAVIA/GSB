@@ -250,6 +250,29 @@ class Database {
     }
 
     /**
+     * Met à jour la table ligneFraisHorsForfait
+     * Met à jour la table ligneFraisHorsForfait pour un visiteur et
+     * un mois donné en enregistrant les nouveaux montants
+     *
+     * @param String $idVisiteur ID du visiteur
+     * @param String $mois       Mois sous la forme aaaamm
+     * @param Array  $lesFrais   tableau associatif de clé idFrais et
+     *                           de valeur la quantité pour ce frais
+     *
+     * @return null
+     */
+    public function reporteLeHorsForfait($idFrais, $mois) {
+        $requetePrepare = Database::$dbh->prepare(
+                'UPDATE lignefraishorsforfait '
+                . 'SET lignefraishorsforfait.mois = :mois '
+                . 'WHERE lignefraishorsforfait.id = :idFrais '
+        );
+        $requetePrepare->bindParam(':mois', $mois, \PDO::PARAM_STR);
+        $requetePrepare->bindParam(':idFrais', $idFrais, \PDO::PARAM_INT);
+        $requetePrepare->execute();
+    }
+
+    /**
      * Met à jour le nombre de justificatifs de la table ficheFrais
      * pour le mois et le visiteur concerné
      *
@@ -333,7 +356,7 @@ class Database {
      */
     public function creeNouvellesLignesFrais($idVisiteur, $mois) {
         $dernierMois = $this->dernierMoisSaisi($idVisiteur);
-        $laDerniereFiche = $this->getLesInfosFicheFrais($idVisiteur, $dernierMois);
+        $laDerniereFiche = $this->getInfosUneFicheFrais($idVisiteur, $dernierMois);
         if ($laDerniereFiche['idEtat'] == 'CR') {
             $this->majEtatFicheFrais($idVisiteur, $dernierMois, 'CL');
         }
@@ -455,7 +478,7 @@ class Database {
     public function getLesInfosFicheFrais($idVisiteur, $mois) {
         if ($idVisiteur == "*") {
             $requetePrepare = Database::$dbh->prepare(
-                    'SELECT fichefrais.idetat as etat, '
+                    'SELECT fichefrais.idetat as idEtat, '
                     . 'fichefrais.datemodif as dateModif,'
                     . 'visiteur.nom as nom,'
                     . 'visiteur.prenom as prenom,'
@@ -469,6 +492,7 @@ class Database {
                     . 'INNER JOIN lignefraishorsforfait ON fichefrais.idvisiteur = lignefraishorsforfait.idvisiteur '
                     . 'INNER JOIN visiteur ON fichefrais.idvisiteur = visiteur.id '
                     . 'WHERE fichefrais.mois = :unMois AND lignefraishorsforfait.mois = :unMois '
+                    . 'AND visiteur.type = "VISTR" '
                     . 'group by fichefrais.idvisiteur'
             );
             $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
@@ -477,7 +501,7 @@ class Database {
             while ($laLigne = $requetePrepare->fetch()) {
                 $lesLignes[] = array(
                     'id' => $laLigne['id'],
-                    'etat' => $laLigne['etat'],
+                    'idEtat' => $laLigne['idEtat'],
                     'nom' => $laLigne['nom'], 
                     'prenom' => $laLigne['prenom'], 
                     'dateModif' => $laLigne['dateModif'],
@@ -490,7 +514,7 @@ class Database {
             return $lesLignes;
         } else {
             $requetePrepare = Database::$dbh->prepare(
-                        'SELECT fichefrais.idetat as etat, '
+                        'SELECT fichefrais.idetat as idEtat, '
                             .'fichefrais.datemodif as dateModif,'
                             .'fichefrais.mois as mois,'
                             . 'visiteur.nom as nom,'
@@ -514,7 +538,7 @@ class Database {
                 $lesLignes[] = array(
                     'nom' => $laLigne['nom'], 
                     'prenom' => $laLigne['prenom'],
-                    'etat' => $laLigne['etat'],
+                    'idEtat' => $laLigne['idEtat'],
                     'mois' => $laLigne['mois'],
                     'id' => $laLigne['id'],
                     'dateModif' => $laLigne['dateModif'],
@@ -567,7 +591,7 @@ class Database {
      */
     public function majEtatFicheFrais($idVisiteur, $mois, $etat) {
         $requetePrepare = Database::$dbh->prepare(
-                'UPDATE ficheFrais '
+                'UPDATE fichefrais '
                 . 'SET idetat = :unEtat, datemodif = now() '
                 . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
                 . 'AND fichefrais.mois = :unMois'
@@ -614,6 +638,7 @@ class Database {
                     . 'prenom,'
                     . 'id '
                     . 'FROM visiteur '
+                    . 'WHERE type = "VISTR" '
             );
             $requetePrepare->execute();
             $lesVisiteurs = array();

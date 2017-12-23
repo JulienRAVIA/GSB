@@ -16,14 +16,3 @@ window.onload = function () {
         html.style.cssText = "--couleurUI: #F39C12; --couleurUIHover: #F5AB35; --couleurUIDeconCadre: #FDE3A7; --couleurUIDeconBorder: #f1892d; --couleurUIDeconText: #c86400;"; 
     }
 };
-
-$('.mySelect').combobox({
-	  bsVersion: '3',
-	  menu: '<ul class="typeahead typeahead-long dropdown-menu"></ul>',
-	  item: '<li><a href="#" class="dropdown-item"></a></li>',
-	  matcher: null,
-	  sorter: null,
-	  highlighter: null,
-	  template: null,
-	  appendId: null
-	});

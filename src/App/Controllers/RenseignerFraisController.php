@@ -51,8 +51,6 @@ class RenseignerFraisController
                                                       'lesFraisHorsForfait' => $this->lesFraisHorsForfait,
                                                       'numAnnee' => $this->numAnnee,
                                                       'numMois' => $this->numMois));
-
-        
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php 
 
-echo $_SERVER['HTTP_HOST'];
+include '../../vendor/autoload.php';
+
+echo \App\Utils\Date::report('201901');
 
 ?>

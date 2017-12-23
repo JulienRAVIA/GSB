@@ -3,6 +3,11 @@
 
 {% set uc = 'gererFrais' %}
 
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ component.url('css/bootstrap-datepicker3.min.css')|trim }}">
+{% endblock %}
+
 {% block content %}
 <div class="row">  
     {% if erreurs %}
@@ -72,4 +77,18 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script src="{{ component.url('js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ component.url('js/bootstrap-datepicker.fr.min') }}"></script>
+    <script type="text/javascript">
+        $('#txtDateHF').datepicker({
+            language: "fr",
+            orientation: "top auto"
+        });
+    </script>
+
 {% endblock %}

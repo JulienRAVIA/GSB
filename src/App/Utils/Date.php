@@ -73,4 +73,24 @@ class Date
 		    ErrorLogger::add('La valeur '.$value.' n\'est pas le type de donnée attendu (date). Elle doit-être au format dd/mm/yyyy');
 		}
 	}
+
+	/**
+	 * Fonction de report d'une date (YYYYMM)
+	 * @param  mois et année de la fiche de frais $moisAnnee
+	 * @return date reportée sur un mois
+	 */
+	static function report($moisAnnee) {
+        $mois = substr($moisAnnee, 4, 2);
+        $annee = substr($moisAnnee, 0, 4);
+        if($mois == '12') {
+            $annee = $annee + 1;
+            $mois = '01';
+        } else {
+            $mois = $mois + 1;
+            if ($mois < 10) {
+            	$mois = '0'. $mois;
+            }
+        }
+        return $annee . $mois;            
+    }
 }

@@ -55,7 +55,7 @@ class ValidationFraisController {
             }
             $this->moisFinal = $moisChoisi;
         }
-
+        
         $this->majFraisForfaitSucces = "";
         $this->majFraisHorsForfaitSucces = "";
         // TODO: Si aucune modif de faite, pas la peine de faire la correction
@@ -71,11 +71,12 @@ class ValidationFraisController {
         } else if (isset($_POST['reporterLesHorsForfait'])) {
             $this->reporterLesHorsForfait($this->idVisiteurFinal, $this->moisFinal);
         }
-
+        $this->vehicule = $this->db->getVehicule($this->idVisiteurFinal, $this->moisFinal);
         // Création de la vue
         View::make('validationFrais.twig', array('lesMois' => $this->lesMois,
             'moisASelectionner' => $this->moisFinal,
             'lesVisiteurs' => $this->lesVisiteurs,
+            'vehicule' => $this->vehicule[0]['typevehicule'],
             'visiteurASelectionner' => $this->idVisiteurFinal,
             'lesFraisForfait' => $this->db->getLesFraisForfait($this->idVisiteurFinal, $this->moisFinal),
             'lesFraisHorsForfait' => $this->db->getLesFraisHorsForfait($this->idVisiteurFinal, $this->moisFinal),
@@ -96,7 +97,10 @@ class ValidationFraisController {
         // on vérifie que le tableau de données envoyé soit un tableau d'entiers positif
         if (ArrayUtils::isIntArray($_POST['lesFrais'])) {
             // on met à jour les frais
-            $this->db->majFraisForfait($idVis, $mois, $_POST['lesFrais']);
+            if (isset($_POST['vehicule'])) {
+                $req = $this->db->majFraisForfait($idVis, $mois, $_POST['lesFrais'],$_POST['vehicule']);
+            }
+            else $req = $this->db->majFraisForfait($idVis, $mois, $_POST['lesFrais']);
         } else {
             ErrorLogger::add('Les valeurs des frais doivent être numériques');
         }

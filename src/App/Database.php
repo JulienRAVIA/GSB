@@ -199,7 +199,7 @@ class Database {
      *
      * @return null
      */
-    public function majFraisForfait($idVisiteur, $mois, $lesFrais) {
+    public function majFraisForfait($idVisiteur, $mois, $lesFrais, $vehicule = null) {
         $lesCles = array_keys($lesFrais);
         foreach ($lesCles as $unIdFrais) {
             $qte = $lesFrais[$unIdFrais];
@@ -216,8 +216,38 @@ class Database {
             $requetePrepare->bindParam(':idFrais', $unIdFrais, \PDO::PARAM_STR);
             $requetePrepare->execute();
         }
+        if (isset($vehicule)) {
+            $requetePrepare = Database::$dbh->prepare(
+                    'UPDATE assignfraisvehicule '
+                    . 'SET typevehicule = :type '
+                    . 'WHERE idvisiteur = :unIdVisiteur '
+                    . 'AND mois = :unMois '
+            );
+            $requetePrepare->bindParam(':type', $vehicule, \PDO::PARAM_INT);
+            $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
+            $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
+            $requetePrepare->execute();
+        }
     }
 
+    public function getVehicule($idVisiteur, $mois){
+        $requetePrepare = Database::$dbh->prepare(
+                    'SELECT typevehicule '
+                    . 'FROM assignfraisvehicule '
+                    . 'WHERE idvisiteur = :unIdVisiteur '
+                    . 'AND mois = :unMois '
+            );
+            $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
+            $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
+            $requetePrepare->execute();
+            $result = $requetePrepare->fetchAll();
+            if (!isset($result[0]['typevehicule'])) {
+                $result[0]['typevehicule'] = 1;
+            }
+            return $result;
+    }
+    
+    
     /**
      * Met à jour la table ligneFraisHorsForfait
      * Met à jour la table ligneFraisHorsForfait pour un visiteur et
@@ -364,6 +394,13 @@ class Database {
                 'INSERT INTO fichefrais (idvisiteur,mois,nbjustificatifs,'
                 . 'montantvalide,datemodif,idetat) '
                 . "VALUES (:unIdVisiteur,:unMois,0,0,now(),'CR')"
+        );
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
+        $requetePrepare->execute();
+        $requetePrepare = Database::$dbh->prepare(
+                'INSERT INTO assignfraisvehicule (idvisiteur,mois,typevehicule) '
+                . "VALUES (:unIdVisiteur,:unMois,1)"
         );
         $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);

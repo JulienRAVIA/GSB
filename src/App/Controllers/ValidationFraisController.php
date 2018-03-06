@@ -76,7 +76,7 @@ class ValidationFraisController {
         View::make('validationFrais.twig', array('lesMois' => $this->lesMois,
             'moisASelectionner' => $this->moisFinal,
             'lesVisiteurs' => $this->lesVisiteurs,
-            'vehicule' => $this->vehicule[0]['typevehicule'],
+            'vehicule' => $this->vehicule,
             'visiteurASelectionner' => $this->idVisiteurFinal,
             'lesFraisForfait' => $this->db->getLesFraisForfait($this->idVisiteurFinal, $this->moisFinal),
             'lesFraisHorsForfait' => $this->db->getLesFraisHorsForfait($this->idVisiteurFinal, $this->moisFinal),

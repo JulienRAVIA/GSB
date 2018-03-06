@@ -50,7 +50,7 @@ class RenseignerFraisController
                                                       'lesFraisForfait' => $this->lesFraisForfait,
                                                       'lesFraisHorsForfait' => $this->lesFraisHorsForfait,
                                                       'numAnnee' => $this->numAnnee,
-                                                      'vehicule' => $this->vehicule[0]['typevehicule'],
+                                                      'vehicule' => $this->vehicule,
                                                       'numMois' => $this->numMois));
     }
 

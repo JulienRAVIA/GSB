@@ -3,15 +3,14 @@
 namespace App\Controllers;
 
 use \App\View\View;
-use \App\Utils\Session;
 use \App\Utils\ErrorLogger;
-use App\Utils\ArrayUtils;
-use App\Utils\Form;
+use \App\Utils\ArrayUtils;
+use \App\Utils\Form;
 
 /**
  * Contrôleur du suivi de paiement de fiche de frais
  */
-class ValidationFraisController {
+class ValidationFraisController extends BaseController {
 
     /**
      * Récupération du singleton de base de données
@@ -19,13 +18,8 @@ class ValidationFraisController {
      * S'il n'est pas comptable, on le redirige vers la page d'accueil
      */
     public function __construct() {
-        try {
+        parent::__construct('CPTBL');
             // on vérifie que l'utilisateur soit comptable, sinon on le redirige vers l'accueil
-            Session::check('type', 'CPTBL');
-            $this->db = \App\Database::getInstance();
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
         // on récupère la liste des visiteurs possédant au moins une fiche de frais
         $this->lesVisiteurs = $this->db->getLesVisiteursAyantFichesFrais();
     }

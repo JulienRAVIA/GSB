@@ -9,15 +9,15 @@ use \App\Utils\ErrorLogger;
 /**
  * Contrôleur de la page de renseignement de fiche de frais
  */
-class RenseignerFraisController
+class RenseignerFraisController extends BaseController
 {
     /**
      * Initialisation des données
      * Récupèration du singleton de base de donnée
      */
     public function __construct() {
+        parent::__construct('VSTR');
         try {
-            $this->db = \App\Database::getInstance();
             $this->mois = \App\Utils\Date::getMois(date('d/m/Y'));
             $this->numAnnee = substr($this->mois, 0, 4);
             $this->numMois = substr($this->mois, 4, 2);

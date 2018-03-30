@@ -9,7 +9,7 @@ use \App\Utils\ErrorLogger as ErrorLogger;
 /**
  * Contrôleur du suivi de paiement de fiche de frais
  */
-class SuivrePaiementController {
+class SuivrePaiementController extends BaseController {
 
     /**
      * Récupération du singleton de base de données
@@ -17,13 +17,8 @@ class SuivrePaiementController {
      * S'il n'est pas comptable, on le redirige vers la page d'accueil
      */
     public function __construct() {
-        try {
+        parent::__construct('CPTBL');
             // on vérifie que l'utilisateur soit comptable, sinon on le redirige vers l'accueil
-            Session::check('type', 'CPTBL');
-            $this->db = \App\Database::getInstance();
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
     	$this->lesMois = $this->db->getLesMoisDisponibles("*");
         $this->lesVisiteurs = $this->db->getVisiteursList();
     }

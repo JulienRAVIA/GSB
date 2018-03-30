@@ -7,18 +7,7 @@ use \App\View\View;
 /**
  * Controleur de la page d'accueil
  */
-class HomeController {
-    
-    /**
-     * On récupère le singleton de base de données
-     */
-    public function __construct() {
-        try {
-            $this->db = \App\Database::getInstance();
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
-    }
+class HomeController extends BaseController {
 
     /**
      * On affiche la page d'accueil si connecté, 

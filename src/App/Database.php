@@ -199,7 +199,20 @@ class Database {
      *
      * @return null
      */
-    public function majFraisForfait($idVisiteur, $mois, $lesFrais) {
+    public function majFraisForfait($idVisiteur, $mois, $lesFrais, $vehicule = null) {
+        if (isset($vehicule)) {
+            $requetePrepare = Database::$dbh->prepare(
+                    'UPDATE assignfraisvehicule '
+                    . 'SET typevehicule = :type '
+                    . 'WHERE idvisiteur = :unIdVisiteur '
+                    . 'AND mois = :unMois '
+            );
+            $requetePrepare->bindParam(':type', $vehicule, \PDO::PARAM_INT);
+            $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
+            $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
+            $requetePrepare->execute();
+        }
+        $this->setMontantValide($idVisiteur, $mois, $lesFrais);
         $lesCles = array_keys($lesFrais);
         foreach ($lesCles as $unIdFrais) {
             $qte = $lesFrais[$unIdFrais];
@@ -216,8 +229,27 @@ class Database {
             $requetePrepare->bindParam(':idFrais', $unIdFrais, \PDO::PARAM_STR);
             $requetePrepare->execute();
         }
+        
     }
 
+    public function getVehicule($idVisiteur, $mois){
+        $requetePrepare = Database::$dbh->prepare(
+                    'SELECT typevehicule '
+                    . 'FROM assignfraisvehicule '
+                    . 'WHERE idvisiteur = :unIdVisiteur '
+                    . 'AND mois = :unMois '
+            );
+            $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
+            $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
+            $requetePrepare->execute();
+            $result = $requetePrepare->fetchAll();
+            if (!isset($result[0]['typevehicule'])) {
+                $result[0]['typevehicule'] = 1;
+            }
+            return $result[0]['typevehicule'];
+    }
+    
+    
     /**
      * Met à jour la table ligneFraisHorsForfait
      * Met à jour la table ligneFraisHorsForfait pour un visiteur et
@@ -364,6 +396,13 @@ class Database {
                 'INSERT INTO fichefrais (idvisiteur,mois,nbjustificatifs,'
                 . 'montantvalide,datemodif,idetat) '
                 . "VALUES (:unIdVisiteur,:unMois,0,0,now(),'CR')"
+        );
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
+        $requetePrepare->execute();
+        $requetePrepare = Database::$dbh->prepare(
+                'INSERT INTO assignfraisvehicule (idvisiteur,mois,typevehicule) '
+                . "VALUES (:unIdVisiteur,:unMois,1)"
         );
         $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
@@ -627,6 +666,53 @@ class Database {
         return $lesLignes;
     }
 
+    
+    /**
+     * Enregistre le montant valide
+     * 
+     * 
+    */
+    public function setMontantValide($idVisiteur, $mois, $lesFrais) {
+        $montantvalide = 0;
+            $lesCles = array_keys($lesFrais);
+            foreach ($lesCles as $unIdFrais) {
+                if ($unIdFrais == "KM") {
+                    $i = $this->getVehicule($idVisiteur, $mois);
+                    switch ($i) {
+                        case 1:
+                            $montantvalide = $montantvalide + (0.52 * $lesFrais[$unIdFrais]);
+                            break;
+                        case 2:
+                            $montantvalide = $montantvalide + (0.58 * $lesFrais[$unIdFrais]);
+                            break;
+                        case 3:
+                            $montantvalide = $montantvalide + (0.62 * $lesFrais[$unIdFrais]);
+                            break;
+                        case 4:
+                            $montantvalide = $montantvalide + (0.67 * $lesFrais[$unIdFrais]);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else{
+                    // Autre type de frais forfait
+                    // $montantvalide = $montantvalide +
+                }
+            }
+            $requetePrepare = Database::$dbh->prepare(
+                    'UPDATE fichefrais '
+                    . 'SET fichefrais.montantvalide = :montant '
+                    . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
+                    . 'AND fichefrais.mois = :unMois '
+            );
+            $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
+            $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
+            $requetePrepare->bindParam(':montant', $montantvalide, \PDO::PARAM_INT);
+            $requetePrepare->execute();
+        }
+    
+    
     /**
      * Récupère la liste des visiteurs
      * 

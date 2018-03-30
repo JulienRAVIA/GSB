@@ -44,12 +44,13 @@ class RenseignerFraisController
         // on charge les données de la fiche de frais du mois actuel
         $this->lesFraisHorsForfait = $this->db->getLesFraisHorsForfait($this->idVisiteur, $this->mois);
         $this->lesFraisForfait = $this->db->getLesFraisForfait($this->idVisiteur, $this->mois);
-
+        $this->vehicule = $this->db->getVehicule($this->idVisiteur, $this->mois);
         // on affiche les infos de la fiche de frais du mois actuel
         View::make('renseignerFicheFrais.twig', array('erreurs' => ErrorLogger::get(), 
                                                       'lesFraisForfait' => $this->lesFraisForfait,
                                                       'lesFraisHorsForfait' => $this->lesFraisHorsForfait,
                                                       'numAnnee' => $this->numAnnee,
+                                                      'vehicule' => $this->vehicule,
                                                       'numMois' => $this->numMois));
     }
 
@@ -75,7 +76,10 @@ class RenseignerFraisController
         // on vérifie que le tableau de données envoyé soit un tableau d'entiers positif
         if(\App\Utils\ArrayUtils::isIntArray($_POST['lesFrais'])) {
             // on met à jour les frais
-            $req = $this->db->majFraisForfait($this->idVisiteur, $this->mois, $_POST['lesFrais']);
+            if (isset($_POST['vehicule'])) {
+                $req = $this->db->majFraisForfait($this->idVisiteur, $this->mois, $_POST['lesFrais'],$_POST['vehicule']);
+            }
+            else $req = $this->db->majFraisForfait($this->idVisiteur, $this->mois, $_POST['lesFrais']);
             // on redirige vers l'accueil
             View::redirect('/frais/saisir');
         } else {

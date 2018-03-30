@@ -59,6 +59,11 @@
                                            style="width: 13%;">
                                 </div>
                             {% endfor %}
+                            <label for="vehicule">Type de vehicule</label><br>
+                            <input type="radio" name="vehicule" value="1" {% if vehicule == 1 %} checked {% endif %} > 4CV Diesel<br>
+                            <input type="radio" name="vehicule" value="2" {% if vehicule == 2 %} checked {% endif %} > 5/6CV Diesel<br>
+                            <input type="radio" name="vehicule" value="3" {% if vehicule == 3 %} checked {% endif %} > 4CV Essence<br>
+                            <input type="radio" name="vehicule" value="4" {% if vehicule == 4 %} checked {% endif %} > 5/6CV Essence<br><br>
                             <button type="submit" name="corrigerForfait" class="btn btn-success">Corriger</button>                      
                             <button type="reset" name="reinitForfait" class="btn btn-danger">Réinitialiser</button>                   
                         </fieldset>

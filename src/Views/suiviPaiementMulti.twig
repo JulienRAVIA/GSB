@@ -33,6 +33,7 @@
                             <th class="datemodif">Derniere Modification</th>
                             <th class="montantF">Montant F</th>
                             <th class="montantHF">Montant HF</th>
+                            <th class="montantHF">Montant Total</th>
                             <th class="libelle">Libellé</th>
                         </tr>
                         {% for uneFiche in lesFiches %}
@@ -43,6 +44,7 @@
                                 <td> {{ uneFiche.dateModif }} </td>
                                 <td> {{ uneFiche.montantF }} </td>
                                 <td> {{ uneFiche.montantHF }} </td>
+                                <td> {{ uneFiche.montantTotal }} </td>
                                 <td> {{ uneFiche.libEtat }} </td>
                             </tr>
                         {% endfor %}
@@ -53,9 +55,6 @@
         </form>
         <hr>
     {% else %}
-        </br>
-        </br>
-        </br>
         <hr>
         <h2>Veuillez renseigner le mois ou visiteur que vous souhaitez consulter.</h2>
         <hr>

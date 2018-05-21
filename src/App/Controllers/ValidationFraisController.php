@@ -84,17 +84,17 @@ class ValidationFraisController extends BaseController {
     /**
      * Fonction permettant de corriger un frais forfait pour un visiteur et un mois donné.
      * 
-     * @param type $idVis
-     * @param type $mois
+     * @param string $idVis Identifiant du visiteur
+     * @param int $mois Identifiant du mois
      */
     public function corrigerForfait($idVis, $mois) {
         // on vérifie que le tableau de données envoyé soit un tableau d'entiers positif
         if (ArrayUtils::isIntArray($_POST['lesFrais'])) {
             // on met à jour les frais
             if (isset($_POST['vehicule'])) {
-                $req = $this->db->majFraisForfait($idVis, $mois, $_POST['lesFrais'],$_POST['vehicule']);
+                $req = $this->db->majFraisForfait($idVis, $mois, $_POST['lesFrais'],$_POST['vehicule'], 'CPTBL');
             }
-            else $req = $this->db->majFraisForfait($idVis, $mois, $_POST['lesFrais']);
+            else $req = $this->db->majFraisForfait($idVis, $mois, $_POST['lesFrais'], 'CPTBL');
         } else {
             ErrorLogger::add('Les valeurs des frais doivent être numériques');
         }
@@ -103,8 +103,8 @@ class ValidationFraisController extends BaseController {
     /**
      * Fonction permettant de corriger un frais forfait pour un visiteur et un mois donné.
      * 
-     * @param type $idVis
-     * @param type $mois
+     * @param string $idVis Identifiant du visiteur
+     * @param int $mois Identifiant du mois
      */
     public function corrigerHorsForfait($idVis, $mois) {
         if(isset($_POST['fraisHorsForfait'])) {
@@ -136,8 +136,8 @@ class ValidationFraisController extends BaseController {
     /**
      * Fonction permettant de reporter plusieurs hors forfait d'un visiteur et du mois selectionné
      * 
-     * @param type $idVis
-     * @param type $mois
+     * @param string $idVis Identifiant du visiteur
+     * @param int $mois Identifiant du mois
      */
     public function reporterLesHorsForfait($idVis, $mois) {
         if(isset($_POST['fraisHorsForfait'])) {
@@ -158,11 +158,11 @@ class ValidationFraisController extends BaseController {
     }
 
     /**
-     * Fonction pour changer le nombre de justificatifs 
+     * Fonction pour changer le nombre de justificatifs d'une fiche de frais d'un utilisateur
      * 
-     * @param type $idVis
-     * @param type $mois
-     * @param type $nbJustificatifs
+     * @param string $idVis Identifiant du visiteur
+     * @param int $mois Identifiant du mois
+     * @param type $nbJustificatifs Nombre de justificatifs à mettre à jour
      */
     public function validerNbJustificatifs($idVis, $mois, $nbJustificatifs) {
         // on vérifie que le tableau de données envoyé soit un tableau d'entiers positif

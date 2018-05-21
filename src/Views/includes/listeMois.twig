@@ -4,11 +4,11 @@
                 <label for="lstMois" accesskey="n">Sélectionner un mois : </label>
                 <select id="lstMois" name="lstMois" class="form-control">
                 	{% for unMois in lesMois %}
-                	    {% if unMois.mois == selection %}
+                	    {% if unMois.mois == moisASelectionner or unMois.mois == selection %}
                                 <option selected value="{{ unMois.mois }}">{{ unMois.numMois }} / {{ unMois.numAnnee }}</option>
-                            {% else %}
-                                <option value="{{ unMois.mois }}">{{ unMois.numMois }} / {{ unMois.numAnnee }}</option>
-                            {% endif %}
+                        {% else %}
+                            <option value="{{ unMois.mois }}">{{ unMois.numMois }} / {{ unMois.numAnnee }}</option>
+                        {% endif %}
                 	{% endfor %}
                 </select>
             </div>

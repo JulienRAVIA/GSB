@@ -16,15 +16,11 @@ class RenseignerFraisController extends BaseController
      * Récupèration du singleton de base de donnée
      */
     public function __construct() {
-        parent::__construct('VSTR');
-        try {
-            $this->mois = \App\Utils\Date::getMois(date('d/m/Y'));
-            $this->numAnnee = substr($this->mois, 0, 4);
-            $this->numMois = substr($this->mois, 4, 2);
-            $this->idVisiteur = \App\Utils\Session::get('idVisiteur');
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
+        parent::__construct('VISTR');
+        $this->mois = \App\Utils\Date::getMois(date('d/m/Y'));
+        $this->numAnnee = substr($this->mois, 0, 4);
+        $this->numMois = substr($this->mois, 4, 2);
+        $this->idVisiteur = \App\Utils\Session::get('idVisiteur');
     }
 
     /**

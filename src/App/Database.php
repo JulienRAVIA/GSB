@@ -129,7 +129,7 @@ class Database {
      * @param String $idVisiteur ID du visiteur
      * @param String $mois       Mois sous la forme aaaamm
      *
-     * @return le nombre entier de justificatifs
+     * @return int le nombre entier de justificatifs
      */
     public function getNbjustificatifs($idVisiteur, $mois) {
         $requetePrepare = Database::$dbh->prepare(
@@ -151,8 +151,7 @@ class Database {
      * @param String $idVisiteur ID du visiteur
      * @param String $mois       Mois sous la forme aaaamm
      *
-     * @return On retourne l'identifiant, le libelle et la quantité sous la forme d'un tableau
-     * associatif
+     * @return array On retourne l'identifiant, le libelle et la quantité
      */
     public function getLesFraisForfait($idVisiteur, $mois) {
         $requetePrepare = Database::$dbh->prepare(
@@ -176,7 +175,7 @@ class Database {
     /**
      * Retourne tous les id de la table FraisForfait
      *
-     * @return un tableau associatif
+     * @return array Les ids de la table FraisForfait
      */
     public function getLesIdFrais() {
         $requetePrepare = Database::$dbh->prepare(
@@ -199,7 +198,7 @@ class Database {
      *
      * @return null
      */
-    public function majFraisForfait($idVisiteur, $mois, $lesFrais, $vehicule = null) {
+    public function majFraisForfait($idVisiteur, $mois, $lesFrais, $vehicule = null, $type = 'VISTR') {
         if (isset($vehicule)) {
             $requetePrepare = Database::$dbh->prepare(
                     'UPDATE assignfraisvehicule '
@@ -212,7 +211,9 @@ class Database {
             $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
             $requetePrepare->execute();
         }
-        $this->setMontantValide($idVisiteur, $mois, $lesFrais);
+        if($type == 'CPTBL') {
+            $this->setMontantValide($idVisiteur, $mois, $lesFrais);
+        }
         $lesCles = array_keys($lesFrais);
         foreach ($lesCles as $unIdFrais) {
             $qte = $lesFrais[$unIdFrais];
@@ -232,6 +233,12 @@ class Database {
         
     }
 
+    /**
+     * Récupère le véhicule d'un utilisateur pour un mois
+     * @param  string $idVisiteur Identifiant du visiteur
+     * @param  int $mois          Identifiant du mois
+     * @return string             Type de véhicule
+     */
     public function getVehicule($idVisiteur, $mois){
         $requetePrepare = Database::$dbh->prepare(
                     'SELECT typevehicule '
@@ -531,13 +538,14 @@ class Database {
                     . 'INNER JOIN lignefraishorsforfait ON fichefrais.idvisiteur = lignefraishorsforfait.idvisiteur '
                     . 'INNER JOIN visiteur ON fichefrais.idvisiteur = visiteur.id '
                     . 'WHERE fichefrais.mois = :unMois AND lignefraishorsforfait.mois = :unMois '
-                    . 'AND visiteur.type = "VISTR" '
-                    . 'group by fichefrais.idvisiteur'
+                    . 'AND visiteur.type = "VISTR" AND lignefraishorsforfait.libelle NOT LIKE "[REFUSÉ]%" '
+                    . 'GROUP BY fichefrais.idvisiteur'
             );
             $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
             $requetePrepare->execute();
             $lesLignes = array();
             while ($laLigne = $requetePrepare->fetch()) {
+                $montantF = $this->montantTotalForfait($mois, $laLigne['id']);
                 $lesLignes[] = array(
                     'id' => $laLigne['id'],
                     'idEtat' => $laLigne['idEtat'],
@@ -545,8 +553,9 @@ class Database {
                     'prenom' => $laLigne['prenom'], 
                     'dateModif' => $laLigne['dateModif'],
                     'nbJustificatifs' => $laLigne['nbJustificatifs'],
-                    'montantF' => $laLigne['montantF'],
+                    'montantF' => $montantF,
                     'montantHF' => $laLigne['montantHF'],
+                    'montantTotal' => ($laLigne['montantHF'] + $montantF),
                     'libEtat' => $laLigne['libEtat']
                 );
             }
@@ -560,20 +569,21 @@ class Database {
                             . 'visiteur.prenom as prenom,'
                             .'fichefrais.idvisiteur as id,'
                             .'fichefrais.nbjustificatifs as nbJustificatifs, '
-                            .'fichefrais.montantvalide as montantF, '
-                            .'sum(lignefraishorsforfait.montant) as montantHF, ' 
+                            .'SUM(lignefraishorsforfait.montant) as montantHF, ' 
                             .'etat.libelle as libEtat '
                             .'FROM fichefrais '
                             .'INNER JOIN etat ON fichefrais.idetat = etat.id '
                             . 'INNER JOIN visiteur ON fichefrais.idvisiteur = visiteur.id '
                             .'INNER JOIN lignefraishorsforfait ON fichefrais.idvisiteur = lignefraishorsforfait.idvisiteur '
                             .'WHERE fichefrais.idVisiteur = :unIdVisiteur and lignefraishorsforfait.mois = fichefrais.mois '
-                            .'group by fichefrais.mois desc'
+                            .'AND lignefraishorsforfait.libelle NOT LIKE "[REFUSÉ]%" '
+                            .'GROUP BY fichefrais.mois desc'
             );
             $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
             $requetePrepare->execute();
             $lesLignes = array();
             while ($laLigne = $requetePrepare->fetch()) {
+                $montantF = $this->montantTotalForfait($laLigne['mois'], $idVisiteur);
                 $lesLignes[] = array(
                     'nom' => $laLigne['nom'], 
                     'prenom' => $laLigne['prenom'],
@@ -582,8 +592,9 @@ class Database {
                     'id' => $laLigne['id'],
                     'dateModif' => $laLigne['dateModif'],
                     'nbJustificatifs' => $laLigne['nbJustificatifs'],
-                    'montantF' => $laLigne['montantF'],
+                    'montantF' => $montantF,
                     'montantHF' => $laLigne['montantHF'],
+                    'montantTotal' => ($laLigne['montantHF'] + $montantF),
                     'libEtat' => $laLigne['libEtat']
                 );
             }
@@ -626,7 +637,7 @@ class Database {
      * @param String $mois       Mois sous la forme aaaamm
      * @param String $etat       Nouvel état de la fiche de frais
      *
-     * @return null
+     * @return bool
      */
     public function majEtatFicheFrais($idVisiteur, $mois, $etat) {
         $requetePrepare = Database::$dbh->prepare(
@@ -643,10 +654,8 @@ class Database {
 
     /**
      * Supprime le frais hors forfait dont l'id est passé en argument
-     *
      * @param String $idFrais ID du frais
-     *
-     * @return null
+     * @return array Liste des visiteurs ayant des fiches de frais
      */
     public function getLesVisiteursAyantFichesFrais() {
         $requetePrepare = Database::$dbh->prepare(
@@ -668,73 +677,111 @@ class Database {
 
     
     /**
-     * Enregistre le montant valide
-     * 
-     * 
-    */
+     * Met à jour le montant validé d'une fiche de frais (total fraisforfait + total fraishorsforfait non refusés)
+     * @param string $idVisiteur Identifiant du visiteur
+     * @param int $mois       Identifiant du mois
+     * @param array $lesFrais   Les frais à calculer
+     */
     public function setMontantValide($idVisiteur, $mois, $lesFrais) {
         $montantvalide = 0;
-            $lesCles = array_keys($lesFrais);
-            foreach ($lesCles as $unIdFrais) {
-                if ($unIdFrais == "KM") {
-                    $i = $this->getVehicule($idVisiteur, $mois);
-                    switch ($i) {
-                        case 1:
-                            $montantvalide = $montantvalide + (0.52 * $lesFrais[$unIdFrais]);
-                            break;
-                        case 2:
-                            $montantvalide = $montantvalide + (0.58 * $lesFrais[$unIdFrais]);
-                            break;
-                        case 3:
-                            $montantvalide = $montantvalide + (0.62 * $lesFrais[$unIdFrais]);
-                            break;
-                        case 4:
-                            $montantvalide = $montantvalide + (0.67 * $lesFrais[$unIdFrais]);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                else{
-                    // Autre type de frais forfait
-                    // $montantvalide = $montantvalide +
+        $montants = array('REP' => 25, 'ETP' => 110, 'NUI' => 80);
+        $lesCles = array_keys($lesFrais);
+        foreach ($lesCles as $unIdFrais) {
+            if ($unIdFrais == "KM") {
+                $i = $this->getVehicule($idVisiteur, $mois);
+                switch ($i) {
+                    case 1:
+                        $montantvalide = $montantvalide + (0.52 * $lesFrais[$unIdFrais]);
+                        break;
+                    case 2:
+                        $montantvalide = $montantvalide + (0.58 * $lesFrais[$unIdFrais]);
+                        break;
+                    case 3:
+                        $montantvalide = $montantvalide + (0.62 * $lesFrais[$unIdFrais]);
+                        break;
+                    case 4:
+                        $montantvalide = $montantvalide + (0.67 * $lesFrais[$unIdFrais]);
+                        break;
+                    default:
+                        break;
                 }
             }
-            $requetePrepare = Database::$dbh->prepare(
-                    'UPDATE fichefrais '
-                    . 'SET fichefrais.montantvalide = :montant '
-                    . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
-                    . 'AND fichefrais.mois = :unMois '
-            );
-            $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
-            $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
-            $requetePrepare->bindParam(':montant', $montantvalide, \PDO::PARAM_INT);
-            $requetePrepare->execute();
+            else{
+                $montantvalide = $montantvalide + ($montants[$unIdFrais] * $lesFrais[$unIdFrais]);
+            }
         }
+        // on ajoute au montant validé (frais forfait) le total des hors forfait non refusés
+        $montantvalide = $montantvalide + $this->montantTotalHorsForfaitNonRefuses($mois, $idVisiteur);
+        $requetePrepare = Database::$dbh->prepare(
+                'UPDATE fichefrais '
+                . 'SET fichefrais.montantvalide = :montant '
+                . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
+                . 'AND fichefrais.mois = :unMois '
+        );
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, \PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $mois, \PDO::PARAM_STR);
+        $requetePrepare->bindParam(':montant', $montantvalide, \PDO::PARAM_INT);
+        $requetePrepare->execute();
+    }
     
     
     /**
      * Récupère la liste des visiteurs
-     * 
-     * 
-    */
+     * @return array Liste des visiteurs
+     */
     public function getVisiteursList() {
-            $requetePrepare = Database::$dbh->prepare(
-                    'SELECT nom,'
-                    . 'prenom,'
-                    . 'id '
-                    . 'FROM visiteur '
-                    . 'WHERE type = "VISTR" '
+        $requetePrepare = Database::$dbh->prepare(
+                'SELECT nom,'
+                . 'prenom,'
+                . 'id '
+                . 'FROM visiteur '
+                . 'WHERE type = "VISTR" '
+        );
+        $requetePrepare->execute();
+        $lesVisiteurs = array();
+        while ($laLigne = $requetePrepare->fetch()) {
+            $lesVisiteurs[] = array(
+                'id' => $laLigne['id'],
+                'nom' => $laLigne['nom'], 
+                'prenom' => $laLigne['prenom'], 
             );
-            $requetePrepare->execute();
-            $lesVisiteurs = array();
-            while ($laLigne = $requetePrepare->fetch()) {
-                $lesVisiteurs[] = array(
-                    'id' => $laLigne['id'],
-                    'nom' => $laLigne['nom'], 
-                    'prenom' => $laLigne['prenom'], 
-                );
-            }
-            return $lesVisiteurs;
+        }
+        return $lesVisiteurs;
+    }
+
+    /**
+     * Retourne le montant total des hors forfait non refusés d'un mois et d'un visiteur
+     * @param  int $mois     Id du mois
+     * @param  string $visiteur Id du visiteur
+     * @return int Montant total           
+     */
+    public function montantTotalHorsForfaitNonRefuses($mois, $visiteur)
+    {
+        $requetePrepare = Database::$dbh->prepare(
+            "SELECT SUM(montant) as totalhf FROM lignefraishorsforfait WHERE libelle 
+            NOT LIKE '[REFUSÉ]%' AND idvisiteur = :visiteur AND mois = :mois"
+        );
+        $requetePrepare->execute(compact('mois', 'visiteur'));
+        $leTotalHorsForfait = $requetePrepare->fetch(\PDO::FETCH_COLUMN, 0);
+        return (!is_null($leTotalHorsForfait)) ? $leTotalHorsForfait : 0;
+    }
+
+    /**
+     * Retourne le montant total des frais forfait d'un mois et d'un visiteur
+     * @param  int $mois     Id du mois
+     * @param  string $visiteur Id du visiteur
+     * @return int Montant total           
+     */
+    public function montantTotalForfait($mois, $visiteur)
+    {
+        $requetePrepare = Database::$dbh->prepare(
+            "SELECT SUM(quantite * montant) as montantF FROM lignefraisforfait
+            INNER JOIN fraisforfait ON
+            fraisforfait.id = lignefraisforfait.idfraisforfait
+            WHERE idvisiteur = :visiteur AND mois = :mois"
+        );
+        $requetePrepare->execute(compact('mois', 'visiteur'));
+        $leTotalForfait = $requetePrepare->fetch(\PDO::FETCH_COLUMN, 0);
+        return (!is_null($leTotalForfait)) ? $leTotalForfait : 0;
     }
 }

@@ -20,5 +20,5 @@ class HomeController extends BaseController {
     	} else {
             View::make('connexion.twig');
     	}
-   }
+    }
 }

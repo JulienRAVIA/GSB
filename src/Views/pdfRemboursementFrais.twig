@@ -5,7 +5,7 @@
 	<title>Remboursement de frais engagés | {{ date.text|capitalize }}</title>
 </head>
 <body>
-	<p style="text-align: center;"><img class="center" src="img/logo.jpg" width="150" alt=""></p>
+	<p style="text-align: center;"><img class="center" src="/img/logo.jpg" width="150" alt=""></p>
 	<div class="bloc">
 		<div class="bloc-head">REMBOURSEMENT DE FRAIS ENGAGES</div>
 		<div class="bloc-body">
@@ -21,7 +21,6 @@
 					<td></td>
 				</tr>
 			</table>
-            {% set montant = 0 %}
 			<table id="table2">
 				<thead>
 					<tr>
@@ -40,13 +39,16 @@
 						<td>{{ unFraisForfaitaire.montant }}</td>
 						<td>{{ total }}</td>
 					</tr>
-                    {% set montant = montant + total %}
                 {% endfor %}
+				<tr>
+					<td class="align-right" colspan="2">Total</td>
+					<td colspan="2">{{ totalF }}</td>
+				</tr>
 				</tbody>
 			</table>
 			
 			<div class="div" style="border-right: 1px solid #1F497D; border-left: 1px solid #1F497D; width: 90%; margin-left: 5%;">
-				<p style="text-align: center;">Autres frais</p>	
+				<p style="text-align: center; margin: 5px 0;"><b>Autres frais</b></p>	
 			</div>
 
 			<table id="table2">
@@ -58,15 +60,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-					</tr>
                     {% for unFrais in autresFrais %}
 					<tr>
 						<td class="align-right">{{ unFrais.date }}</td>
 						<td class="align-right">{{ unFrais.libelle }}</td>
 						<td>{{ unFrais.montant }}</td>
 					</tr>
-                    {% set montant = montant + unFrais.montant %}
                     {% endfor %}
 				</tbody>
 			</table>
@@ -74,6 +73,10 @@
             <div style="float: right; width: 29%; margin-top: 5%;">
             	<table id="table3">
             	    <tbody>
+            	        <tr>
+            	            <td>Total hors-forfait</td>
+            	            <td>{{ totalHF }}€</td>
+            	        </tr>
             	        <tr>
             	            <td>Total 07/2017</td>
             	            <td>{{ montant }}€</td>
@@ -87,7 +90,7 @@
 	<div style="float: right; width: 25%; margin-top: 1%;">
 		Fait à Paris, le {{ infosFicheFrais.dateModif|date('d/m') }} <br>
 		Vu l'agent comptable <br><br>
-		<img src="img/signatureComptable.png">
+		<img src="/img/signatureComptable.png">
 	</div>
 
 	<style type="text/css">

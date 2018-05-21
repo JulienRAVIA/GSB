@@ -36,6 +36,7 @@ class SuivrePaiementController extends BaseController {
 
     /**
      * Affichage des fiches de frais de chaque utilisateur l'ayant remplie
+     * @param  bool $singleUser Afficher pour un seul utilisateur (true) ou non (false)
      * @return view Vue du suivi de paiements avec les informations nécessaires pour l'affichage
      */	
     public function showSuivi($singleUser = false) {
@@ -74,6 +75,7 @@ class SuivrePaiementController extends BaseController {
     
     /**
      * Gestion du suivi multiple ou unique pour le routeur
+     * @param  array $request Tableau comportant le type de filtrage pour les fiches de frais
      */
     public function suivi($request) {
         if ($request['type'] == 'multiple') {
@@ -87,6 +89,7 @@ class SuivrePaiementController extends BaseController {
     
     /**
      * Mise en paiement des fiches de frais selectionnées
+     * @param  array $request Tableau comportant le type de filtrage pour les fiches de frais
      */
     public function miseEnPaiement($request){
         /**
@@ -119,7 +122,6 @@ class SuivrePaiementController extends BaseController {
             }
            $this->showSuivi(true);
         }
-        
     }
 }
 

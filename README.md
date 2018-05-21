@@ -33,6 +33,8 @@ Lancer la commande suivante : ``phpunit --bootstrap src/Class.php --testdox test
 
 Lien vers la documentation : https://julienravia.github.io/GSB/
 
+Date de la dernière génération de documentation : 21/05/2018
+
 Lancer la mise à jour/regénération de la documentation avec la commande suivante (à la racine du projet) : 
 ``vendor\bin\apigen generate src --destination docs``
 
@@ -52,7 +54,7 @@ Lancer la mise à jour/regénération de la documentation avec la commande suiva
 - [x] Tache 3 : Production de la documentation (dernière version : 23/12/2017)
 - [x] Tache 4 : Gestion du refus de certains frais hors forfait
 - [x] Tache 5 : Sécurisation des mots de passe stockés. Hashage utilisé : SHA-512
-- [ ] Tache 6 : Gestion plus fine de l'indeminisation kilométrique
+- [x] Tache 6 : Gestion plus fine de l'indeminisation kilométrique
 - [x] Tache 7 : Génération d'un état de frais au format PDF
 - [x] Tache 8 : Davantage d'écologie dans l'application
 
@@ -62,10 +64,10 @@ Lancer la mise à jour/regénération de la documentation avec la commande suiva
 - [x] Report d'un frais hors forfait
 - [x] Report de plusieurs frais hors forfait
 - [x] Correction de plusieurs frairs hors forfait en même temps
-- [ ] Décompte des frais hors forfait refusés lors de la génération du pdf et du suivi de paiement
+- [x] Décompte des frais hors forfait refusés lors de la génération du pdf et du suivi de paiement
 - [x] Ajout d'un datepicker pour l'ajout d'élément hors forfait
-- [ ] Compte avec l'indemnisation kilométrique pour le PDF
-- [ ] Ajout du montant total au suivi des fiches de frais et calcul avec indemnité kilométrique selon voiture
+- [x] Compte avec l'indemnisation kilométrique pour le PDF
+- [x] Ajout du montant total au suivi des fiches de frais et calcul avec indemnité kilométrique selon voiture
 
 ## Auteurs
 

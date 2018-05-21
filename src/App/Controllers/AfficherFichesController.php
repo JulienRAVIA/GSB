@@ -8,18 +8,14 @@ use Jenssegers\Date\Date;
 /**
  * Contrôleur de la page d'affichage des fiches de frais
  */
-class AfficherFichesController {
+class AfficherFichesController extends BaseController {
 
     /**
      * Récupération du singleton de base de données
      */
     public function __construct() {
-        try {
-            $this->db = \App\Database::getInstance();
-            $this->idVisiteur = \App\Utils\Session::get('idVisiteur');
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
+        parent::__construct();
+        $this->idVisiteur = \App\Utils\Session::get('idVisiteur');
     }
 
     /**
@@ -75,7 +71,8 @@ class AfficherFichesController {
         $autresFrais = $this->db->getLesFraisHorsForfait($request['user'], $request['mois']);
         $lesInfosFicheFrais = $this->db->getLesInfosFicheFrais($request['user'], $request['mois']);
         $infosVisiteur = $this->db->getInfosVisiteurFromId($request['user']);
-        
+        $montantF = $this->db->montantTotalForfait($request['mois'], $request['user']);
+        $montantHF = $this->db->montantTotalHorsForfaitNonRefuses($request['mois'], $request['user']);
         /* Récupération des dates au bon format à afficher sur le PDF */
         Date::setLocale('fr');
         $dateFiche = Date::createFromFormat('Ym', $request['mois']);
@@ -84,13 +81,15 @@ class AfficherFichesController {
         $date['numMois'] = $dateFiche->format('m');
         $date['text'] = $dateFiche->format('F Y');
         $date['total'] = $dateFiche->format('m/Y');
-
         // Création du rendu du PDF
         View::make('pdfRemboursementFrais.twig', array('visiteur' => $infosVisiteur, 
                                                        'lesFraisForfaitaires' => $lesFraisForfait, 
                                                        'autresFrais' => $autresFrais, 
                                                        'infosFicheFrais' => $lesInfosFicheFrais, 
-                                                       'date' => $date
+                                                       'date' => $date,
+                                                       'totalF' => $montantF,
+                                                       'totalHF' => $montantHF,
+                                                       'montant' => ($montantF + $montantHF)
                                                        ));
     }
     
@@ -99,19 +98,27 @@ class AfficherFichesController {
      */
     public function genPdf() {
         // On génére le nom de la fiche de frais
-        $filename='pdf/Remboursement de frais engagés - '.$_POST['mois'].'_'.\App\Utils\Session::get('idVisiteur').'_'.sha1(\App\Utils\Session::get('idVisiteur')).'.pdf'; 
+        $filename = 'Remboursement_de_frais_engages_'.$_POST['mois'].'_'.\App\Utils\Session::get('idVisiteur').'_'.sha1(\App\Utils\Session::get('idVisiteur')).'.pdf'; 
 
-        // Si le fichier n'existe pas, on le créé                    
-        if(!file_exists($filename)) {
-            $mpdf = new \Mpdf\Mpdf();
-            $source = file_get_contents('http://'.$_SERVER['HTTP_HOST'].'/frais/pdf/'.\App\Utils\Session::get('idVisiteur').'/'.$_POST['mois']);
-            $mpdf->WriteHTML($source);
-            $mpdf->Output($filename, 'F');
+        // on instancie la source et la classe de génération de pdf
+        $mpdf = new \Mpdf\Mpdf();
+        $source = file_get_contents('http://'.$_SERVER['HTTP_HOST'].'/frais/pdf/'.\App\Utils\Session::get('idVisiteur').'/'.$_POST['mois']);
+        
+        // on créé un pdf temporaire correspondant au fichier qui serait généré 
+        $temp = 'pdf/temp_'.$filename;
+        $mpdf->WriteHTML($source);
+        $mpdf->Output($temp, 'F');
+    
+        // Si le fichier n'existe pas ou que la taille du fichier temporaire est différente du fichier existant, on renomme le pdf
+        if(!file_exists('pdf/'.$filename) || file_exists('pdf/'.$filename) && filesize($temp) != filesize('pdf/'.$filename)) {
+            rename($temp, 'pdf/'.$filename); 
         }
+
+        // on permet à l'utilisateur de télécharger le pdf
         header("Content-type: application/octet-stream");                       
         header("Content-Disposition:inline;filename='".basename($filename)."'");            
-        header('Content-Length: ' . filesize($filename));
+        header('Content-Length: ' . filesize('pdf/'.$filename));
         header("Cache-control: private"); //use this to open files directly                     
-        readfile($filename);
+        readfile('pdf/'.$filename);
     }
 }

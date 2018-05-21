@@ -9,19 +9,8 @@ use \App\Utils\ErrorLogger as ErrorLogger;
 /**
 * Contrôleur de la page de connexion
 */
-class ConnexionController
+class ConnexionController extends BaseController
 {
-    /**
-     * Récupèration du singleton de base de donnée
-     */
-	public function __construct() {
-        try {
-            $this->db = \App\Database::getInstance();
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
-    }
-
     /**
      * Affiche la page de connexion dans le cas ou on est pas connecté
      * Sinon on redirige vers l'accueil

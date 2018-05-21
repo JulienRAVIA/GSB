@@ -7,7 +7,6 @@
     <div id="listeMois">
         {% include 'includes/listeMois.twig' with {'lesMois': lesMois, 'moisASelectionner' : moisASelectionner ,'redirect' : '/frais/etat'} only %}
     </div>
-
 {% if showEtat %}
 <hr>
 <div class="panel panel-primary">
@@ -28,15 +27,17 @@
 </div>
 <div class="panel panel-info">
     <div class="panel-heading">Eléments forfaitisés</div>
-    <table class="table table-bordered table-responsive">
+    <table class="table table-bordered table-responsive text-center">
         <tr>
             {% for unFraisForfait in lesFraisForfait %}
-                <th>{{ unFraisForfait.libelle|e }}</th>
+                <th class="text-center">{{ unFraisForfait.libelle|e }}</th>
+                <th class="text-center" style="border-right: 1px solid black;"><i class="fa fa-euro"></i> {{ unFraisForfait.montant }}</th>
             {% endfor %}
         </tr>
         <tr>
             {% for unFraisForfait in lesFraisForfait %}
                 <td class="qteForfait">{{ unFraisForfait.quantite }}</td>
+                <td class="qteForfait" style="border-right: 1px solid black;">{{ unFraisForfait.quantite * unFraisForfait.montant }}</td>
             {% endfor %}
         </tr>
     </table>
